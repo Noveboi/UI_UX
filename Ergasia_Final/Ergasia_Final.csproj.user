@@ -7,6 +7,12 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\DJView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ExHallView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\MainMenuView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -16,8 +22,20 @@
     <Compile Update="Views\TestView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\UpConView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\VRoomView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\DJView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ExHallView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\MainMenuView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -25,6 +43,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\TestView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\UpConView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\VRoomView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

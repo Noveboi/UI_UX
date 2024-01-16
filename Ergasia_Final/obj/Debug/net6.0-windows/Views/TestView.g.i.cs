@@ -53,7 +53,7 @@ namespace Ergasia_Final.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Ergasia_Final;component/views/testview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Ergasia_Final;V1.0.0.0;component/views/testview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\TestView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

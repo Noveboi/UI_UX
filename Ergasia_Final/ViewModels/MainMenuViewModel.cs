@@ -15,9 +15,21 @@ namespace Ergasia_Final.ViewModels
             _events = eventAggregator;
         }
 
-        public void OpenTestView()
+        public void OpenUpCon()
         {
-            _events.PublishOnUIThreadAsync(new TestViewModel());
+
+        }
+        public void OpenExHall()
+        {
+
+        }
+        public void OpenVRoom()
+        {
+
+        }
+        public void OpenDJ()
+        {
+
         }
     }
 }
