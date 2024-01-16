@@ -7,38 +7,11 @@
              mc:Ignorable="d" 
              MinWidth="800" MinHeight="450"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Purple">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    <Grid Background="BlueViolet">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Column="0"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Center"
-                 MinWidth="300"
-                 MinHeight="60"
-                 FontSize="32"
-                 Text="{Binding Path=FirstName, Mode=TwoWay, NotifyOnTargetUpdated=True}"/>
-        <TextBox Grid.Column="1"
-         HorizontalAlignment="Center"
-         VerticalAlignment="Center"
-         MinWidth="300"
-         FontSize="32"
-         MinHeight="60"
-                 Text="{Binding Path=LastName, Mode=TwoWay}"/>
-        <TextBlock x:Name="FirstName"
-            VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="48"
-                   Foreground="AliceBlue"
-                   Grid.Column="0" Grid.Row="1"/>
-        <TextBlock x:Name="LastName" 
-            VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="48"
-                   Foreground="AliceBlue"
-                   Grid.Column="1" Grid.Row="1"/>
+        <ContentControl Grid.Row="1" x:Name="ActiveItem"/>
     </Grid>
 </UserControl>

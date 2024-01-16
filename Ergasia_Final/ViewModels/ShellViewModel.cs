@@ -3,38 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class ShellViewModel : Screen
+    public class ShellViewModel : Conductor<object>, IHandle<object>
     {
-        private string _firstName = "Mary";
-        public string FirstName
+        private readonly IEventAggregator _events;
+        public ShellViewModel(IEventAggregator eventAggregator)
         {
-            get
-            {
-                return _firstName;
-            }
-            set
-            {
-                _firstName = value;
-                NotifyOfPropertyChange();
-            }
+            _events = eventAggregator;
+            _events.SubscribeOnUIThread(this);
+            ActivateItemAsync(new MainMenuViewModel(eventAggregator));
         }
 
-        private string _lastName = "Dimi";
-        public string LastName
+        public async Task HandleAsync(object message, CancellationToken cancellationToken)
         {
-            get
-            {
-                return _lastName;
-            }
-            set
-            {
-                _lastName = value;
-                NotifyOfPropertyChange();
-            }
+            await ActivateItemAsync(message);
         }
     }
 }
