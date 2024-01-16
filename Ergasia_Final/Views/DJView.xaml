@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Background="Green">
+        <TextBlock FontSize="64" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                   Text="DJ App!" Foreground="White"/>
     </Grid>
 </UserControl>

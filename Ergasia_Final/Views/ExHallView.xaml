@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Background="DarkCyan">
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="64" Text="Exhibition Hall!" Foreground="White"/>
     </Grid>
 </UserControl>

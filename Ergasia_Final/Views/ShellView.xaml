@@ -9,9 +9,25 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="BlueViolet">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ContentControl Grid.Row="1" x:Name="ActiveItem"/>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="10"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="20"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="PreviousWindow"
+                    MinHeight="35" MinWidth="35" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="Previous Window"
+                    Padding="10"/>
+        </StackPanel>
     </Grid>
 </UserControl>

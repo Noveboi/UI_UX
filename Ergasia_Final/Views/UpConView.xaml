@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Background="BlueViolet">
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="64" Foreground="White" Text="Upcoming Concerts!"/>
     </Grid>
 </UserControl>

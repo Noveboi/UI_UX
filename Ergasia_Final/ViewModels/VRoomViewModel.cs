@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,10 @@ namespace Ergasia_Final.ViewModels
 {
     public class VRoomViewModel
     {
+        private readonly IEventAggregator _eventAggregator;
+        public VRoomViewModel(IEventAggregator eventAggregator)
+        {
+            _eventAggregator = eventAggregator;
+        }
     }
 }

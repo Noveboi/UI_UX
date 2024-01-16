@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,12 +23,37 @@ namespace Ergasia_Final.ViewModels
         {
             _events = eventAggregator;
             _events.SubscribeOnUIThread(this);
-            ActivateItemAsync(new MainMenuViewModel(eventAggregator));
+
+            var mainMenu = new MainMenuViewModel(eventAggregator);
+
+            ActivateItemAsync(mainMenu);
+
+            _windowStack = new Stack<object>();
+            _windowStack.Push(mainMenu);
         }
 
+        // Fields
+        private Stack<object> _windowStack; 
+
+
+        // Methods
         public async Task HandleAsync(object message, CancellationToken cancellationToken)
         {
+            _windowStack.Push(message);
             await ActivateItemAsync(message);
+        }
+        public void PreviousWindow()
+        {
+            try
+            {
+                if (_windowStack.Peek().GetType().Name != typeof(MainMenuViewModel).Name)
+                {
+                    _windowStack.Pop();
+                    var newWindow = _windowStack.Peek();
+                    ActivateItemAsync(newWindow);
+                }
+            }
+            catch { }
         }
     }
 }

@@ -19,9 +19,6 @@
     <Compile Update="Views\ShellView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TestView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\UpConView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -40,9 +37,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ShellView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\TestView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\UpConView.xaml">
