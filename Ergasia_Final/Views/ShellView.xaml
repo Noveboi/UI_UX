@@ -28,6 +28,14 @@
                     VerticalAlignment="Center"
                     Content="Previous Window"
                     Padding="10"/>
+            <TextBlock Text="Modern Museum of Music Artists"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            <Button x:Name="ToggleColorTheme"
+                    Padding="10" MinHeight="35" MinWidth="35" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="Light/Dark Mode"/>
         </StackPanel>
     </Grid>
 </UserControl>

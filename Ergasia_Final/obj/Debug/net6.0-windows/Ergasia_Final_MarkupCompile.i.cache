@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 C:\Users\maryd\OneDrive\Υπολογιστής\Εργασία UI UX\UI_UX\Ergasia_Final\App.xaml
-61892325353
+9-1233345925
 
 17-1472822726
 198-2077706147
-Views\DJView.xaml;Views\ExHallView.xaml;Views\MainMenuView.xaml;Views\ShellView.xaml;Views\UpConView.xaml;Views\VRoomView.xaml;
+Resources\GlobalStyles.xaml;Resources\Themes\DarkColors.xaml;Resources\Themes\LightColors.xaml;Views\DJView.xaml;Views\ExHallView.xaml;Views\MainMenuView.xaml;Views\ShellView.xaml;Views\UpConView.xaml;Views\VRoomView.xaml;
 
-False
+True
 

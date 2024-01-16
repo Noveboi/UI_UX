@@ -14,10 +14,14 @@
                     <Setter Property="Margin" Value="12"/>
                 </Style>
             </StackPanel.Resources>
-            <Button x:Name="OpenUpCon" VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
-            <Button x:Name="OpenExHall" VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
-            <Button x:Name="OpenVRoom" VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
-            <Button x:Name="OpenDJ" VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
+            <Button x:Name="OpenUpCon" Content="Upcoming Concerts"
+                    VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
+            <Button x:Name="OpenExHall" Content="Exhibition Hall"
+                    VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
+            <Button x:Name="OpenVRoom" Content="Viewing Room"
+                    VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
+            <Button x:Name="OpenDJ" Content="DJ"
+                    VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
         </StackPanel>
     </Grid>
 </UserControl>
