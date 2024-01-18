@@ -15,6 +15,7 @@ namespace Ergasia_Final.ViewModels
             _eventAggregator = eventAggregator;
         }
 
+        // Methods for the 4 buttons 
         public void OpenUpCon()
         {
             _eventAggregator.PublishOnUIThreadAsync(new UpConViewModel(_eventAggregator));

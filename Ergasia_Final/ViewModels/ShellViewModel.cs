@@ -16,9 +16,8 @@ namespace Ergasia_Final.ViewModels
     {
         private readonly IEventAggregator _events;
         /// <summary>
-        /// By default, request the event aggregator instance for inter-class communication
+        /// By default, request the event aggregator instance for class cross-communication
         /// </summary>
-        /// <param name="eventAggregator"></param>
         public ShellViewModel(IEventAggregator eventAggregator)
         {
             _events = eventAggregator;
@@ -33,10 +32,15 @@ namespace Ergasia_Final.ViewModels
         }
 
         // Fields
+        /// <summary>
+        /// Remember which windows have been opened in order to go back to previous ones
+        /// </summary>
         private Stack<object> _windowStack; 
 
-
         // Methods
+        /// <summary>
+        /// (Implemented from IHandle) This method runs when an event is published in IEventAggregator
+        /// </summary>
         public async Task HandleAsync(object message, CancellationToken cancellationToken)
         {
             _windowStack.Push(message);
