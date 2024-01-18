@@ -6,7 +6,13 @@
 - Ιστορικό της προόδου στο project
 - Οργάνωση και "συγχρόνισμος" των αρχείων της εργασίας μεταξύ των υπολογιστών μας
 ***
+
+### **Dependencies**:
+- [Caliburn.Micro](https://www.nuget.org/packages/Caliburn.Micro)
+- [WPF Extended Toolkit](https://www.nuget.org/packages/Extended.Wpf.Toolkit)
+
 Βοηθητικό υλικό:
 - [Introduction to WPF](https://www.youtube.com/watch?v=gSfMNjWNoX0&t=2070s)
 - [WPF MVVM with Caliburn.Micro](https://www.youtube.com/watch?v=laPFq3Fhs8k&t=473s)
 - [Event Aggregation in WPF](https://www.youtube.com/watch?v=70Dj9cnyu2g)
+
