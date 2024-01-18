@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\maryd\OneDrive\Υπολογιστής\Εργασία UI UX\UI_UX\Ergasia_Final\obj\Debug\net6.0-windows\
+C:\Users\novap\OneDrive\Desktop\UI_UX\Ergasia_Final\obj\Debug\net6.0-windows\
 Ergasia_Final
 none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
-C:\Users\maryd\OneDrive\Υπολογιστής\Εργασία UI UX\UI_UX\Ergasia_Final\App.xaml
+C:\Users\novap\OneDrive\Desktop\UI_UX\Ergasia_Final\App.xaml
 9-1233345925
 
 17-1472822726
-198-2077706147
+194726069201
 Resources\GlobalStyles.xaml;Resources\Themes\DarkColors.xaml;Resources\Themes\LightColors.xaml;Views\DJView.xaml;Views\ExHallView.xaml;Views\MainMenuView.xaml;Views\ShellView.xaml;Views\UpConView.xaml;Views\VRoomView.xaml;
 
-True
+False
 
