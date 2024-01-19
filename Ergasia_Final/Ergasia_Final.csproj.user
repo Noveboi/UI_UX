@@ -7,6 +7,15 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\ArtistHallView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\CafeteriaView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ConcertTicketsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\DJView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +43,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\Themes\LightColors.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ArtistHallView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CafeteriaView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ConcertTicketsView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DJView.xaml">
