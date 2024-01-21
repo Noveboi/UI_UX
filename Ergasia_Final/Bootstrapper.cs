@@ -24,15 +24,13 @@ namespace Ergasia_Final
 
         protected override void Configure()
         {
+            // Create services for use with dependency injection
             _container
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<IWindowManager, WindowManager>();
 
-            GetType().Assembly.GetTypes()
-                .Where(type => type.IsClass)
-                .Where(type => type.ToString().EndsWith("ViewModel"))
-                .ToList()
-                .ForEach(viewModel => _container.RegisterPerRequest(viewModel, viewModel.ToString(), viewModel));
+            // Make the ShellViewModel able to request services 
+            _container.RegisterPerRequest(typeof(ShellViewModel), typeof(ShellViewModel).Name, typeof(ShellViewModel));
         }
 
         protected override object GetInstance(Type service, string key)
