@@ -9,13 +9,11 @@
                 <ResourceDictionary>
                     <local:Bootstrapper x:Key="bootstrapper"/>
                 </ResourceDictionary>
-                
+
                 <!--Color & Themes-->
                 <ResourceDictionary Source="Resources/GlobalStyles.xaml"/>
                 <ResourceDictionary Source="Resources/DarkColors.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        
-        
     </Application.Resources>
 </Application>

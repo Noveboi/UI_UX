@@ -18,11 +18,20 @@ namespace Ergasia_Final.Views
     /// <summary>
     /// Interaction logic for ShellView.xaml
     /// </summary>
-    public partial class ShellView : UserControl
+    public partial class ShellView : Window
     {
         public ShellView()
         {
             InitializeComponent();
         }
+
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
     }
 }

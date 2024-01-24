@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Input;
 
 namespace Ergasia_Final.ViewModels
 {
@@ -32,22 +34,31 @@ namespace Ergasia_Final.ViewModels
             _windowStack.Push(mainMenu);
         }
 
+        // Properties
+        public string MaximizeSymbol
+        {
+            get => _maximizeSymbol;
+            set
+            {
+                _maximizeSymbol = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         // Fields
-        /// <summary>
-        /// Remember which windows have been opened in order to go back to previous ones
-        /// </summary>
         private Stack<object> _windowStack;
+        private string _maximizeSymbol = "🗖";
         private bool _isDarkMode = true;
 
         // Methods
-        /// <summary>
-        /// (Implemented from IHandle) This method runs when an event is published in IEventAggregator
-        /// </summary>
+        // (Implemented from IHandle) This method runs when an event is published in IEventAggregator
         public async Task HandleAsync(object message, CancellationToken cancellationToken)
         {
             _windowStack.Push(message);
             await ActivateItemAsync(message);
         }
+
+        // Switch the ActiveItem in ContentControl 
         public void PreviousWindow()
         {
             try
@@ -66,6 +77,7 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        // Replace color theme resource dictionaries to dynamically change app colors
         public void ToggleColorTheme()
         {
             // Clear the application dictionary for the colors
@@ -82,6 +94,38 @@ namespace Ergasia_Final.ViewModels
             Application.Current.Resources.MergedDictionaries.Add(newTheme);
 
             _isDarkMode = !_isDarkMode;
+        }
+
+        public void MinimizeView()
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        public void MaximizeView()
+        {
+            if (Application.Current.MainWindow.WindowState != WindowState.Maximized)
+            {
+                _maximizeSymbol = "🗖";
+                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            } 
+            else
+            {
+                _maximizeSymbol = "🗗︎";
+                Application.Current.MainWindow.WindowState = WindowState.Normal;
+            }
+        }
+
+        public void CloseApp()
+        {
+            Application.Current.Shutdown();
+        }
+
+        public void MoveWindow(MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Application.Current.MainWindow.DragMove();
+            }
         }
     }
 }
