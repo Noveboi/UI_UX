@@ -5,10 +5,18 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--Include Caliburn.Micro Bootstrapper-->
                 <ResourceDictionary>
                     <local:Bootstrapper x:Key="bootstrapper"/>
                 </ResourceDictionary>
+                
+                <!--Color & Themes-->
+                <ResourceDictionary Source="Resources/GlobalStyles.xaml"/>
+                <ResourceDictionary Source="Resources/DarkColors.xaml"/>
+                <ResourceDictionary Source="Resources/LightColors.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
+        
     </Application.Resources>
 </Application>

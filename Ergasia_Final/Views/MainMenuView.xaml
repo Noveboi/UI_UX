@@ -6,22 +6,31 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
+    <Grid Background="{StaticResource darkBackground3}">
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Margin" Value="12"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="MinHeight" Value="200"/>
+                    <Setter Property="Width" Value="150"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
                 </Style>
             </StackPanel.Resources>
             <Button x:Name="OpenUpCon" Content="Upcoming Concerts"
-                    VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
+                    Background="{StaticResource darkBackground1}"
+                    Foreground="{StaticResource darkForeground1}"/>
             <Button x:Name="OpenExHall" Content="Exhibition Hall"
-                    VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
+                    Background="{StaticResource darkBackground1}"
+                    Foreground="{StaticResource darkForeground2}"/>
             <Button x:Name="OpenVRoom" Content="Viewing Room"
-                    VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
+                    Background="{StaticResource darkBackground2}"
+                    Foreground="{StaticResource darkForeground3}"/>
             <Button x:Name="OpenDJ" Content="DJ"
-                    VerticalAlignment="Center" MinHeight="200" MinWidth="150"/>
+                    Background="{StaticResource darkBackground2}"
+                    Foreground="{StaticResource darkForeground1}"/>
         </StackPanel>
     </Grid>
 </UserControl>
