@@ -15,4 +15,5 @@
 - [Introduction to WPF](https://www.youtube.com/watch?v=gSfMNjWNoX0&t=2070s)
 - [WPF MVVM with Caliburn.Micro](https://www.youtube.com/watch?v=laPFq3Fhs8k&t=473s)
 - [Event Aggregation in WPF](https://www.youtube.com/watch?v=70Dj9cnyu2g)
+- [Dark Mode Guide](https://www.youtube.com/watch?v=6U9iC-c15AI)
 
