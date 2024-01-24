@@ -19,6 +19,9 @@
     <Compile Update="Views\DJView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\EPayServiceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ExHallView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -29,6 +32,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\UpConView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\VideoPlayerView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\VRoomView.xaml.cs">
@@ -57,6 +63,9 @@
     <Page Update="Views\DJView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\EPayServiceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ExHallView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -67,6 +76,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\UpConView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\VideoPlayerView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\VRoomView.xaml">
