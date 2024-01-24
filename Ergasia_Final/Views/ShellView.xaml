@@ -5,37 +5,52 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
+             Foreground="{DynamicResource Foreground2}"
              MinWidth="800" MinHeight="450"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="BlueViolet">
+    <Grid Background="{DynamicResource Background1}">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ContentControl Grid.Row="1" x:Name="ActiveItem"/>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel.Resources>
+        
+        <!--Row 1: StackPanel with navigation and light/dark mode switch-->
+        <Grid>
+            <Grid.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Margin" Value="10"/>
                 </Style>
                 <Style TargetType="TextBlock">
-                    <Setter Property="Margin" Value="20"/>
+                    <Setter Property="FontSize" Value="26"/>
+                    <Setter Property="FontWeight" Value="Black"/>
                 </Style>
-            </StackPanel.Resources>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
             <Button x:Name="PreviousWindow"
                     MinHeight="35" MinWidth="35" 
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Content="Previous Window"
+                    Grid.Row="0"
                     Padding="10"/>
             <TextBlock Text="Modern Museum of Music Artists"
                        HorizontalAlignment="Center"
+                       Grid.Column="1"
                        VerticalAlignment="Center"/>
             <Button x:Name="ToggleColorTheme"
                     Padding="10" MinHeight="35" MinWidth="35" 
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
+                    Grid.Column="2"
                     Content="Light/Dark Mode"/>
-        </StackPanel>
+        </Grid>
+        
+        <!--Row 2: Content Control for all other windows-->
+        <ContentControl Grid.Row="1" x:Name="ActiveItem"/>
+        
     </Grid>
 </UserControl>

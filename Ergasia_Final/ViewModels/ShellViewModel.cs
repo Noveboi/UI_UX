@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Ergasia_Final.ViewModels
 {
@@ -35,7 +36,8 @@ namespace Ergasia_Final.ViewModels
         /// <summary>
         /// Remember which windows have been opened in order to go back to previous ones
         /// </summary>
-        private Stack<object> _windowStack; 
+        private Stack<object> _windowStack;
+        private bool _isDarkMode = true;
 
         // Methods
         /// <summary>
@@ -50,6 +52,7 @@ namespace Ergasia_Final.ViewModels
         {
             try
             {
+                // If the current window is NOT MainMenuView, then go to previous window
                 if (_windowStack.Peek().GetType().Name != typeof(MainMenuViewModel).Name)
                 {
                     _windowStack.Pop();
@@ -57,7 +60,28 @@ namespace Ergasia_Final.ViewModels
                     ActivateItemAsync(newWindow);
                 }
             }
-            catch { }
+            catch 
+            { 
+                //do nothing
+            }
+        }
+
+        public void ToggleColorTheme()
+        {
+            // Clear the application dictionary for the colors
+            // IMPORTANT: do not change the ORDER of the resource dictionaries in App.xaml!!!
+            Application.Current.Resources.MergedDictionaries.RemoveAt(2);
+
+            string colorThemePath = _isDarkMode ? "Resources/LightColors.xaml" : "Resources/DarkColors.xaml";
+
+            // Create the ResourceDictionary and add it to the application scope
+            ResourceDictionary newTheme = new ResourceDictionary
+            {
+                Source = new Uri(colorThemePath, UriKind.Relative)
+            };
+            Application.Current.Resources.MergedDictionaries.Add(newTheme);
+
+            _isDarkMode = !_isDarkMode;
         }
     }
 }

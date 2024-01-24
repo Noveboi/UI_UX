@@ -13,7 +13,6 @@
                 <!--Color & Themes-->
                 <ResourceDictionary Source="Resources/GlobalStyles.xaml"/>
                 <ResourceDictionary Source="Resources/DarkColors.xaml"/>
-                <ResourceDictionary Source="Resources/LightColors.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         

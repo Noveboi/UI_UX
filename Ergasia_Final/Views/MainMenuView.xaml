@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="{StaticResource darkBackground3}">
+    <Grid Background="{DynamicResource Background3}">
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center">
             <StackPanel.Resources>
@@ -15,22 +15,34 @@
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="MinHeight" Value="200"/>
                     <Setter Property="Width" Value="150"/>
-                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="FontSize" Value="25"/>
                     <Setter Property="FontWeight" Value="Bold"/>
                 </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="TextAlignment" Value="Center"/>
+                </Style>
             </StackPanel.Resources>
-            <Button x:Name="OpenUpCon" Content="Upcoming Concerts"
-                    Background="{StaticResource darkBackground1}"
-                    Foreground="{StaticResource darkForeground1}"/>
-            <Button x:Name="OpenExHall" Content="Exhibition Hall"
-                    Background="{StaticResource darkBackground1}"
-                    Foreground="{StaticResource darkForeground2}"/>
-            <Button x:Name="OpenVRoom" Content="Viewing Room"
-                    Background="{StaticResource darkBackground2}"
-                    Foreground="{StaticResource darkForeground3}"/>
-            <Button x:Name="OpenDJ" Content="DJ"
-                    Background="{StaticResource darkBackground2}"
-                    Foreground="{StaticResource darkForeground1}"/>
+            <Button x:Name="OpenUpCon"
+                    Background="{DynamicResource Background1}"
+                    Foreground="{DynamicResource Foreground1}">
+                <TextBlock Text="Upcoming Concerts"/>
+            </Button>
+            <Button x:Name="OpenExHall" 
+                    Background="{DynamicResource Background1}"
+                    Foreground="{DynamicResource Foreground2}">
+                <TextBlock Text="Exhibition Hall"/>
+            </Button>
+            <Button x:Name="OpenVRoom" 
+                    Background="{DynamicResource Background2}"
+                    Foreground="{DynamicResource Foreground3}">
+                <TextBlock Text="Viewing Room"/>
+            </Button>
+            <Button x:Name="OpenDJ"
+                    Background="{DynamicResource Background2}"
+                    Foreground="{DynamicResource Foreground1}">
+                <TextBlock Text="DJ"/>
+            </Button>
         </StackPanel>
     </Grid>
 </UserControl>
