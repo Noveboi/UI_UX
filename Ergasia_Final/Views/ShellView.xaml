@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views" 
              xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels"
              xmlns:cal="http://www.caliburnproject.org"
-             Foreground="#efefef"
+             Foreground="#014511"
              MinWidth="800" MinHeight="450"
              WindowStyle="None"
              ResizeMode="CanResizeWithGrip">
-    <Grid Background="{DynamicResource WindowBackground}">
+    <Grid Background="#937fd4">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="60"/>
