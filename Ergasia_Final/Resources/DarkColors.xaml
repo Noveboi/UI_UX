@@ -2,11 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Background Colors -->
     <SolidColorBrush x:Key="WindowBackground"  Color="#160230"/>
-    <SolidColorBrush x:Key="Background2"  Color="#2c1387"/>
-    <SolidColorBrush x:Key="Background3"  Color="#370854"/>
+    <SolidColorBrush x:Key="ButtonBackground"  Color="#382457"/>
+    <SolidColorBrush x:Key="MainBackground"  Color="#190736"/>
     
     <!-- Foreground Colors -->
     <SolidColorBrush x:Key="TextForeground"  Color="White"/>
     <SolidColorBrush x:Key="TitleForeground"  Color="#9e69c9"/>
-    <SolidColorBrush x:Key="Foreground3"  Color="#69bdc9"/>
+    <SolidColorBrush x:Key="Foreground"  Color="#69bdc9"/>
 </ResourceDictionary>
