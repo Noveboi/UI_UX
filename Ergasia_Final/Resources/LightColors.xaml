@@ -6,7 +6,7 @@
     <SolidColorBrush x:Key="Background3"  Color="#87c4b5"/>
 
     <!-- Foreground Colors -->
-    <SolidColorBrush x:Key="Foreground1"  Color="Black"/>
-    <SolidColorBrush x:Key="Foreground2"  Color="#0b0630"/>
+    <SolidColorBrush x:Key="TextForeground"  Color="Black"/>
+    <SolidColorBrush x:Key="TitleForeground"  Color="#0b0630"/>
     <SolidColorBrush x:Key="Foreground3"  Color="#360342"/>
 </ResourceDictionary>

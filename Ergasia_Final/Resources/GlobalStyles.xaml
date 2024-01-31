@@ -1,4 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+    <Style TargetType="TextBlock" x:Key="titleStyle">
+        <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+        <Setter Property="FontSize" Value="48"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="simpleText">
+        <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
 </ResourceDictionary>

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views" 
              xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels"
              xmlns:cal="http://www.caliburnproject.org"
-             Foreground="{DynamicResource Foreground2}"
+             Foreground="#efefef"
              MinWidth="800" MinHeight="450"
              WindowStyle="None"
              ResizeMode="CanResizeWithGrip">
