@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="Bisque">
-        <TextBlock Text="Concert Tickets!" 
+        <TextBlock Text="{Binding Path=Test, Mode=OneWay}" 
                    VerticalAlignment="Center" HorizontalAlignment="Center"
                    FontSize="64" />
     </Grid>
