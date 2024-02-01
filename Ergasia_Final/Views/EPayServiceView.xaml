@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Background="White">
+        <TextBlock Text="{Binding Path=Price, Mode=OneWay}"
+                   FontSize="96" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

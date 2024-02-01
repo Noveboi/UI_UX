@@ -20,7 +20,7 @@ namespace Ergasia_Final.ViewModels
         // Methods
         public void GoToTickets(Button sender)
         {
-            _eventAggregator.PublishOnUIThreadAsync(new ConcertTicketsViewModel(sender.Name));
+            _eventAggregator.PublishOnUIThreadAsync(new ConcertTicketsViewModel(_eventAggregator, 1.0));
         }
     }
 }

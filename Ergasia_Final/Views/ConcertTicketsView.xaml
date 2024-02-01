@@ -6,9 +6,94 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Bisque">
-        <TextBlock Text="{Binding Path=Test, Mode=OneWay}" 
-                   VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="64" />
+    <Grid Background="{DynamicResource MainBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="250"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--Concert Map Grid-->
+        <Border Grid.Column="0" Margin="20"
+                BorderBrush="Beige" BorderThickness="4"
+                Background="ForestGreen">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="7.5"/>
+                        <Setter Property="FontSize" Value="22"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </Grid.Resources>
+                <!--Side VIP-->
+                <Button x:Name="sideVip1" 
+                        Grid.RowSpan="3">
+                    <TextBlock Text="Side VIP 1"/>
+                </Button>
+                <Button x:Name="sideVip2" 
+                        Grid.Column="2" Grid.RowSpan="3">
+                    <TextBlock Text="Side VIP 2"/>
+                </Button>
+                
+                <!--Stage-->
+                <Button x:Name="stage"
+                        IsEnabled="False"
+                        Grid.Column="1" Grid.RowSpan="2">
+                    <TextBlock Text="Stage"/>
+                </Button>
+            
+                <!--VIP-->
+                <Button x:Name="vip" 
+                        Grid.Row="2" Grid.Column="1">
+                    <TextBlock Text="VIP"/>
+                </Button>
+
+                 <!--General Admission-->
+                <Button x:Name="gen_admission"
+                        Grid.Row="3" Grid.Column="1">
+                    <TextBlock Text="General Admission"/>
+                </Button>
+            </Grid>
+        </Border>
+        
+        <!--Price & Details-->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="80"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Price" Style="{StaticResource titleStyle}"/>
+            <TextBlock Text="{Binding Path=TotalPrice, UpdateSourceTrigger=PropertyChanged}" 
+                       Style="{StaticResource titleStyle}"
+                       FontWeight="Medium"
+                       Grid.Row="1"/>
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="Tickets" Style="{StaticResource simpleText}" 
+                           HorizontalAlignment="Center"/>
+                <TextBox FontSize="24" 
+                         Text="{Binding Path=TicketQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <Button x:Name="GoToEPay"
+                    Grid.Row="3"
+                    Content="Checkout"></Button>
+        </Grid>
     </Grid>
 </UserControl>
