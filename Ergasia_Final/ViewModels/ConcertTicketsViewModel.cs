@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Text.RegularExpressions;
+using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace Ergasia_Final.ViewModels
 {
@@ -34,9 +35,6 @@ namespace Ergasia_Final.ViewModels
 
         private string _artistName;
 
-        // Match numbers from 1 - 9999
-        private Regex _onlyNums = new Regex("[1-9][0-9]{0,3}");
-
         // Properties
         // Displayed on ConcertTicketView
         public string TotalPrice
@@ -54,10 +52,16 @@ namespace Ergasia_Final.ViewModels
             get => _ticketQuantity;
             set
             {
-                _ticketQuantity = value;
-                NotifyOfPropertyChange();
-                if (value != "" && _onlyNums.IsMatch(value))
+                if (value.Equals(string.Empty))
                 {
+                    _ticketQuantity = string.Empty;
+                    NotifyOfPropertyChange();
+                    TotalPrice = "-";
+                }
+                else if (ValidateInput(value))
+                {
+                    _ticketQuantity = value;
+                    NotifyOfPropertyChange();
                     SetPrice();
                 }
             }
@@ -74,13 +78,29 @@ namespace Ergasia_Final.ViewModels
         /// </summary>
         public void SetPrice()
         {
-            _totalPriceNumeric = Math.Round(50.0 * _artistPriceMultiplier * _seatPriceMultiplier * int.Parse(_ticketQuantity), 2);
-            TotalPrice = "€" + _totalPriceNumeric.ToString();
+            if (!_ticketQuantity.Equals(string.Empty))
+            {
+                _totalPriceNumeric = Math.Round(50.0 * _artistPriceMultiplier * _seatPriceMultiplier * int.Parse(_ticketQuantity), 2);
+                TotalPrice = "€" + _totalPriceNumeric.ToString();
+            }
         }
 
         public void GoToEPay()
         {
-            _eventAggregator.PublishOnUIThreadAsync(new EPayServiceViewModel(_totalPriceNumeric, _eventAggregator));
+            if (!_ticketQuantity.Equals(string.Empty))
+            {
+                _eventAggregator.PublishOnUIThreadAsync(new EPayServiceViewModel(_totalPriceNumeric, _eventAggregator));
+            } 
+            else
+            {
+                MessageBox.Show("Please enter a non-empty ticket quantity!", "Need more tickets!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public bool ValidateInput(string input)
+        {
+            int num;
+            return int.TryParse(input, out num) && num > 0 && num < 100;
         }
 
         public void ChooseSide1()

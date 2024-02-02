@@ -14,7 +14,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="Upcoming Concerts" Style="{StaticResource titleStyle}"/>
-        <StackPanel Grid.Row="1" Margin="10">
+        <StackPanel Grid.Row="1" Margin="20 10">
             <TextBlock Text="Click on the concert you want to get tickets to!" Style="{StaticResource simpleText}" FontWeight="Bold"/>
             <TextBlock Text="*Every concert listed here takes places at the Digital Museum of Music and Arts’ Concert Hall." Style="{StaticResource simpleText}"/>
             <TextBlock Text="*All dates are in Museum Local Time (EEST) (Greece Time Zone)" Style="{StaticResource simpleText}"/>
