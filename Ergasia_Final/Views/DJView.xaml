@@ -6,73 +6,122 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border BorderBrush="AntiqueWhite" BorderThickness="10">
-        <Grid Background="{DynamicResource MainBackground}">
+    <Border BorderBrush="Red" BorderThickness="10" Background="{DynamicResource MainBackground}">
+        <Grid Background="{DynamicResource MainBackground}" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Rectangle Fill="#631212"/>
-            <Rectangle Fill="#8a1313" Grid.Column="1"/>
-            <Rectangle Fill="#8a1313" Grid.Column="2"/>
-            <Rectangle Fill="#8a1313" Grid.Column="3"/>
-            <Rectangle Fill="#8a1313" Grid.Column="4"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="1"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="1"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="1"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="1"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="1"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="2"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="2"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="2"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="2"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="2"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="3"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="3"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="3"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="3"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="3"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="4"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="4"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="4"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="4"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="4"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="5"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="5"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="5"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="5"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="5"/>
-            <TextBlock Text="#" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="40" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Artist" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="30" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Title" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="30" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Speed/ Genre" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="20" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Auto-DJ" Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="20" Foreground="{DynamicResource TextForeground}"/>
-            <Button x:Name="RockButton" Grid.Row="2" Grid.Column="6" Margin="5" Height="50" Width="70" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button x:Name="PopButton" Grid.Row="2" Grid.Column="7" Margin="5" Height="50" Width="70" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button x:Name="DanceButton" Grid.Row="2" Grid.Column="8" Margin="5" Height="50" Width="70" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Grid.Resources>
+                <Style TargetType="Button" x:Key="autoDjButton">
+                    <Setter Property="MinWidth" Value="50"/>
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="MinHeight" Value="15"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+                    <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+                </Style>
+            </Grid.Resources>
+            
+            <!--Song Queue (Λίστα Αναπαραγωγής)-->
+            <DataGrid Background="#121232"
+                      Margin="10">
+            </DataGrid>
+
+            <Grid Grid.Column="1" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                 <!--Auto DJ Title-->
+                <TextBlock Grid.Column="1"
+                           Text="Auto-DJ"
+                           Style="{StaticResource titleStyle}"/>
+                
+                <!--Genre Buttons-->
+                <Grid Grid.Column="1"
+                            Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Genres" 
+                               Style="{StaticResource simpleText}"
+                               HorizontalAlignment="Center"/>
+                    <Grid Grid.Row="1">
+                        <Grid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Rock" Grid.Column="0"/>
+                        <Button Content="Pop" Grid.Column="1"/>
+                        <Button Content="Dance" Grid.Column="2"/>
+                    </Grid>
+                </Grid>
+                
+                 <!--Speed Buttons-->
+                <Grid Grid.Column="1"
+                      Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Speed" 
+                               Style="{StaticResource simpleText}"
+                               HorizontalAlignment="Center"/>
+                    <Grid Grid.Row="1">
+                        <Grid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Slow" Grid.Column="0"/>
+                        <Button Content="Fast" Grid.Column="1"/>
+                    </Grid>
+                </Grid>
+
+                <Rectangle Stroke="{DynamicResource TextForeground}"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                           Grid.Row="2" Grid.Column="1"/>
+            </Grid>
+            <!--Karaoke & Effects-->
+            <Grid Grid.Row="1" Grid.Column="1"
+                  Margin="10 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
+                </Grid.Resources>
+                <Button Content="Karaoke" Grid.Column="0"/>
+                <Button Content="Effects" Grid.Column="1"/>
+            </Grid>
+            
+            <!--BPM Slider & Color Wheel-->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Slider VerticalAlignment="Center"
+                        Margin="10"/>
+                <Image Source="/Images/color_wheel.png"
+                       Grid.Column="1"/>
+            </Grid>
         </Grid>
     </Border>
 </UserControl>
