@@ -15,26 +15,33 @@ namespace Ergasia_Final.ViewModels
         public ConcertTicketsViewModel(IEventAggregator events, double priceMultiplier)
         {
             _eventAggregator = events;
-            _priceMultiplier = priceMultiplier;
+            _artistPriceMultiplier = priceMultiplier;
             SetPrice();
         }
 
 
         // Fields
         private readonly IEventAggregator _eventAggregator;
-        private double _priceMultiplier;
-        private double _price;
-        private string _totalPrice;
+
+        private double _artistPriceMultiplier;
+        private double _seatPriceMultiplier = 1.0;
+
+        private double _totalPriceNumeric;
+        private string _totalPriceString;
+
         private string _ticketQuantity = "1";
-        private Regex _onlyNums = new Regex("[1-9][0-9]{1,3}");
+
+        // Match numbers from 1 - 9999
+        private Regex _onlyNums = new Regex("[1-9][0-9]{0,3}");
 
         // Properties
+        // Displayed on ConcertTicketView
         public string TotalPrice
         {
-            get => _totalPrice;
+            get => _totalPriceString;
             set
             {
-                _totalPrice = value;
+                _totalPriceString = value;
                 NotifyOfPropertyChange();
             }
         }
@@ -54,15 +61,42 @@ namespace Ergasia_Final.ViewModels
         }
 
         // Methods
+        /// <summary>
+        /// 
+        /// </summary>
         public void SetPrice()
         {
-            _price = Math.Round(50.0 * _priceMultiplier * int.Parse(_ticketQuantity), 2);
-            TotalPrice = "€" + _price.ToString();
+            _totalPriceNumeric = Math.Round(50.0 * _artistPriceMultiplier * _seatPriceMultiplier * int.Parse(_ticketQuantity), 2);
+            TotalPrice = "€" + _totalPriceNumeric.ToString();
         }
 
         public void GoToEPay()
         {
-            _eventAggregator.PublishOnUIThreadAsync(new EPayServiceViewModel(_price));
+            _eventAggregator.PublishOnUIThreadAsync(new EPayServiceViewModel(_totalPriceNumeric, _eventAggregator));
+        }
+
+        public void ChooseSide1()
+        {
+            _seatPriceMultiplier = 1.5;
+            SetPrice();
+        }
+        
+        public void ChooseSide2()
+        {
+            _seatPriceMultiplier = 1.5;
+            SetPrice();
+        }
+
+        public void ChooseGenAdmission()
+        {
+            _seatPriceMultiplier = 1;
+            SetPrice();
+        }
+
+        public void ChooseVip()
+        {
+            _seatPriceMultiplier = 2;
+            SetPrice();
         }
     }
 }

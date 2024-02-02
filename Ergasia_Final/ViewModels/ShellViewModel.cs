@@ -54,8 +54,17 @@ namespace Ergasia_Final.ViewModels
         // (Implemented from IHandle) This method runs when an event is published in IEventAggregator
         public async Task HandleAsync(object message, CancellationToken cancellationToken)
         {
-            _windowStack.Push(message);
-            await ActivateItemAsync(message);
+            if (message.Equals("epay to main"))
+            {
+                PreviousWindow();
+                PreviousWindow();
+                PreviousWindow();
+            }
+            else
+            {
+                _windowStack.Push(message);
+                await ActivateItemAsync(message);
+            }
         }
 
         // Switch the ActiveItem in ContentControl 

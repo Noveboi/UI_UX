@@ -3,12 +3,13 @@
     <Style TargetType="TextBlock" x:Key="titleStyle">
         <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
         <Setter Property="FontSize" Value="48"/>
+        <Setter Property="FontFamily" Value="C:/Users/novap/OneDrive/Desktop/UI_UX/Ergasia_Final/Fonts/#PlayfairDisplay-Bold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontWeight" Value="Bold"/>
     </Style>
     <Style TargetType="TextBlock" x:Key="simpleText">
         <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+        <Setter Property="FontFamily" Value="/Ergasia_Final;component/Fonts/#PlayfairDisplay-Regular"/>
         <Setter Property="FontSize" Value="16"/>
     </Style>
 </ResourceDictionary>

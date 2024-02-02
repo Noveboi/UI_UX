@@ -6,9 +6,105 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
-        <TextBlock Text="{Binding Path=Price, Mode=OneWay}"
-                   FontSize="96" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid Background="{DynamicResource MainBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <!--Contactless-->
+        <TextBlock Text="Contactless" 
+                   Style="{StaticResource titleStyle}"/>
+        <TextBlock Text="Place your card over the 'contactless' symbol below to finalize your payment."
+                   Grid.Row="1" 
+                   Style="{StaticResource simpleText}" TextWrapping="Wrap"
+                   Margin="5"
+                   TextAlignment="Center"/>
+        <Grid Grid.Column="0" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="80"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Image Source="/Images/contactless.png" Margin="100 0"
+                   Grid.ColumnSpan="2"/>
+
+            <Image Source="/Images/visa.png" 
+                   Grid.Row="1" HorizontalAlignment="Right"
+                   Margin="15 15 5 15"/>
+            <Image Source="/Images/mastercard.png" 
+                   Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"
+                   Margin="25 15 15 15"/>
+        </Grid>
+
+        <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                   Grid.RowSpan="3" Width="1" 
+                   Stroke="{DynamicResource TextForeground}"/>
+
+        <!--Manual-->
+        <TextBlock Text="Manual Payment" 
+                   Grid.Column="1"
+                   Style="{StaticResource titleStyle}"/>
+        <TextBlock Text="In the case where you don’t have a physical card available, you can use the form below to finalize your payment."
+           Grid.Row="1" Grid.Column="1"
+           Style="{StaticResource simpleText}" TextWrapping="Wrap"
+           TextAlignment="Center" Margin="5"/>
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="20 10"/>
+                </Style>
+            </Grid.Resources>
+            
+            <StackPanel Grid.ColumnSpan="2">
+                <TextBlock Text="Card Holder (Full Name)"
+                           Style="{StaticResource simpleText}"/>
+                <TextBox/>
+            </StackPanel>
+            
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                <TextBlock Text="Card Number"
+                           Style="{StaticResource simpleText}"/>
+                <TextBox/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="0">
+                <TextBlock Text="Expiration Date"
+                           Style="{StaticResource simpleText}"/>
+                <TextBox/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="1">
+                <TextBlock Text="CVC"
+                           Style="{StaticResource simpleText}"/>
+                <TextBox/>
+            </StackPanel>
+
+            <Button x:Name="Pay"
+                    Grid.Row="3" Grid.ColumnSpan="2"
+                    FontSize="36"
+                    Content="{Binding Path=Price, Mode=OneTime}"
+                    Margin="20 10"/>
+        </Grid>
     </Grid>
 </UserControl>

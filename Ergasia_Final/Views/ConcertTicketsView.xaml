@@ -7,16 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="{DynamicResource MainBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="250"/>
         </Grid.ColumnDefinitions>
         
+        <!--Instructions-->
+        <TextBlock Text="Click on the area you want to be in using the map below!" 
+                   Style="{StaticResource simpleText}"
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Center"
+                   Margin="20 0"/>
+
         <!--Concert Map Grid-->
         <Border Grid.Column="0" Margin="20"
+                Grid.Row="1"
                 BorderBrush="Beige" BorderThickness="4"
                 Background="ForestGreen">
-            <Grid Margin="20">
+            <Grid Margin="20 5 20 20">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -42,30 +54,30 @@
                     </Style>
                 </Grid.Resources>
                 <!--Side VIP-->
-                <Button x:Name="sideVip1" 
+                <Button x:Name="ChooseSide1" 
                         Grid.RowSpan="3">
                     <TextBlock Text="Side VIP 1"/>
                 </Button>
-                <Button x:Name="sideVip2" 
+                <Button x:Name="ChooseSide2" 
                         Grid.Column="2" Grid.RowSpan="3">
                     <TextBlock Text="Side VIP 2"/>
                 </Button>
                 
                 <!--Stage-->
-                <Button x:Name="stage"
+                <Button x:Name="Stage"
                         IsEnabled="False"
                         Grid.Column="1" Grid.RowSpan="2">
                     <TextBlock Text="Stage"/>
                 </Button>
             
                 <!--VIP-->
-                <Button x:Name="vip" 
+                <Button x:Name="ChooseVip" 
                         Grid.Row="2" Grid.Column="1">
                     <TextBlock Text="VIP"/>
                 </Button>
 
                  <!--General Admission-->
-                <Button x:Name="gen_admission"
+                <Button x:Name="ChooseGenAdmission"
                         Grid.Row="3" Grid.Column="1">
                     <TextBlock Text="General Admission"/>
                 </Button>
@@ -73,26 +85,47 @@
         </Border>
         
         <!--Price & Details-->
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1"
+              Grid.Row="1"
+              Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="80"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Price" Style="{StaticResource titleStyle}"/>
+            
+            <!--P&D Row 0-->
+            <TextBlock Text="Price" 
+                       VerticalAlignment="Top"
+                       Style="{StaticResource titleStyle}"/>
+            
+            <!--P&D Row 1-->
             <TextBlock Text="{Binding Path=TotalPrice, UpdateSourceTrigger=PropertyChanged}" 
                        Style="{StaticResource titleStyle}"
-                       FontWeight="Medium"
+                       FontWeight="Light"
                        Grid.Row="1"/>
-            <StackPanel Grid.Row="2">
+            <Separator Grid.Row="1" VerticalAlignment="Bottom"
+                       Background="{DynamicResource TextForeground}"/>
+            
+            <!--P&D Row 2-->
+            <StackPanel Grid.Row="2" Margin="0 20">
                 <TextBlock Text="Tickets" Style="{StaticResource simpleText}" 
                            HorizontalAlignment="Center"/>
-                <TextBox FontSize="24" 
+                <TextBox FontSize="20" 
+                         Padding="5"
+                         HorizontalContentAlignment="Center"
+                         MaxWidth="100"
                          Text="{Binding Path=TicketQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            
+            <!--P&D Row 3-->
             <Button x:Name="GoToEPay"
+                    FontSize="26"
+                    FontWeight="Medium"
                     Grid.Row="3"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource TextForeground}"
                     Content="Checkout"></Button>
         </Grid>
     </Grid>
