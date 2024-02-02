@@ -28,16 +28,155 @@
             <Grid.Resources>
                 <!--Add custom button content template-->
                 <Style TargetType="Button">
+                    <Setter Property="Cursor" Value="Hand"/>
                     <Setter Property="BorderBrush" Value="#cccccc"/>
                     <Setter Property="BorderThickness" Value="2"/>
                     <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
                     <Setter Property="Margin" Value="20"/>
                     <Setter Property="cal:Message.Attach" Value="[Event Click] = [Action GoToTickets($source)]"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="LightGray" Opacity="0.6"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="TextBlock" x:Key="infoText">
+                    <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
                 </Style>
             </Grid.Resources>
-            <Button x:Name="LeftConcert" Grid.Column="0"/>
-            <Button x:Name="MiddleConcert" Grid.Column="1"/>
-            <Button x:Name="RightConcert" Grid.Column="2"/>
+            <Button x:Name="LeftConcert" Grid.Column="0">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Border BorderBrush="Beige" BorderThickness="2">
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="/Images/taylor_concert.jpg" 
+                                       Stretch="UniformToFill" 
+                                       Grid.ColumnSpan="2"/>
+                                <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
+
+                                <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+
+                                <Image Source="/Images/avatar.png" Grid.Row="1" Margin="2"/>
+                                <TextBlock Grid.Column="1" Grid.Row="1" 
+                                           Text="Taylor Swift"
+                                           Style="{StaticResource infoText}"/>
+                                <Image Source="/Images/clock.png" Grid.Row="2" Margin="2"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" 
+                                           Text="9/2/2024 10:00 PM"
+                                           Style="{StaticResource infoText}"/>
+                                <Image Source="/Images/money.png" Grid.Row="3" Margin="2"/>
+                                <TextBlock x:Name="priceMultiplier"
+                                           Grid.Column="1" Grid.Row="3" 
+                                           Text="€€€"
+                                           Foreground="Red"
+                                           Style="{StaticResource infoText}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="MiddleConcert" Grid.Column="1">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Border BorderBrush="Beige" BorderThickness="2">
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="/Images/m83_concert.jpg" 
+                                       Stretch="UniformToFill" 
+                                       Grid.ColumnSpan="2"/>
+                                <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
+
+                                <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+
+                                <Image Source="/Images/avatar.png" Grid.Row="1" Margin="2"/>
+                                <TextBlock Grid.Column="1" Grid.Row="1" 
+                                           Text="M83"
+                                           Style="{StaticResource infoText}"/>
+                                <Image Source="/Images/clock.png" Grid.Row="2" Margin="2"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" 
+                                           Text="10/2/2024 11:00 PM"
+                                           Style="{StaticResource infoText}"/>
+                                <Image Source="/Images/money.png" Grid.Row="3" Margin="2"/>
+                                <TextBlock x:Name="priceMultiplier"
+                                           Grid.Column="1" Grid.Row="3" 
+                                           Text="€"
+                                           Foreground="LightGreen"
+                                           Style="{StaticResource infoText}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="RightConcert" Grid.Column="2">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Border BorderBrush="Beige" BorderThickness="2">
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="/Images/altj_concert.jpg" 
+                                        Stretch="UniformToFill" 
+                                        Grid.ColumnSpan="2"/>
+                                <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
+
+                                <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+
+                                <Image Source="/Images/avatar.png" Grid.Row="1" Margin="2"/>
+                                <TextBlock Grid.Column="1" Grid.Row="1" 
+                                           Text="alt-J"
+                                           Style="{StaticResource infoText}"/>
+                                <Image Source="/Images/clock.png" Grid.Row="2" Margin="2"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" 
+                                           Text="17/2/2024 9:30 PM"
+                                           Style="{StaticResource infoText}"/>
+                                <Image Source="/Images/money.png" Grid.Row="3" Margin="2"/>
+                                <TextBlock x:Name="priceMultiplier"
+                                           Grid.Column="1" Grid.Row="3"
+                                           Text="€€"
+                                           Foreground="Orange"
+                                           Style="{StaticResource infoText}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

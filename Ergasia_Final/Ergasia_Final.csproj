@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\altj_concert.jpg" />
+    <None Remove="Images\avatar.png" />
+    <None Remove="Images\clock.png" />
+    <None Remove="Images\m83_concert.jpg" />
+    <None Remove="Images\money.png" />
+    <None Remove="Images\taylor_concert.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
   </ItemGroup>
 
@@ -51,8 +60,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\altj_concert.jpg" />
+    <Resource Include="Images\avatar.png" />
+    <Resource Include="Images\clock.png" />
     <Resource Include="Images\contactless.png" />
+    <Resource Include="Images\m83_concert.jpg" />
     <Resource Include="Images\mastercard.png" />
+    <Resource Include="Images\money.png" />
+    <Resource Include="Images\taylor_concert.jpg" />
     <Resource Include="Images\visa.png" />
   </ItemGroup>
 

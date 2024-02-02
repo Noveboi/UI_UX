@@ -20,7 +20,16 @@ namespace Ergasia_Final.ViewModels
         // Methods
         public void GoToTickets(Button sender)
         {
-            _eventAggregator.PublishOnUIThreadAsync(new ConcertTicketsViewModel(_eventAggregator, 1.0));
+            TextBlock? priceMult = sender.Template.FindName("priceMultiplier", sender) as TextBlock;
+            if (priceMult is not null)
+            {
+                int multiplier = priceMult.Text.Length;
+                _eventAggregator.PublishOnUIThreadAsync(new ConcertTicketsViewModel(_eventAggregator, multiplier));
+            }
+            else 
+            { 
+                _eventAggregator.PublishOnUIThreadAsync(new ConcertTicketsViewModel(_eventAggregator, 1.0));
+            }
         }
     }
 }
