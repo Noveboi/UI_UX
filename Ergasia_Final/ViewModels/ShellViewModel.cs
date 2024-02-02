@@ -114,12 +114,12 @@ namespace Ergasia_Final.ViewModels
         {
             if (Application.Current.MainWindow.WindowState != WindowState.Maximized)
             {
-                _maximizeSymbol = "🗖";
+                MaximizeSymbol = "🗗︎";
                 Application.Current.MainWindow.WindowState = WindowState.Maximized;
             } 
             else
             {
-                _maximizeSymbol = "🗗︎";
+                MaximizeSymbol = "🗖";
                 Application.Current.MainWindow.WindowState = WindowState.Normal;
             }
         }
