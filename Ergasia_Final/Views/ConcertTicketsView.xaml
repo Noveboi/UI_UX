@@ -67,7 +67,7 @@
                 <Button x:Name="Stage"
                         IsEnabled="False"
                         Grid.Column="1" Grid.RowSpan="2">
-                    <TextBlock Text="Stage"/>
+                    <TextBlock Text="{Binding Path=ArtistName, Mode=OneTime}"/>
                 </Button>
             
                 <!--VIP-->

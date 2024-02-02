@@ -12,10 +12,11 @@ namespace Ergasia_Final.ViewModels
 {
     public class ConcertTicketsViewModel : Screen
     {
-        public ConcertTicketsViewModel(IEventAggregator events, double priceMultiplier)
+        public ConcertTicketsViewModel(IEventAggregator events, double priceMultiplier, string artistName)
         {
             _eventAggregator = events;
             _artistPriceMultiplier = priceMultiplier;
+            _artistName = artistName;
             SetPrice();
         }
 
@@ -30,6 +31,8 @@ namespace Ergasia_Final.ViewModels
         private string _totalPriceString;
 
         private string _ticketQuantity = "1";
+
+        private string _artistName;
 
         // Match numbers from 1 - 9999
         private Regex _onlyNums = new Regex("[1-9][0-9]{0,3}");
@@ -58,6 +61,11 @@ namespace Ergasia_Final.ViewModels
                     SetPrice();
                 }
             }
+        }
+
+        public string ArtistName
+        {
+            get => _artistName;
         }
 
         // Methods

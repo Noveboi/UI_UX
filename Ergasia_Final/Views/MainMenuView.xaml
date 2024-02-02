@@ -19,32 +19,38 @@
                     <Setter Property="Width" Value="150"/>
                     <Setter Property="FontSize" Value="25"/>
                     <Setter Property="FontWeight" Value="Bold"/>
-                </Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="TextWrapping" Value="Wrap"/>
-                    <Setter Property="TextAlignment" Value="Center"/>
+                    <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderBrush="Beige" BorderThickness="2"
+                                        Background="{TemplateBinding Background}">
+                                    <TextBlock Text="{TemplateBinding Content}"
+                                               Foreground="{DynamicResource TextForeground}"
+                                               TextWrapping="Wrap"
+                                               TextAlignment="Center"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="LightGray" Opacity="0.3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </StackPanel.Resources>
-            <Button x:Name="OpenUpCon"
-                    Background="{DynamicResource ButtonBackground}"
-                    Foreground="{DynamicResource TextForeground}">
-                <TextBlock Text="Upcoming Concerts"/>
-            </Button>
-            <Button x:Name="OpenExHall" 
-                    Background="{DynamicResource ButtonBackground}"
-                    Foreground="{DynamicResource TextForeground}">
-                <TextBlock Text="Exhibition Hall"/>
-            </Button>
-            <Button x:Name="OpenVRoom" 
-                    Background="{DynamicResource ButtonBackground}"
-                    Foreground="{DynamicResource TextForeground}">
-                <TextBlock Text="Viewing Room"/>
-            </Button>
-            <Button x:Name="OpenDJ"
-                    Background="{DynamicResource ButtonBackground}"
-                    Foreground="{DynamicResource TextForeground}">
-                <TextBlock Text="DJ"/>
-            </Button>
+            
+            <Button x:Name="OpenUpCon" Content="Upcoming Concerts"/>
+            <Button x:Name="OpenExHall" Content="Exhibition Hall"/>
+            <Button x:Name="OpenVRoom" Content="Viewing Room"/>
+            <Button x:Name="OpenDJ" Content="DJ"/>
         </StackPanel>
     </Grid>
 </UserControl>

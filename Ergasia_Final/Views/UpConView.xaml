@@ -14,7 +14,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="Upcoming Concerts" Style="{StaticResource titleStyle}"/>
-        <StackPanel Grid.Row="1" Margin="20 0 0 0">
+        <StackPanel Grid.Row="1" Margin="10">
             <TextBlock Text="Click on the concert you want to get tickets to!" Style="{StaticResource simpleText}" FontWeight="Bold"/>
             <TextBlock Text="*Every concert listed here takes places at the Digital Museum of Music and Arts’ Concert Hall." Style="{StaticResource simpleText}"/>
             <TextBlock Text="*All dates are in Museum Local Time (EEST) (Greece Time Zone)" Style="{StaticResource simpleText}"/>
@@ -75,7 +75,8 @@
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
                                 <Image Source="/Images/avatar.png" Grid.Row="1" Margin="2"/>
-                                <TextBlock Grid.Column="1" Grid.Row="1" 
+                                <TextBlock x:Name="artist"
+                                           Grid.Column="1" Grid.Row="1" 
                                            Text="Taylor Swift"
                                            Style="{StaticResource infoText}"/>
                                 <Image Source="/Images/clock.png" Grid.Row="2" Margin="2"/>
@@ -117,7 +118,8 @@
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
                                 <Image Source="/Images/avatar.png" Grid.Row="1" Margin="2"/>
-                                <TextBlock Grid.Column="1" Grid.Row="1" 
+                                <TextBlock x:Name="artist" 
+                                           Grid.Column="1" Grid.Row="1" 
                                            Text="M83"
                                            Style="{StaticResource infoText}"/>
                                 <Image Source="/Images/clock.png" Grid.Row="2" Margin="2"/>
@@ -159,7 +161,8 @@
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
                                 <Image Source="/Images/avatar.png" Grid.Row="1" Margin="2"/>
-                                <TextBlock Grid.Column="1" Grid.Row="1" 
+                                <TextBlock x:Name="artist"
+                                           Grid.Column="1" Grid.Row="1" 
                                            Text="alt-J"
                                            Style="{StaticResource infoText}"/>
                                 <Image Source="/Images/clock.png" Grid.Row="2" Margin="2"/>
