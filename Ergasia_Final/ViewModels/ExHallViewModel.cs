@@ -44,7 +44,7 @@ namespace Ergasia_Final.ViewModels
                 " Over the years, M83 has continued to evolve its sound, creating immersive sonic landscapes that resonate with a diverse audience.",
                 ImagePath = "",
                 SongPath = ""
-            })
+            });
 
             artists.Add(new ArtistModel
             {
@@ -59,7 +59,7 @@ namespace Ergasia_Final.ViewModels
                 " enigmatic lyrics, contribute to their reputation as one of the more inventive and genre-crossing acts in contemporary indie music.",
                 ImagePath = "",
                 SongPath = ""
-            })
+            });
         }
     }
 }
