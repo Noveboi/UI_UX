@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
@@ -16,7 +17,28 @@ namespace Ergasia_Final.ViewModels
         private ArtistModel _currentArtist;
         private int _currentIndex = 0;
         private int _maxIndex;
+        private Visibility _leftNavButtonEnabled = Visibility.Hidden;
+        private Visibility _rightNavButtonEnabled = Visibility.Visible;
 
+
+        public Visibility LeftNavButtonEnabled
+        {
+            get => _leftNavButtonEnabled;
+            set
+            {
+                _leftNavButtonEnabled = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public Visibility RightNavButtonEnabled
+        {
+            get => _rightNavButtonEnabled;
+            set
+            {
+                _rightNavButtonEnabled = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public ArtistModel CurrentArtist
         {
             get => _currentArtist;
@@ -85,6 +107,12 @@ namespace Ergasia_Final.ViewModels
             });
         }
         
+        private void CheckNav()
+        {
+            LeftNavButtonEnabled = _currentIndex > 0 ? Visibility.Visible : Visibility.Hidden;
+            RightNavButtonEnabled = _currentIndex < _maxIndex ? Visibility.Visible : Visibility.Hidden;
+        }
+
         public void GoLeft()
         {
             if (_currentIndex > 0)
@@ -92,6 +120,8 @@ namespace Ergasia_Final.ViewModels
                 _currentIndex -= 1;
                 CurrentArtist = _artists[_currentIndex];
             }
+
+            CheckNav();
         }
 
         public void GoRight()
@@ -101,6 +131,8 @@ namespace Ergasia_Final.ViewModels
                 _currentIndex += 1;
                 CurrentArtist = _artists[_currentIndex];
             }
+
+            CheckNav();
         }
     }
 }

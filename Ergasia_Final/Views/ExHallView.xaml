@@ -8,6 +8,9 @@
              MinHeight="500"
              MinWidth="600"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid Background="{DynamicResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -52,12 +55,16 @@
                    FontSize="40" Foreground="{DynamicResource TextForeground}"/>
         
         <!--Navigation Buttons-->
-        <Button x:Name="GoLeft" Grid.Row="1">
+        <Button x:Name="GoLeft" Grid.Row="1"
+                Visibility="{Binding Path=LeftNavButtonEnabled, 
+                             Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <TextBlock Text="&lt;"
                        Style="{StaticResource buttonArrow}"
                        Height="75"/>
         </Button>
-        <Button x:Name="GoRight" Grid.Column="3" Grid.Row="1" >
+        <Button x:Name="GoRight" Grid.Column="3" Grid.Row="1" 
+                Visibility="{Binding Path=RightNavButtonEnabled, 
+                             Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <TextBlock Text="&gt;"
                        Style="{StaticResource buttonArrow}"
                        Height="75"/>
