@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Ergasia_Final.Models
 {
     public class ArtistModel
     {
-        public string Name;
-        public string Description;
-        public string ImagePath;
-        public string SongPath;
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public BitmapImage Portrait { get; set; }
+        public Uri SongPath { get; set; }
+        public string SongName { get; set; }
+        public string AlbumName { get; set; }
     }
 }

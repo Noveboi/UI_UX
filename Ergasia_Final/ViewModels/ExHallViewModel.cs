@@ -3,20 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Caliburn.Micro;
 using Ergasia_Final.Models;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class ExHallViewModel
+    public class ExHallViewModel : Screen
     {
-        List<ArtistModel> artists;
+        private List<ArtistModel> _artists;
+        private ArtistModel _currentArtist;
+        private int _currentIndex = 0;
+        private int _maxIndex;
+
+        public ArtistModel CurrentArtist
+        {
+            get => _currentArtist;
+            set
+            {
+                _currentArtist = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public ExHallViewModel()
         {
-            artists = new List<ArtistModel>();
+            _artists = new List<ArtistModel>();
+            addArtists();
+
+            _currentArtist = _artists[0];
+            _maxIndex = _artists.Count - 1;
         }
         private void addArtists()
         {
-            artists.Add(new ArtistModel
+            _artists.Add(new ArtistModel
             {
                 Name = "Taylor Swift",
                 Description = "Taylor Swift, a globally acclaimed singer-songwriter and performer, stands as a prominent figure in " +
@@ -28,11 +48,12 @@ namespace Ergasia_Final.ViewModels
                "Beyond her musical prowess, Swift is renowned for her advocacy work, outspokenness on social issues, and her " +
                "ability to connect intimately with her fan base through candid storytelling in her songs. The epitome of a " +
                "modern-day pop icon, Taylor Swift continues to shape the industry with her unparalleled creativity and unwavering authenticity.",
-                ImagePath = "",
-                SongPath = ""
+                SongName = "Cruel Summer",
+                Portrait = new BitmapImage(new Uri(@"/Ergasia_Final;component/Images/taylor_portrait.jpg", UriKind.Relative)),
+                AlbumName = "Lover"
             });
 
-            artists.Add(new ArtistModel
+            _artists.Add(new ArtistModel
             {
                 Name = "M83",
                 Description = "M83 is a French electronic music project formed in 2001 by musician and producer Anthony Gonzalez. " +
@@ -42,11 +63,12 @@ namespace Ergasia_Final.ViewModels
                 "commercial success and is often regarded as one of their signature tracks. M83's music is characterized by lush " +
                 "synthesizers, emotive melodies, and cinematic qualities, often evoking a sense of nostalgia and otherworldly beauty." +
                 " Over the years, M83 has continued to evolve its sound, creating immersive sonic landscapes that resonate with a diverse audience.",
-                ImagePath = "",
-                SongPath = ""
+                SongName = "Midnight City",
+                Portrait = new BitmapImage(new Uri(@"/Ergasia_Final;component/Images/m83_portrait.jpg", UriKind.Relative)),
+                AlbumName = "Hurry up, We're Dreaming"
             });
 
-            artists.Add(new ArtistModel
+            _artists.Add(new ArtistModel
             {
                 Name = "alt-J",
                 Description = "Alt-J, stylized as ∆, is an English indie rock band formed in 2007. The group's name is derived from the keyboard" +
@@ -57,9 +79,28 @@ namespace Ergasia_Final.ViewModels
                 " music, creating a genre-defying sonic experience. Subsequent albums, such as \"This Is All Yours\" (2014) and \"Relaxer\" " +
                 "(2017), further showcased their innovative approach to music-making. The band's complex and layered compositions, coupled with" +
                 " enigmatic lyrics, contribute to their reputation as one of the more inventive and genre-crossing acts in contemporary indie music.",
-                ImagePath = "",
-                SongPath = ""
+                SongName = "Breezeblocks",
+                Portrait = new BitmapImage(new Uri(@"/Ergasia_Final;component/Images/altj_portrait.jpg", UriKind.Relative)),
+                AlbumName = "An Awesome Wave"
             });
+        }
+        
+        public void GoLeft()
+        {
+            if (_currentIndex > 0)
+            {
+                _currentIndex -= 1;
+                CurrentArtist = _artists[_currentIndex];
+            }
+        }
+
+        public void GoRight()
+        {
+            if (_currentIndex < _maxIndex)
+            {
+                _currentIndex += 1;
+                CurrentArtist = _artists[_currentIndex];
+            }
         }
     }
 }
