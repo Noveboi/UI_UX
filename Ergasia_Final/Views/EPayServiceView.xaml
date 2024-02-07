@@ -103,6 +103,8 @@
             <Button x:Name="Pay"
                     Grid.Row="3" Grid.ColumnSpan="2"
                     FontSize="36"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource TextForeground}"
                     Content="{Binding Path=Price, Mode=OneTime}"
                     Margin="20 10"/>
         </Grid>

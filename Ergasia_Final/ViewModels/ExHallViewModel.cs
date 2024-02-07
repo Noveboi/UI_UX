@@ -107,7 +107,7 @@ namespace Ergasia_Final.ViewModels
             });
         }
         
-        private void CheckNav()
+        private void CheckHideNavButtons()
         {
             LeftNavButtonEnabled = _currentIndex > 0 ? Visibility.Visible : Visibility.Hidden;
             RightNavButtonEnabled = _currentIndex < _maxIndex ? Visibility.Visible : Visibility.Hidden;
@@ -121,7 +121,7 @@ namespace Ergasia_Final.ViewModels
                 CurrentArtist = _artists[_currentIndex];
             }
 
-            CheckNav();
+            CheckHideNavButtons();
         }
 
         public void GoRight()
@@ -132,7 +132,7 @@ namespace Ergasia_Final.ViewModels
                 CurrentArtist = _artists[_currentIndex];
             }
 
-            CheckNav();
+            CheckHideNavButtons();
         }
     }
 }
