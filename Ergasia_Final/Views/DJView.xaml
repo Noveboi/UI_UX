@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              d:DesignHeight="450" d:DesignWidth="800">
     <Border BorderBrush="Red" BorderThickness="10" Background="{DynamicResource MainBackground}">
         <Grid Background="{DynamicResource MainBackground}" Margin="10">
@@ -98,7 +98,7 @@
                 </Style>
                 <Style TargetType="Slider">
                     <Setter Property="Minimum" Value="60"/>
-                    <Setter Property="Maximum" Value="160"/>
+                    <Setter Property="Maximum" Value="180"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Slider">
@@ -179,6 +179,78 @@
                 <Style TargetType="Button" x:Key="navButtonStyle">
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="Margin" Value="0"/>
+                    <Setter Property="MinHeight" Value="30"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#111111" Opacity="0.2"/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+                <!--DataGrid Styles-->
+                <!--Column Headers-->
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="Background" Value="#AA0125"/>
+                </Style>
+                <!--Set row background-->
+                <Style TargetType="DataGridRow">
+                    <Setter Property="MinHeight" Value="80"/>
+                    <Setter Property="Background" Value="#222233"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{x:Null}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <!--Cells-->
+                <Style TargetType="DataGridCell" x:Key="CellStyle">
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Padding" Value="20"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="FontWeight" Value="Light"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{x:Null}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <!--DataGridTextColumn Style that enables TextWrapping-->
+                <Style TargetType="TextBlock" x:Key="SongQueueWrap">
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <!--Special style for the row ID column-->
+                <Style x:Key="rowIdStyle" TargetType="DataGridCell" 
+                       BasedOn="{StaticResource CellStyle}">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#dfdfdf" Opacity="0.5"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#111111" Opacity="0.2"/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="rowIdTextStyle" TargetType="TextBlock" 
+                       BasedOn="{StaticResource SongQueueWrap}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
                 </Style>
             </Grid.Resources>
             
@@ -189,33 +261,41 @@
             -->
             <!--Song Queue (Λίστα Αναπαραγωγής)-->
             <DataGrid x:Name="SongQueue"
-                      Background="#121232"
+                      Background="#222233"
                       Margin="10"
+                      Foreground="#f0f0f0"
+                      ColumnWidth="*"
+                      dd:DragDrop.DropHandler="{Binding OnDragDrop}"
+                      dd:DragDrop.IsDragSource="True"
+                      dd:DragDrop.IsDropTarget="True"
+                      GridLinesVisibility="None"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
                       AutoGenerateColumns="False"
+                      AlternatingRowBackground="#332233"
                       VerticalScrollBarVisibility="Disabled"
                       HorizontalScrollBarVisibility="Disabled"
                       CanUserResizeRows="False" CanUserSortColumns="False"
-                      CanUserResizeColumns="False" CanUserReorderColumns="False">
+                      CanUserResizeColumns="False" CanUserReorderColumns="False"
+                      CanUserAddRows="False"
+                      CellStyle="{StaticResource CellStyle}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="#" Width="30" Binding="{Binding RowID}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Artist" Binding="{Binding ArtistName}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Song" Binding="{Binding Title}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Speed" Binding="{Binding Speed}" IsReadOnly="True"/>
-                    <DataGridTemplateColumn Width="50">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <Button x:Name="Up"
-                                            cal:Message.Attach="[Event Click] = [Action OnUpArrowClick($dataContext)]"
-                                            Width="50" Height="30" Style="{StaticResource navButtonStyle}"/>
-                                    <Button x:Name="Down"
-                                            cal:Message.Attach="[Event Click] = [Action OnDownArrowClick($dataContext)]"
-                                            Width="50" Height="30" Style="{StaticResource navButtonStyle}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="#" Width="60" Binding="{Binding RowID}" 
+                                        IsReadOnly="True"
+                                        ElementStyle="{StaticResource rowIdTextStyle}"
+                                        CellStyle="{StaticResource rowIdStyle}"/>
+                    <DataGridTextColumn Header="Artist" Binding="{Binding ArtistName}" 
+                                        IsReadOnly="True"
+                                        ElementStyle="{StaticResource SongQueueWrap}"/>
+                    <DataGridTextColumn Header="Song" Binding="{Binding Title}" 
+                                        IsReadOnly="True"
+                                        ElementStyle="{StaticResource SongQueueWrap}"/>
+                    <DataGridTextColumn Header="Genre" Binding="{Binding Genre}"
+                                        IsReadOnly="True"
+                                        ElementStyle="{StaticResource SongQueueWrap}"/>
+                    <DataGridTextColumn Header="Speed" Binding="{Binding Speed}" 
+                                        IsReadOnly="True"
+                                        ElementStyle="{StaticResource SongQueueWrap}"/>
                 </DataGrid.Columns>
             </DataGrid>
 

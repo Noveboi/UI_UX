@@ -23,6 +23,16 @@ namespace Ergasia_Final.Views
         public DJView()
         {
             InitializeComponent();
+            
         }
+
+        //private void SongQueue_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    foreach (var column in SongQueue.Columns)
+        //    {
+        //        column.MinWidth = column.ActualWidth;
+        //        column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
+        //    }
+        //}
     }
 }

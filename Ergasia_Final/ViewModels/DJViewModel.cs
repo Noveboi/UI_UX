@@ -12,7 +12,7 @@ namespace Ergasia_Final.ViewModels
 {
     public class DJViewModel : Screen
     {
-        private double _bpm = 60;
+        private double _bpm;
 
         public double Bpm
         {
@@ -29,6 +29,8 @@ namespace Ergasia_Final.ViewModels
         {
             SongQueue = new BindableCollection<SongModel>();
             AddSongs();
+
+            _bpm = SongQueue[0].BPM;
         }
 
         public void OnUpArrowClick(SongModel dataContext)
@@ -52,6 +54,11 @@ namespace Ergasia_Final.ViewModels
                 Genre = genre,
                 BPM = bpm
             });
+        }
+
+        public void OnDragDrop()
+        {
+            // Make stuff
         }
 
         public void AddSongs()
