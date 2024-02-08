@@ -11,7 +11,6 @@
     <None Remove="Images\altj_concert.jpg" />
     <None Remove="Images\avatar.png" />
     <None Remove="Images\clock.png" />
-    <None Remove="Images\color_wheel.png" />
     <None Remove="Images\m83_concert.jpg" />
     <None Remove="Images\money.png" />
     <None Remove="Images\taylor_concert.jpg" />
@@ -64,7 +63,6 @@
     <Resource Include="Images\altj_concert.jpg" />
     <Resource Include="Images\avatar.png" />
     <Resource Include="Images\clock.png" />
-    <Resource Include="Images\color_wheel.png" />
     <Resource Include="Images\contactless.png" />
     <Resource Include="Images\m83_concert.jpg" />
     <Resource Include="Images\mastercard.png" />
