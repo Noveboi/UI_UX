@@ -5,74 +5,313 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border BorderBrush="AntiqueWhite" BorderThickness="10">
-        <Grid Background="{DynamicResource MainBackground}">
+    <Border BorderBrush="Red" BorderThickness="10" Background="{DynamicResource MainBackground}">
+        <Grid Background="{DynamicResource MainBackground}" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Rectangle Fill="#631212"/>
-            <Rectangle Fill="#8a1313" Grid.Column="1"/>
-            <Rectangle Fill="#8a1313" Grid.Column="2"/>
-            <Rectangle Fill="#8a1313" Grid.Column="3"/>
-            <Rectangle Fill="#8a1313" Grid.Column="4"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="1"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="1"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="1"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="1"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="1"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="2"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="2"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="2"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="2"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="2"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="3"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="3"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="3"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="3"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="3"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="4"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="4"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="4"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="4"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="4"/>
-            <Rectangle Fill="#0f0c17" Grid.Row="5"/>
-            <Rectangle Fill="#171224" Grid.Column="1" Grid.Row="5"/>
-            <Rectangle Fill="#171224" Grid.Column="2" Grid.Row="5"/>
-            <Rectangle Fill="#171224" Grid.Column="3" Grid.Row="5"/>
-            <Rectangle Fill="#0f0c17" Grid.Column="4" Grid.Row="5"/>
-            <TextBlock Text="#" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="40" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Artist" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="30" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Title" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="30" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Speed/ Genre" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="20" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Auto-DJ" Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Center" 
-            FontSize="20" Foreground="{DynamicResource TextForeground}"/>
-            <Button x:Name="RockButton" Grid.Row="2" Grid.Column="6" Margin="5" Height="50" Width="70" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button x:Name="PopButton" Grid.Row="2" Grid.Column="7" Margin="5" Height="50" Width="70" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button x:Name="DanceButton" Grid.Row="2" Grid.Column="8" Margin="5" Height="50" Width="70" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Grid.Resources>
+                <!--Auto-DJ Buttons-->
+                <Style TargetType="Button" x:Key="autoDjButton">
+                    <Setter Property="MinWidth" Value="50"/>
+                    <Setter Property="Margin" Value="15"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="BorderBrush" Value="MediumPurple"/>
+                    <Setter Property="MinHeight" Value="15"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="FontWeight" Value="Light"/>
+                    <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+                    <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+                </Style>
+                <!--
+                    Slider Custom Style
+                    Refer to: https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.slider?view=windowsdesktop-8.0
+                -->
+                <Style TargetType="RepeatButton" x:Key="SliderButtonStyle">
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Border Background="Transparent"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Thumb">
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="Width" Value="50"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Thumb">
+                                <Border x:Name="sliderThumb"
+                                        VerticalAlignment="Stretch"
+                                        CornerRadius="5"
+                                        BorderBrush="LightPink"
+                                        BorderThickness="1">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStopCollection>
+                                                    <GradientStop Color="#0a90c9" Offset="0.0"/>
+                                                    <GradientStop Color="#79c8ea" Offset="1.0"/>
+                                                </GradientStopCollection>
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <TextBlock Text="{Binding Path=Bpm, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               VerticalAlignment="Center" HorizontalAlignment="Center"
+                                               FontSize="18" 
+                                               FontWeight="Light"
+                                               FontStretch="Medium"
+                                               FontFamily="Franklin Gothic"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" TargetName="sliderThumb">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStopCollection>
+                                                            <GradientStop Color="#7a90c9" Offset="0.0"/>
+                                                            <GradientStop Color="#e9c8ea" Offset="1.0"/>
+                                                        </GradientStopCollection>
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Slider">
+                    <Setter Property="Minimum" Value="60"/>
+                    <Setter Property="Maximum" Value="160"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Slider">
+                                <Border x:Name="TrackBackground"
+                                        Height="50"
+                                        CornerRadius="5"
+                                        BorderThickness="1">
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStopCollection>
+                                                    <GradientStop Color="#76aaff"
+                                                        Offset="0.0" />
+                                                    <GradientStop Color="#11aaff"
+                                                        Offset="1.0" />
+                                                </GradientStopCollection>
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <LinearGradientBrush.GradientStops>
+                                                <GradientStopCollection>
+                                                    <GradientStop Color="#76aaff" Offset="0.0" />
+                                                    <GradientStop Color="#11aaff" Offset="1.0"/>
+                                                </GradientStopCollection>
+                                            </LinearGradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Track x:Name="PART_Track">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Style="{StaticResource SliderButtonStyle}"
+                                                          Command="Slider.DecreaseLarge" />
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb/>
+                                        </Track.Thumb>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Style="{StaticResource SliderButtonStyle}"
+                                                          Command="Slider.IncreaseLarge" />
+                                        </Track.IncreaseRepeatButton>
+                                    </Track>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+                <!--Auto-DJ Headers-->
+                <Style TargetType="TextBlock" x:Key="autoDjHeader">
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="Foreground" Value="HotPink"/>
+                </Style>
+                
+                <!--Color Wheel Button-->
+                <Style TargetType="Button" x:Key="cWheelButton">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Height" Value="50"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Grid Margin="5" x:Name="cWheelGrid">
+                                    <Image Source="/Images/color_wheel.png"/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Margin" Value="0" TargetName="cWheelGrid"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+                <!--Navigation Button Style-->
+                <Style TargetType="Button" x:Key="navButtonStyle">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </Grid.Resources>
+            
+            <!--
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                Control Section
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            -->
+            <!--Song Queue (Λίστα Αναπαραγωγής)-->
+            <DataGrid x:Name="SongQueue"
+                      Background="#121232"
+                      Margin="10"
+                      AutoGenerateColumns="False"
+                      VerticalScrollBarVisibility="Disabled"
+                      HorizontalScrollBarVisibility="Disabled"
+                      CanUserResizeRows="False" CanUserSortColumns="False"
+                      CanUserResizeColumns="False" CanUserReorderColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="#" Width="30" Binding="{Binding RowID}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Artist" Binding="{Binding ArtistName}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Song" Binding="{Binding Title}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Speed" Binding="{Binding Speed}" IsReadOnly="True"/>
+                    <DataGridTemplateColumn Width="50">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Button x:Name="Up"
+                                            cal:Message.Attach="[Event Click] = [Action OnUpArrowClick($dataContext)]"
+                                            Width="50" Height="30" Style="{StaticResource navButtonStyle}"/>
+                                    <Button x:Name="Down"
+                                            cal:Message.Attach="[Event Click] = [Action OnDownArrowClick($dataContext)]"
+                                            Width="50" Height="30" Style="{StaticResource navButtonStyle}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Grid Grid.Column="1" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                 <!--Auto DJ Title-->
+                <TextBlock Grid.Column="1"
+                           Text="Auto-DJ"
+                           Style="{StaticResource titleStyle}"/>
+                
+                <!--Genre Buttons-->
+                <Grid Grid.Column="1"
+                            Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Genres" 
+                               Style="{StaticResource autoDjHeader}"
+                               HorizontalAlignment="Center"/>
+                    <Grid Grid.Row="1">
+                        <Grid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Rock" Grid.Column="0"/>
+                        <Button Content="Pop" Grid.Column="1"/>
+                        <Button Content="Dance" Grid.Column="2"/>
+                    </Grid>
+                </Grid>
+                
+                 <!--Speed Buttons-->
+                <Grid Grid.Column="1"
+                      Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Speed" 
+                               Style="{StaticResource autoDjHeader}"
+                               HorizontalAlignment="Center"/>
+                    <Grid Grid.Row="1">
+                        <Grid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Slow" Grid.Column="0"/>
+                        <Button Content="Fast" Grid.Column="1"/>
+                    </Grid>
+                </Grid>
+                
+                <!--Separator--> 
+                <Rectangle Stroke="{DynamicResource TextForeground}"
+                           HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                           Grid.Row="2" Grid.Column="1"/>
+            </Grid>
+            <!--Karaoke & Effects-->
+            <Grid Grid.Row="1" Grid.Column="1"
+                  Margin="10 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
+                </Grid.Resources>
+                <Button Content="Karaoke" Grid.Column="0"/>
+                <Button Content="Effects" Grid.Column="1"/>
+            </Grid>
+            
+            <!--BPM Slider & Color Wheel-->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Slider VerticalAlignment="Center"
+                        Value="{Binding Path=Bpm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="10"/>
+                <Button Grid.Column="1"
+                        Style="{StaticResource cWheelButton}">
+                    <Image 
+                           Grid.Column="1"/>
+                </Button>
+            </Grid>
         </Grid>
     </Border>
 </UserControl>
