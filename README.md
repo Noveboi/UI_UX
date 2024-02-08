@@ -10,6 +10,7 @@
 ### **Dependencies**:
 - [Caliburn.Micro](https://www.nuget.org/packages/Caliburn.Micro)
 - [WPF Extended Toolkit](https://www.nuget.org/packages/Extended.Wpf.Toolkit)
+- [GongSolutions Drag & Drop](https://www.nuget.org/packages/gong-wpf-dragdrop/3.2.1?_src=template)
 
 Βοηθητικό υλικό:
 - [Introduction to WPF](https://www.youtube.com/watch?v=gSfMNjWNoX0&t=2070s)
