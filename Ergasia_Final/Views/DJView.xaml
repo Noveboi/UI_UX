@@ -194,6 +194,7 @@
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="FontSize" Value="20"/>
                     <Setter Property="Padding" Value="10"/>
+                    <Setter Property="Foreground" Value="#f0f0f0"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                     <Setter Property="FontWeight" Value="Medium"/>
@@ -212,6 +213,7 @@
                 <!--Cells-->
                 <Style TargetType="DataGridCell" x:Key="CellStyle">
                     <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Foreground" Value="#f0f0f0"/>
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="Padding" Value="20"/>
                     <Setter Property="Margin" Value="0"/>
@@ -263,9 +265,8 @@
             <DataGrid x:Name="SongQueue"
                       Background="#222233"
                       Margin="10"
-                      Foreground="#f0f0f0"
                       ColumnWidth="*"
-                      dd:DragDrop.DropHandler="{Binding OnDragDrop}"
+                      dd:DragDrop.DropHandler="{Binding}"
                       dd:DragDrop.IsDragSource="True"
                       dd:DragDrop.IsDropTarget="True"
                       GridLinesVisibility="None"
