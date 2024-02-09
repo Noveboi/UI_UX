@@ -7,7 +7,7 @@
              xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels"
              xmlns:cal="http://www.caliburnproject.org"
              Foreground="#014511"
-             MinWidth="800" MinHeight="450"
+             MinWidth="800" MinHeight="550"
              WindowStyle="None"
              ResizeMode="CanResizeWithGrip">
     <Grid Background="#937fd4">
