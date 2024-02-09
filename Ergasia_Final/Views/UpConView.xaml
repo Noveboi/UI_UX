@@ -69,7 +69,8 @@
 
                                 <Image Source="/Images/taylor_concert.jpg" 
                                        Stretch="UniformToFill" 
-                                       Grid.ColumnSpan="2"/>
+                                       Grid.ColumnSpan="2"
+                                       VerticalAlignment="Center"/>
                                 <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
 
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
@@ -112,7 +113,8 @@
 
                                 <Image Source="/Images/m83_concert.jpg" 
                                        Stretch="UniformToFill" 
-                                       Grid.ColumnSpan="2"/>
+                                       Grid.ColumnSpan="2"
+                                       VerticalAlignment="Center"/>
                                 <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
 
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
@@ -155,7 +157,8 @@
 
                                 <Image Source="/Images/altj_concert.jpg" 
                                         Stretch="UniformToFill" 
-                                        Grid.ColumnSpan="2"/>
+                                        Grid.ColumnSpan="2"
+                                        VerticalAlignment="Center"/>
                                 <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
 
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>

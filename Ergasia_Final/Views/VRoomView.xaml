@@ -6,8 +6,44 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="OrangeRed">
-        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="64" Foreground="White" Text="Viewing Room!"/>
+    <Grid Background="{DynamicResource MainBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <!--1st Row, Title and Catalog Button-->
+        <TextBlock Text="Artists Hall" Style="{StaticResource titleStyle}"/>
+        <Button x:Name="Catalog" Height="50" Width="70" HorizontalAlignment="Right" Margin="10"/>
+        <!--2nd Row-->
+        <StackPanel Grid.Row="1" Margin="20 10">
+            <TextBlock Text="Click on any artist's icon!" FontSize="30" Foreground="{DynamicResource TextForeground}"/>
+            <TextBlock Text="See the Museum's featured artists in-concert, or get more personal with recorded interviews." Style="{StaticResource simpleText}"/>
+            <TextBlock Text="*This room has food and drink available. To order click the red button in the top-right corner." Style="{StaticResource simpleText}"/>
+        </StackPanel>
+        <!--3rd Row, Artists-->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Margin="10" Width="200">
+                <Image Source="/Images/altJ.jpg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Button>
+            <Button Margin="10" Grid.Column="1" Width="200">
+                <Image Source="/Images/TS_Eras_Tour.jpg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Button>
+            <Button Margin="10" Grid.Column="2" Width="200">
+                <Image Source="/Images/M83.jpg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Button>
+            <TextBlock Text="alt-J" Grid.Row="1" FontSize="30" Foreground="#fc8c03" HorizontalAlignment="Center"/>
+            <TextBlock Text="Taylor Swift" Grid.Row="1" Grid.Column="1" FontSize="30" Foreground="#d303fc" HorizontalAlignment="Center"/>
+            <TextBlock Text="M83" Grid.Row="1" Grid.Column="2" FontSize="30" Foreground="#03fc4e" HorizontalAlignment="Center"/>
+        </Grid>
     </Grid>
 </UserControl>
