@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Ergasia_Final.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +19,19 @@ namespace Ergasia_Final.ViewModels
         // Methods for the 4 buttons 
         public void OpenUpCon()
         {
-            _eventAggregator.PublishOnUIThreadAsync(new UpConViewModel(_eventAggregator));
+            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<UpConViewModel>(_eventAggregator));
         }
         public void OpenExHall()
         {
-            _eventAggregator.PublishOnUIThreadAsync(new ExHallViewModel());
+            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<ExHallViewModel>());
         }
         public void OpenVRoom()
         {
-            _eventAggregator.PublishOnUIThreadAsync(new VRoomViewModel(_eventAggregator));
+            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<VRoomViewModel>(_eventAggregator));
         }
         public void OpenDJ()
         {
-            _eventAggregator.PublishOnUIThreadAsync(new DJViewModel());
+            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<DJViewModel>());
         }
     }
 }

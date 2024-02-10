@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class VRoomViewModel
+    public class VRoomViewModel : Screen
     {
         private readonly IEventAggregator _eventAggregator;
         public VRoomViewModel(IEventAggregator eventAggregator)

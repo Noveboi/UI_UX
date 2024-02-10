@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class EPayServiceViewModel
+    public class EPayServiceViewModel : Screen
     {
         public EPayServiceViewModel(double price, IEventAggregator events)
         {

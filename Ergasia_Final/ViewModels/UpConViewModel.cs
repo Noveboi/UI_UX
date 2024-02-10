@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class UpConViewModel
+    public class UpConViewModel : Screen
     {
         private readonly IEventAggregator _eventAggregator; 
         public UpConViewModel(IEventAggregator eventAggregator)

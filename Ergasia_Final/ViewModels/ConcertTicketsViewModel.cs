@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
+using Ergasia_Final.Models;
 
 namespace Ergasia_Final.ViewModels
 {
