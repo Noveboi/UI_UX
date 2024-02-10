@@ -405,7 +405,7 @@
                 <Grid.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
                 </Grid.Resources>
-                <Button Content="Karaoke" Grid.Column="0"/>
+                <Button x:Name="OpenKaraoke" Content="Karaoke" Grid.Column="0"/>
                 <Button Content="Effects" Grid.Column="1"/>
             </Grid>
             

@@ -11,7 +11,7 @@ namespace Ergasia_Final.Models
     {
         private int _bpm;
 
-        public int RowID { get; set; }
+        public string RowID { get; set; }
         public string ArtistName { get; set; }
         public string Title { get; set; }
         public SpeedTypes Speed { get; private set; }
@@ -27,5 +27,6 @@ namespace Ergasia_Final.Models
             }
         }
         public Uri AudioPath { get; set; }
+        public string Lyrics { get; set; }
     }
 }
