@@ -6,9 +6,44 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="DeepPink">
-        <TextBlock Text="Artist Hall!" 
-                   VerticalAlignment="Center" HorizontalAlignment="Center"
-                   FontSize="64" Foreground="AliceBlue"/>
+    <Grid Background="{DynamicResource MainBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Personal Artist Hall" Style="{StaticResource titleStyle}"/>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="130"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="130"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!--SmallTitles-->
+            <TextBlock Text="Concerts" FontSize="30" Foreground="{DynamicResource TextForeground}"/>
+            <TextBlock Text="Interviews" Grid.Row="3" FontSize="30" Foreground="{DynamicResource TextForeground}"/>
+            <TextBlock Text="Covers/Tributes" Grid.Column="2" FontSize="30" Foreground="{DynamicResource TextForeground}"/>
+            <!--Videos-->
+            <Rectangle Fill="AntiqueWhite" Grid.Row="1" Margin="10"/>
+            <Rectangle Fill="AntiqueWhite" Grid.Row="1" Grid.Column="1" Margin="10"/>
+            <Rectangle Fill="AntiqueWhite" Grid.Row="1" Grid.Column="2" Margin="10"/>
+            <Rectangle Fill="AntiqueWhite" Grid.Row="4" Margin="10"/>
+            <Rectangle Fill="AntiqueWhite" Grid.Row="4" Grid.Column="1" Margin="10"/>
+            <Rectangle Fill="AntiqueWhite" Grid.Row="4" Grid.Column="2" Margin="10"/>
+            <!--VideoTitles-->
+            <TextBlock Text="Concert Video 1" Grid.Row="2" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
+            <TextBlock Text="Concert Video 2" Grid.Row="2" Grid.Column="1" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
+            <TextBlock Text="Cover Video 1" Grid.Row="2" Grid.Column="2" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
+            <TextBlock Text="Cover Video 2" Grid.Row="5" Grid.Column="2" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
+            <TextBlock Text="Interview Video 1" Grid.Row="5" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
+            <TextBlock Text="Interview Video 2" Grid.Row="5" Grid.Column="1" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
+        </Grid>
     </Grid>
 </UserControl>
