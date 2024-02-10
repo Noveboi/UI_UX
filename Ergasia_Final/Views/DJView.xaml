@@ -6,11 +6,12 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:ex="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:dd="urn:gong-wpf-dragdrop" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:DJViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
              MinHeight="450" MinWidth="600">
-    <Border BorderBrush="Purple" BorderThickness="10" Background="{DynamicResource MainBackground}">
+    <Border BorderBrush="{Binding BorderLightIndicator}" BorderThickness="10" Background="{DynamicResource MainBackground}">
         <Grid Background="{DynamicResource MainBackground}" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -185,7 +186,7 @@
                 </Style>
 
                 <!--Color Wheel Button-->
-                <Style TargetType="Button" x:Key="cWheelButton">
+                <Style TargetType="ToggleButton" x:Key="cWheelButton">
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Cursor" Value="Hand"/>
                     <Setter Property="Height" Value="50"/>
@@ -204,6 +205,14 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
+                
+                <!--Color Canvas Style (Color Selector)-->
+                <Style TargetType="ex:ColorCanvas">
+                    <Setter Property="Background" Value="#222233"/>
+                    <Setter Property="Foreground" Value="#f0f0f0"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="BorderBrush" Value="Beige"/>
+                </Style> 
                 
                 <!--DataGrid Styles-->
                 <!--Column Headers-->
@@ -288,6 +297,7 @@
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                 </Style>
+                <!--END DataGrid Styles-->
             </Grid.Resources>
             
             <!--
@@ -302,7 +312,7 @@
                       SelectionMode="Single"
                       SelectionUnit="FullRow"
                       BorderThickness="2"
-                      BorderBrush="#ddccff"
+                      BorderBrush="#7050aa"
                       AlternationCount="2"
                       ColumnWidth="*"
                       dd:DragDrop.DropHandler="{Binding}"
@@ -316,7 +326,8 @@
                       HorizontalScrollBarVisibility="Disabled"
                       CanUserResizeRows="False" CanUserSortColumns="False"
                       CanUserResizeColumns="False" CanUserReorderColumns="False"
-                      CanUserAddRows="False"
+                      CanUserAddRows="False" CanUserDeleteRows="False"
+                      RowHeaderWidth="0"
                       CellStyle="{StaticResource CellStyle}"
                       ColumnHeaderStyle="{StaticResource ColumnHeader}">
                 <DataGrid.Columns>
@@ -436,11 +447,19 @@
                 <Slider VerticalAlignment="Center"
                         Value="{Binding Path=Bpm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="10"/>
-                <Button Grid.Column="1"
-                        Style="{StaticResource cWheelButton}">
-                    <Image 
-                           Grid.Column="1"/>
-                </Button>
+                <ToggleButton x:Name="colorWheel"
+                              Grid.Column="1"
+                              Style="{StaticResource cWheelButton}"/>
+                <Popup IsOpen="{Binding IsChecked, ElementName=colorWheel}"
+                       PlacementTarget="{Binding ElementName=colorWheel}"
+                       Placement="Top"
+                       StaysOpen="False">
+                    <ex:ColorCanvas Height="140" 
+                                    SelectedColor="{Binding LightsColor, 
+                                                    Mode=TwoWay,
+                                                    UpdateSourceTrigger=PropertyChanged}"/>
+                </Popup>
+
             </Grid>
         </Grid>
     </Border>

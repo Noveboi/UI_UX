@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ergasia_Final.Views"
-        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:cal="http://www.caliburnproject.org" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:KaraokeViewModel}"
         mc:Ignorable="d"
         Title="Karaoke" Height="600" Width="600"
         cal:Message.Attach="[Event Closed] = [Action OnClose()]">
@@ -17,33 +17,37 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-
+        
+        <!--Separator--> 
         <Rectangle Stroke="Beige" 
                    HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                    Grid.ColumnSpan="2"
                    Grid.Row="0"/>
         
-            <Viewbox Margin="10 10 20 10"
-                     VerticalAlignment="Center"
-                     Stretch="Uniform" StretchDirection="Both">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+        <!--Now Playing (Artist and Song)-->
+        <Viewbox Margin="10 10 20 10"
+                    VerticalAlignment="Center"
+                    Stretch="Uniform" StretchDirection="Both">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Image Source="/Images/now_playing.png"/>
                 <TextBlock FontSize="32"
-                           Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Style="{StaticResource simpleText}">
-                        <TextBlock.Inlines>
-                            <Run Text="{Binding NowPlaying.ArtistName}"/>
-                            <Run Text=" - " />
-                            <Run Text="{Binding NowPlaying.Title}"/>
-                        </TextBlock.Inlines>
-                    </TextBlock>
-                </Grid>
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource simpleText}">
+                    <TextBlock.Inlines>
+                        <Run Text="{Binding NowPlaying.ArtistName}"/>
+                        <Run Text=" - " />
+                        <Run Text="{Binding NowPlaying.Title}"/>
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </Grid>
         </Viewbox>
+        
+        <!--Lyric Viewer-->
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       Grid.Row="1">
             <Viewbox StretchDirection="DownOnly" Stretch="Uniform"
@@ -55,13 +59,18 @@
                            UpdateSourceTrigger=PropertyChanged}"/>
             </Viewbox>
         </ScrollViewer>
-
+        
+        <!--Rate the Singer-->
         <Viewbox StretchDirection="DownOnly" Stretch="Uniform"
                  Margin="10" Grid.Row="0" Grid.Column="1">
             <TextBlock Text="Rate the Singer!" 
                        Style="{StaticResource simpleText}"
                        FontSize="32"/>
         </Viewbox>
-
+        
+        <!--Rating System-->
+        <Grid Grid.Row="1" Grid.Column="1">
+            
+        </Grid>
     </Grid>
 </Window>

@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Ergasia_Final.Models;
 using GongSolutions.Wpf.DragDrop;
+using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Ergasia_Final.ViewModels
@@ -25,7 +27,8 @@ namespace Ergasia_Final.ViewModels
         private Brush _effectsDisabled = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
         private Brush _effectsOff = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a01039"));
         private Brush _effectsOn = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#13a51d"));
-
+        private Color lightsColor = (Color)ColorConverter.ConvertFromString("#8811ff");
+        private Brush borderLightIndicator;
         public double Bpm
         {
             get => bpm;
@@ -55,6 +58,20 @@ namespace Ergasia_Final.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+
+        public Color LightsColor
+        {
+            get => lightsColor;
+            set
+            {
+                lightsColor = value;
+                BorderLightIndicator = new SolidColorBrush(lightsColor); 
+                NotifyOfPropertyChange();
+                NotifyOfPropertyChange("BorderLightIndicator");
+            }
+        }
+
+        public Brush BorderLightIndicator { get; set; }
         #endregion
         public DJViewModel()
         {
@@ -506,6 +523,12 @@ And your knee socks
             {
                 EffectsButtonColor = _effectsOff;
             }
+        }
+
+        // Simulate the backup of the current setup of the DJ App (song queue state, bpm setting)
+        public void OnKeyDown() 
+        {
+            
         }
 
         public async Task HandleAsync(int message, CancellationToken cancellationToken)
