@@ -4,6 +4,8 @@ using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,15 +36,6 @@ namespace Ergasia_Final.ViewModels
             _bpm = SongQueue[0].BPM;
         }
 
-        public void OnUpArrowClick(SongModel dataContext)
-        {
-
-        }
-
-        public void OnDownArrowClick(SongModel dataContext)
-        {
-        }
-
         // Use this instead of SongQueue.Add()!
         private void AddToQueue(string artistName, string title, GenreTypes genre, int bpm)
         {
@@ -56,6 +49,50 @@ namespace Ergasia_Final.ViewModels
                 BPM = bpm
             });
         }
+
+        // The sorting is done as follows:
+        //   - Create 2 lists
+        //      - For list 1: Add all songs with the specified genre
+        //      - For list 2: Add the rest of the songs as they appear in the original SongQueue
+        public void SortByGenre(Button sender)
+        {
+            string xName = sender.Name;
+            GenreTypes sortGenre = GenreTypes.Rock;
+
+            if (xName.Equals("popButton")) { sortGenre = GenreTypes.Pop; }
+            else if (xName.Equals("danceButton")) { sortGenre = GenreTypes.Dance; }
+
+            List<SongModel> genreSongs = (from song in SongQueue
+                                          where song.Genre.Equals(sortGenre)
+                                          select song).ToList();
+            List<SongModel> restOfSongs = (from song in SongQueue
+                                           where !song.Genre.Equals(sortGenre)
+                                           select song).ToList();
+
+            genreSongs.AddRange(restOfSongs);
+            SongQueue.Clear();
+            SongQueue.AddRange(genreSongs);
+            UpdateRowIDs();
+        }
+
+        public void SortBySpeed(Button sender)
+        {
+            string xName = sender.Name;
+            SpeedTypes sortSpeed = xName.Equals("slowButton") ? SpeedTypes.Slow : SpeedTypes.Fast;
+
+            List<SongModel> speedSongs = (from song in SongQueue
+                                          where song.Speed.Equals(sortSpeed)
+                                          select song).ToList();
+            List<SongModel> restOfSongs = (from song in SongQueue
+                                           where !song.Speed.Equals(sortSpeed)
+                                           select song).ToList();
+
+            speedSongs.AddRange(restOfSongs);
+            SongQueue.Clear();
+            SongQueue.AddRange(speedSongs);
+            UpdateRowIDs();
+        }
+
 
         public void AddSongs()
         {

@@ -348,16 +348,19 @@
                                HorizontalAlignment="Center"/>
                     <Grid Grid.Row="1">
                         <Grid.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
+                            <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}">
+                                <Setter Property="cal:Message.Attach" 
+                                        Value="[Event Click] = [Action SortByGenre($source)]"/>
+                            </Style>
                         </Grid.Resources>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="Rock" Grid.Column="0"/>
-                        <Button Content="Pop" Grid.Column="1"/>
-                        <Button Content="Dance" Grid.Column="2"/>
+                        <Button x:Name="rockButton" Content="Rock" Grid.Column="0"/>
+                        <Button x:Name="popButton" Content="Pop" Grid.Column="1"/>
+                        <Button x:Name="danceButton" Content="Dance" Grid.Column="2"/>
                     </Grid>
                 </Grid>
                 
@@ -373,14 +376,17 @@
                                HorizontalAlignment="Center"/>
                     <Grid Grid.Row="1">
                         <Grid.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
+                            <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}">
+                                <Setter Property="cal:Message.Attach"
+                                        Value="[Event Click] = [Action SortBySpeed($source)]"/>
+                            </Style>
                         </Grid.Resources>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Content="Slow" Grid.Column="0"/>
-                        <Button Content="Fast" Grid.Column="1"/>
+                        <Button x:Name="slowButton" Content="Slow" Grid.Column="0"/>
+                        <Button x:Name="fastButton" Content="Fast" Grid.Column="1"/>
                     </Grid>
                 </Grid>
                 
