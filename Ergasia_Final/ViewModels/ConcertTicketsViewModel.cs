@@ -36,7 +36,74 @@ namespace Ergasia_Final.ViewModels
 
         private string _artistName;
 
+        private bool sideVip1Checked = false;
+        private bool sideVip2Checked = false;
+        private bool vipChecked = false;
+        private bool genAdChecked = true;
+
         // Properties
+
+        public bool SideVip1Checked
+        {
+            get => sideVip1Checked;
+            set
+            {
+                sideVip1Checked = value;
+                NotifyOfPropertyChange();
+                if (sideVip1Checked)
+                {
+                    SideVip2Checked = false;
+                    VipChecked = false;
+                    GenAdChecked = false;
+                }
+            }
+        }
+        public bool SideVip2Checked
+        {
+            get => sideVip2Checked;
+            set
+            {
+                sideVip2Checked = value;
+                NotifyOfPropertyChange();
+                if (sideVip2Checked)
+                {
+                    SideVip1Checked = false;
+                    VipChecked = false;
+                    GenAdChecked = false;
+                }
+            }
+        }
+        public bool VipChecked
+        {
+            get => vipChecked;
+            set
+            {
+                vipChecked = value;
+                NotifyOfPropertyChange();
+                if (vipChecked)
+                {
+                    SideVip1Checked = false;
+                    SideVip2Checked = false;
+                    GenAdChecked = false;
+                }
+            }
+        }
+        public bool GenAdChecked
+        {
+            get => genAdChecked;
+            set
+            {
+                genAdChecked = value;
+                NotifyOfPropertyChange();
+                if (genAdChecked)
+                {
+                    SideVip1Checked = false;
+                    SideVip2Checked = false;
+                    VipChecked = false;
+                }
+            }
+        }
+
         // Displayed on ConcertTicketView
         public string TotalPrice
         {
@@ -74,9 +141,6 @@ namespace Ergasia_Final.ViewModels
         }
 
         // Methods
-        /// <summary>
-        /// 
-        /// </summary>
         public void SetPrice()
         {
             if (!_ticketQuantity.Equals(string.Empty))
