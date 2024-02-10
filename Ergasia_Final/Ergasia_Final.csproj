@@ -8,17 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\altJ.jpg" />
     <None Remove="Images\altj_concert.jpg" />
     <None Remove="Images\altj_portrait.jpg" />
     <None Remove="Images\avatar.png" />
     <None Remove="Images\clock.png" />
     <None Remove="Images\color_wheel.png" />
+    <None Remove="Images\M83.jpg" />
     <None Remove="Images\m83_concert.jpg" />
     <None Remove="Images\m83_portrait.jpg" />
     <None Remove="Images\money.png" />
     <None Remove="Images\now_playing.png" />
     <None Remove="Images\taylor_concert.jpg" />
     <None Remove="Images\taylor_portrait.jpg" />
+    <None Remove="Images\TS_Eras_Tour.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,12 +69,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\altJ.jpg" />
     <Resource Include="Images\altj_concert.jpg" />
     <Resource Include="Images\altj_portrait.jpg" />
     <Resource Include="Images\avatar.png" />
     <Resource Include="Images\clock.png" />
     <Resource Include="Images\color_wheel.png" />
     <Resource Include="Images\contactless.png" />
+    <Resource Include="Images\M83.jpg" />
     <Resource Include="Images\m83_concert.jpg" />
     <Resource Include="Images\m83_portrait.jpg" />
     <Resource Include="Images\mastercard.png" />
@@ -79,6 +84,7 @@
     <Resource Include="Images\now_playing.png" />
     <Resource Include="Images\taylor_concert.jpg" />
     <Resource Include="Images\taylor_portrait.jpg" />
+    <Resource Include="Images\TS_Eras_Tour.jpg" />
     <Resource Include="Images\visa.png" />
   </ItemGroup>
 
