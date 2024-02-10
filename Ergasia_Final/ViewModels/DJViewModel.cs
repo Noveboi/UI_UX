@@ -4,58 +4,71 @@ using GongSolutions.Wpf.DragDrop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Cryptography;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class DJViewModel : Screen, IDropTarget
+    public class DJViewModel : Screen, IDropTarget, IHandle<int>
     {
-        private double _bpm;
+        #region Fields & Properties
+        private double bpm;
         /// <summary>
         /// EventAggregator used to send updates to the <see cref="KaraokeViewModel"/> when a new song plays
         /// </summary>
         private IEventAggregator _djEvents;
+        private bool karaokeOpen = false;
+        private Brush effectsButtonColor;
+        private Brush _effectsDisabled = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
+        private Brush _effectsOff = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a01039"));
+        private Brush _effectsOn = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#13a51d"));
 
         public double Bpm
         {
-            get => _bpm;
+            get => bpm;
             set
             {
-                _bpm = Math.Round(value);
+                bpm = Math.Round(value);
+                NotifyOfPropertyChange();
+            }
+        }
+        public BindableCollection<SongModel> SongQueue { get; }
+        public bool KaraokeOpen
+        {
+            get => karaokeOpen;
+            set
+            {
+                karaokeOpen = value;
                 NotifyOfPropertyChange();
             }
         }
 
-        public BindableCollection<SongModel> SongQueue { get; }
+        public Brush EffectsButtonColor
+        {
+            get => effectsButtonColor;
+            set
+            {
+                effectsButtonColor = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        #endregion
         public DJViewModel()
         {
             SongQueue = new BindableCollection<SongModel>();
             _djEvents = new EventAggregator();
+            _djEvents.SubscribeOnUIThread(this);
             AddSongs();
 
-            _bpm = SongQueue[0].BPM;
+            effectsButtonColor = _effectsDisabled;
+
+            bpm = SongQueue[0].BPM;
         }
 
-        // Use this instead of SongQueue.Add()!
-        private void AddToQueue(string artistName, string title, GenreTypes genre, int bpm, string lyrics)
-        {
-            int id = SongQueue.Count + 1;
-            SongQueue.Add(new SongModel()
-            {
-                RowID = SongQueue.Count == 0 ? "⏵" : id.ToString(),
-                ArtistName = artistName,
-                Title = title,
-                Genre = genre,
-                BPM = bpm, 
-                Lyrics = lyrics
-            });
-        }
-
+        #region Sort Buttons
         // The sorting is done as follows:
         //   - Create 2 lists
         //      - For list 1: Add all songs with the specified genre
@@ -99,11 +112,53 @@ namespace Ergasia_Final.ViewModels
             SongQueue.AddRange(sorted);
             UpdateSongs();
         }
-
-        public void OpenKaraoke()
+        #endregion
+        #region Drap & Drop Logic
+        public void DragOver(IDropInfo dropInfo)
         {
-            IWindowManager manager = new WindowManager();
-            manager.ShowWindowAsync(new KaraokeViewModel(SongQueue[0], _djEvents));
+            dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+            dropInfo.Effects = DragDropEffects.Move;
+        }
+
+        public void Drop(IDropInfo dropInfo)
+        {
+            SongModel sourceSong = (SongModel)dropInfo.Data;
+            SongModel targetSong = (SongModel)dropInfo.TargetItem;
+
+            int sourceId = sourceSong.RowID == "⏵" ? 0 : int.Parse(sourceSong.RowID) - 1;
+            int targetId = targetSong.RowID == "⏵" ? 0 : int.Parse(targetSong.RowID) - 1;
+
+            SongQueue.Move(sourceId, targetId);
+            UpdateSongs();
+        }
+        #endregion
+        #region Song Queue Manipulation
+        private void UpdateSongs()
+        {
+            SongQueue[0].RowID = "⏵";
+            for (int i = 1; i < SongQueue.Count; i++)
+            {
+                SongQueue[i].RowID = (i + 1).ToString();
+            }
+            SongQueue.Refresh();
+
+            _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
+            Bpm = SongQueue[0].BPM;
+        }
+
+        // Use this instead of SongQueue.Add()!
+        private void AddToQueue(string artistName, string title, GenreTypes genre, int bpm, string lyrics)
+        {
+            int id = SongQueue.Count + 1;
+            SongQueue.Add(new SongModel()
+            {
+                RowID = SongQueue.Count == 0 ? "⏵" : id.ToString(),
+                ArtistName = artistName,
+                Title = title,
+                Genre = genre,
+                BPM = bpm,
+                Lyrics = lyrics
+            });
         }
 
         public void AddSongs()
@@ -429,35 +484,34 @@ When you walked around your house wearing my sky blue Lacoste
 And your knee socks
 [2x]");
         }
-
-        public void DragOver(IDropInfo dropInfo)
+        #endregion
+        public void OpenKaraoke()
         {
-            dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
-            dropInfo.Effects = DragDropEffects.Move;
-        }
-
-        public void Drop(IDropInfo dropInfo)
-        {
-            SongModel sourceSong = (SongModel)dropInfo.Data;
-            SongModel targetSong = (SongModel)dropInfo.TargetItem;
-
-            int sourceId = sourceSong.RowID == "⏵" ? 0 : int.Parse(sourceSong.RowID) - 1;
-            int targetId = targetSong.RowID == "⏵" ? 0 : int.Parse(targetSong.RowID) - 1;
-
-            SongQueue.Move(sourceId, targetId);
-            UpdateSongs();
-        }
-
-        private void UpdateSongs()
-        {
-            SongQueue[0].RowID = "⏵";
-            for (int i = 1; i < SongQueue.Count; i++)
+            if (!karaokeOpen)
             {
-                SongQueue[i].RowID = (i + 1).ToString();
+                IWindowManager manager = new WindowManager();
+                manager.ShowWindowAsync(new KaraokeViewModel(SongQueue[0], _djEvents));
+                KaraokeOpen = true;
+                EffectsButtonColor = _effectsOff;
             }
-            SongQueue.Refresh();
+        }
 
-            _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
+        public void AddVoiceEffects()
+        {
+            if (effectsButtonColor is null || effectsButtonColor == _effectsOff)
+            {
+                EffectsButtonColor = _effectsOn;
+            }
+            else
+            {
+                EffectsButtonColor = _effectsOff;
+            }
+        }
+
+        public async Task HandleAsync(int message, CancellationToken cancellationToken)
+        {
+            KaraokeOpen = false;
+            EffectsButtonColor = _effectsDisabled;
         }
     }
 }

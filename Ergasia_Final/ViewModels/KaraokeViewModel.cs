@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Ergasia_Final.Models;
+using Ergasia_Final.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Automation;
 
 namespace Ergasia_Final.ViewModels
 {
@@ -38,5 +41,9 @@ namespace Ergasia_Final.ViewModels
             NowPlaying = message;
         }
 
+        public void OnClose()
+        {
+            _djEvents.PublishOnUIThreadAsync(1);
+        }
     }
 }

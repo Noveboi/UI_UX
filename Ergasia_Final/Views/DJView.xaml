@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:dd="urn:gong-wpf-dragdrop" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:DJViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
              MinHeight="450" MinWidth="600">
     <Border BorderBrush="Purple" BorderThickness="10" Background="{DynamicResource MainBackground}">
@@ -33,6 +34,34 @@
                     <Setter Property="FontWeight" Value="Light"/>
                     <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
                     <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter Margin="2"
+                                                      RecognizesAccessKey="True"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#ff11aa" Opacity="0.3"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="#666666"/>
+                            <Setter Property="BorderBrush" Value="#aaaaaa"/>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
                 <!--
                     Slider Custom Style
@@ -154,7 +183,7 @@
                     <Setter Property="FontWeight" Value="Medium"/>
                     <Setter Property="Foreground" Value="HotPink"/>
                 </Style>
-                
+
                 <!--Color Wheel Button-->
                 <Style TargetType="Button" x:Key="cWheelButton">
                     <Setter Property="Background" Value="Transparent"/>
@@ -172,20 +201,6 @@
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                
-                <!--Navigation Button Style-->
-                <Style TargetType="Button" x:Key="navButtonStyle">
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="MinHeight" Value="30"/>
-                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                    <Setter Property="VerticalAlignment" Value="Stretch"/>
-                    <Setter Property="Background">
-                        <Setter.Value>
-                            <SolidColorBrush Color="#111111" Opacity="0.2"/>
                         </Setter.Value>
                     </Setter>
                 </Style>
@@ -406,7 +421,10 @@
                     <Style TargetType="Button" BasedOn="{StaticResource autoDjButton}"/>
                 </Grid.Resources>
                 <Button x:Name="OpenKaraoke" Content="Karaoke" Grid.Column="0"/>
-                <Button Content="Effects" Grid.Column="1"/>
+                <Button x:Name="AddVoiceEffects"
+                        Background="{Binding EffectsButtonColor}"
+                        Content="Effects" Grid.Column="1"
+                        IsEnabled="{Binding KaraokeOpen}"/>
             </Grid>
             
             <!--BPM Slider & Color Wheel-->

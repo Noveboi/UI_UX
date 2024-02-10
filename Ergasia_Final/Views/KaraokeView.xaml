@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ergasia_Final.Views"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
-        Title="KaraokeView" Height="600" Width="800">
+        Title="Karaoke" Height="600" Width="600"
+        cal:Message.Attach="[Event Closed] = [Action OnClose()]">
     <Grid Background="{DynamicResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
