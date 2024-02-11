@@ -15,14 +15,15 @@ using System.Windows.Media;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class DJViewModel : Screen, IDropTarget, IHandle<int>
+    public class DJViewModel : Screen, IDropTarget, IHandle<int>, IHandle<string>
     {
         #region Fields & Properties
         private double bpm;
         /// <summary>
         /// EventAggregator used to send updates to the <see cref="KaraokeViewModel"/> when a new song plays
         /// </summary>
-        private IEventAggregator _djEvents;
+        private readonly IEventAggregator _djEvents;
+        private readonly IEventAggregator _shellEvents;
         private bool karaokeOpen = false;
         private Brush effectsButtonColor;
         private static readonly Brush EFFECTS_DISABLED = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
@@ -35,6 +36,8 @@ namespace Ergasia_Final.ViewModels
         private MediaElement _audioPlayer;
         private Uri currentAudioSource;
         private bool isPlaying = false;
+        private bool initialLoad = false;
+        private TimeSpan savedPosition = TimeSpan.MaxValue;
 
         public double Bpm
         {
@@ -109,13 +112,14 @@ namespace Ergasia_Final.ViewModels
 
         public Brush BorderLightIndicator { get; set; }
         #endregion
-        public DJViewModel()
+        public DJViewModel(IEventAggregator eventAggregator)
         {
             SongQueue = new BindableCollection<SongModel>();
             AddSongs();
 
             currentAudioSource = SongQueue[0].AudioPath;
 
+            eventAggregator.SubscribeOnUIThread(this);
             _djEvents = new EventAggregator();
             _djEvents.SubscribeOnUIThread(this);
 
@@ -603,7 +607,11 @@ And your knee socks
         // Grab the MediaElement control from the View
         public void OnMediaControlsLoaded(Grid source)
         {
-            _audioPlayer = source.FindName("AudioPlayer") as MediaElement;
+            if (!initialLoad) 
+            { 
+                _audioPlayer = source.FindName("AudioPlayer") as MediaElement;
+                initialLoad = true;
+            }
         }
 
         public void ChangeBPM()
@@ -615,6 +623,21 @@ And your knee socks
         {
             KaraokeOpen = false;
             EffectsButtonColor = EFFECTS_DISABLED;
+        }
+
+        public async Task HandleAsync(string message, CancellationToken cancellationToken)
+        {
+            if (message == "DJ Exiting!")
+            {
+                PlayPause();
+                savedPosition = _audioPlayer.Position;
+            }
+            if (message == "DJ Opening!" && savedPosition != TimeSpan.MaxValue)
+            {
+                ChangeBPM();
+                _audioPlayer.Position = savedPosition;
+                PlayPause();
+            }
         }
     }
 }

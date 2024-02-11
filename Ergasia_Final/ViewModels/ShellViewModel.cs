@@ -60,7 +60,7 @@ namespace Ergasia_Final.ViewModels
                 PreviousWindow();
                 PreviousWindow();
             }
-            else
+            else if (message is Screen)
             {
                 _windowStack.Push(message);
                 await ActivateItemAsync(message);
@@ -72,9 +72,14 @@ namespace Ergasia_Final.ViewModels
         {
             try
             {
+                string activeViewModel = _windowStack.Peek().GetType().Name;
                 // If the current window is NOT MainMenuView, then go to previous window
-                if (_windowStack.Peek().GetType().Name != typeof(MainMenuViewModel).Name)
+                if (activeViewModel != typeof(MainMenuViewModel).Name)
                 {
+                    if (activeViewModel == typeof(DJViewModel).Name)
+                    {
+                        _events.PublishOnUIThreadAsync("DJ Exiting!");
+                    }
                     _windowStack.Pop();
                     var newWindow = _windowStack.Peek();
                     ActivateItemAsync(newWindow);
