@@ -118,13 +118,13 @@
                     Grid.Row="2" Grid.Column="2">
             <Button Background="Transparent" VerticalAlignment="Center"
                     BorderThickness="0" Cursor="Hand"
-                    cal:Message.Attach="[Event Click] = [Action PlayPause($source)]"
+                    cal:Message.Attach="[Event Click] = [Action PlayPause($source)];
+                                        [Event Loaded] = [Action CreateStoryboard($source)]"
                     Style="{StaticResource VinylStyle}">
                 <Image x:Name="vinylIcon"
                        Source="/Images/now_playing.png" 
                        Width="70" Height="70"
-                       RenderTransformOrigin="0.5,0.5"
-                       cal:Message.Attach="[Event Loaded] = [Action CreateStoryboard($source)]">
+                       RenderTransformOrigin="0.5,0.5">
                     <Image.RenderTransform>
                         <RotateTransform x:Name="vinylIconAngle" Angle="0.0"/>
                     </Image.RenderTransform>

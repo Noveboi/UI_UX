@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Ergasia_Final.Models;
+using Ergasia_Final.Views;
 using GongSolutions.Wpf.DragDrop;
 using Microsoft.Xaml.Behaviors.Core;
 using System;
@@ -31,7 +32,10 @@ namespace Ergasia_Final.ViewModels
         private static readonly Uri PAUSE_IMAGE = new Uri("/Images/pause.png", UriKind.Relative);
         private Color lightsColor = (Color)ColorConverter.ConvertFromString("#8811ff");
         private Uri playPauseImage = PLAY_IMAGE;
+        private MediaElement _audioPlayer;
+        private Uri currentAudioSource;
         private bool isPlaying = false;
+
         public double Bpm
         {
             get => bpm;
@@ -93,14 +97,27 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        public Uri CurrentAudioSource
+        {
+            get => currentAudioSource;
+            set
+            {
+                currentAudioSource = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public Brush BorderLightIndicator { get; set; }
         #endregion
         public DJViewModel()
         {
             SongQueue = new BindableCollection<SongModel>();
+            AddSongs();
+
+            currentAudioSource = SongQueue[0].AudioPath;
+
             _djEvents = new EventAggregator();
             _djEvents.SubscribeOnUIThread(this);
-            AddSongs();
 
             effectsButtonColor = EFFECTS_DISABLED;
 
@@ -121,12 +138,12 @@ namespace Ergasia_Final.ViewModels
             else if (xName.Equals("danceButton")) { sortGenre = GenreTypes.Dance; }
 
             List<SongModel> genreSongs = (from song in SongQueue
-                                          where song.Genre.Equals(sortGenre)
+                                          where song.Genre.Equals(sortGenre) && song.RowID != "⏵"
                                           select song).ToList();
             List<SongModel> restOfSongs = (from song in SongQueue
-                                           where !song.Genre.Equals(sortGenre)
+                                           where !song.Genre.Equals(sortGenre) && song.RowID != "⏵"
                                            select song).ToList();
-
+            genreSongs.Insert(0, SongQueue[0]);
             genreSongs.AddRange(restOfSongs);
             SongQueue.Clear();
             SongQueue.AddRange(genreSongs);
@@ -140,14 +157,18 @@ namespace Ergasia_Final.ViewModels
 
             List<SongModel> sorted = sortSpeed == SpeedTypes.Slow ?
                                     (from song in SongQueue
+                                     where song.RowID != "⏵"
                                      orderby song.BPM ascending
                                      select song).ToList()
                                      :
                                      (from song in SongQueue
+                                      where song.RowID != "⏵"
                                       orderby song.BPM descending
                                       select song).ToList();
 
+            SongModel nowPlaying = SongQueue[0];
             SongQueue.Clear();
+            SongQueue.Add(nowPlaying);
             SongQueue.AddRange(sorted);
             UpdateSongs();
         }
@@ -183,13 +204,14 @@ namespace Ergasia_Final.ViewModels
 
             _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
             Bpm = SongQueue[0].BPM;
+            CurrentAudioSource = SongQueue[0].AudioPath;
         }
 
         // Use this instead of SongQueue.Add()!
-        private void AddToQueue(string artistName, string title, GenreTypes genre, int bpm, string lyrics)
+        private void AddToQueue(string artistName, string title, GenreTypes genre, int bpm, string lyrics, Uri? audioPath = null)
         {
             int id = SongQueue.Count + 1;
-            SongQueue.Add(new SongModel()
+            SongModel song = new SongModel()
             {
                 RowID = SongQueue.Count == 0 ? "⏵" : id.ToString(),
                 ArtistName = artistName,
@@ -197,7 +219,23 @@ namespace Ergasia_Final.ViewModels
                 Genre = genre,
                 BPM = bpm,
                 Lyrics = lyrics
-            });
+            };
+
+            if (audioPath is not null)
+            {
+                song.AudioPath = audioPath;
+            }
+
+            SongQueue.Add(song);
+        }
+
+        public void NextInQueue()
+        {
+            SongModel justFinished = SongQueue[0];
+            SongQueue.RemoveAt(0);
+            SongQueue.Add(justFinished);
+            _audioPlayer.SpeedRatio = 1;
+            UpdateSongs();
         }
 
         public void AddSongs()
@@ -294,7 +332,7 @@ Or with a nasty scar (leave a nasty scar)
 Got a long list of ex-lovers
 They'll tell you I'm insane
 But I've got a blank space, baby
-And I'll write your name");
+And I'll write your name", new Uri("./Audio/ts_blankSpace.mp3", UriKind.RelativeOrAbsolute));
 
             AddToQueue("alt-J", "Fitzpleasure", GenreTypes.Rock, 144,
                 @"Tra la la tra la tra-ah la
@@ -334,7 +372,7 @@ Deep greedy and googling every corner
 Tra la la tra la tra-ah la
 La la la la la la la
 Ohhhhhhh
-Blended by the lights");
+Blended by the lights", new Uri("./Audio/altj_fitzpleasure.mp3", UriKind.RelativeOrAbsolute));
 
             AddToQueue("Daft Punk", "Digital Love", GenreTypes.Dance, 120,
                 @"Last night I had a dream about you
@@ -363,7 +401,7 @@ About this dream and you
 We'll make this dream come true
 
 Why don't you play the game?
-Why don't you play the game?");
+Why don't you play the game?", new Uri("./Audio/dp_digitalLove.mp3", UriKind.RelativeOrAbsolute));
 
             AddToQueue("M83", "Midnight City", GenreTypes.Dance, 105,
                 @"Waiting in a car
@@ -392,7 +430,7 @@ Waiting in a car
 Waiting for the right time
 
 Waiting in a car
-Waiting for the right time");
+Waiting for the right time", new Uri("./Audio/m83_midnightCity.mp3", UriKind.RelativeOrAbsolute));
 
             AddToQueue("Taylor Swift", "Don't Blame Me", GenreTypes.Pop, 136,
                 @"Don't blame me, love made me crazy
@@ -473,7 +511,7 @@ I get so high, oh!
 Every time you're, every time you're lovin' me
 You're lovin' me
 Oh, Lord, save me, my drug is my baby
-I'll be usin' for the rest of my life");
+I'll be usin' for the rest of my life", new Uri("./Audio/ts_dontBlameMe.mp3", UriKind.RelativeOrAbsolute));
 
             AddToQueue("Arctic Monkeys", "Knee Socks", GenreTypes.Rock, 98,
                 @"You got the lights on in the afternoon
@@ -521,7 +559,7 @@ When the zeros line up on the 24 hour clock
 When you know who's calling even though the number is blocked
 When you walked around your house wearing my sky blue Lacoste
 And your knee socks
-[2x]");
+[2x]", new Uri("./Audio/am_kneeSocks.mp3", UriKind.RelativeOrAbsolute));
         }
         #endregion
         #region Karaoke 
@@ -552,6 +590,25 @@ And your knee socks
         public void PlayPause()
         {
             IsPlaying = !IsPlaying;
+            if (IsPlaying)
+            {
+                _audioPlayer.Play();
+            }
+            else
+            {
+                _audioPlayer.Pause();
+            }
+        }
+
+        // Grab the MediaElement control from the View
+        public void OnMediaControlsLoaded(Grid source)
+        {
+            _audioPlayer = source.FindName("AudioPlayer") as MediaElement;
+        }
+
+        public void ChangeBPM()
+        {
+            _audioPlayer.SpeedRatio = Bpm / SongQueue[0].BPM;
         }
         #endregion
         public async Task HandleAsync(int message, CancellationToken cancellationToken)

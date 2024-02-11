@@ -456,11 +456,17 @@
             </Grid>
             
             <!--Media Controls-->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1"
+                  cal:Message.Attach=
+                  "[Event Loaded] = [Action OnMediaControlsLoaded($source)]">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <MediaElement x:Name="AudioPlayer" 
+                              Source="{Binding CurrentAudioSource, UpdateSourceTrigger=PropertyChanged}"
+                              cal:Message.Attach="[Event MediaEnded] = [Action NextInQueue()]"
+                              LoadedBehavior="Manual" UnloadedBehavior="Manual"/>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
                         <Style TargetType="Image">
@@ -478,6 +484,7 @@
                                         UpdateSourceTrigger=PropertyChanged}"/>
                     </Button>
                     <Button Style="{StaticResource MediaControlStyle}"
+                            cal:Message.Attach="[Event Click] = [Action NextInQueue()]"
                             Grid.Column="2">
                         <Image Source="/Images/skip_forward.png"/>
                     </Button>
@@ -507,9 +514,12 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
+                
                 <Slider VerticalAlignment="Center"
                         Value="{Binding Path=Bpm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Margin="10"/>
+                        Margin="10"
+                        cal:Message.Attach="[Event PreviewMouseUp] = [Action ChangeBPM()]"/>
+                
                 <ToggleButton x:Name="colorWheel"
                               Grid.Column="1"
                               Style="{StaticResource cWheelButton}"/>

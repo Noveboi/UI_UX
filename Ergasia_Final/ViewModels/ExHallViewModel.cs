@@ -139,7 +139,7 @@ namespace Ergasia_Final.ViewModels
             CheckHideNavButtons();
         }
 
-        public void CreateStoryboard(Image source)
+        public void CreateStoryboard(Button source)
         {
             _vinylStoryboard = new Storyboard();
             DoubleAnimation constantRotation = new DoubleAnimation(0.0, 360.0, new Duration(TimeSpan.FromSeconds(3)));
@@ -147,7 +147,7 @@ namespace Ergasia_Final.ViewModels
             _vinylStoryboard.Children.Add(constantRotation);
             Storyboard.SetTargetProperty(constantRotation, new PropertyPath("RenderTransform.Angle"));
             Storyboard.SetTargetName(constantRotation, "vinylIcon");
-            _vinylStoryboard.Begin((Button)source.Parent, true);
+            _vinylStoryboard.Begin(source, true);
         }
 
         public void PlayPause(Button sender)
