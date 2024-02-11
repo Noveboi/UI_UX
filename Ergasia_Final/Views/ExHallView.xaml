@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:Ergasia_Final.Views" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ExHallViewModel}"
              mc:Ignorable="d" 
              MinHeight="500"
@@ -25,7 +26,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.Resources>
-            <Style TargetType="Button">
+            <Style TargetType="Button" x:Key="NavButtonStyle">
                 <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
                 <Setter Property="Height" Value="95"/>
@@ -42,6 +43,27 @@
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
             </Style>
+            <Style TargetType="Button" x:Key="VinylStyle">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <SolidColorBrush Color="#aa1122" Opacity="0.3"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </Grid.Resources>
         
         <!--Artist Portrait-->
@@ -55,14 +77,17 @@
                    FontSize="40" Foreground="{DynamicResource TextForeground}"/>
         
         <!--Navigation Buttons-->
-        <Button x:Name="GoLeft" Grid.Row="1"
+        <Button x:Name="GoLeft" Grid.Row="1" 
+                Style="{StaticResource NavButtonStyle}"
                 Visibility="{Binding Path=LeftNavButtonEnabled, 
                              Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <TextBlock Text="&lt;"
                        Style="{StaticResource buttonArrow}"
                        Height="75"/>
         </Button>
-        <Button x:Name="GoRight" Grid.Column="3" Grid.Row="1" 
+        <Button x:Name="GoRight" 
+                Grid.Column="3" Grid.Row="1" 
+                Style="{StaticResource NavButtonStyle}"
                 Visibility="{Binding Path=RightNavButtonEnabled, 
                              Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <TextBlock Text="&gt;"
@@ -91,7 +116,20 @@
         <!--Now Playing (Song)-->
         <StackPanel Orientation="Horizontal" Margin="10"
                     Grid.Row="2" Grid.Column="2">
-            <Image Source="/Images/now_playing.png" Width="70" Height="70"/>
+            <Button Background="Transparent" VerticalAlignment="Center"
+                    BorderThickness="0" Cursor="Hand"
+                    cal:Message.Attach="[Event Click] = [Action PlayPause($source)]"
+                    Style="{StaticResource VinylStyle}">
+                <Image x:Name="vinylIcon"
+                       Source="/Images/now_playing.png" 
+                       Width="70" Height="70"
+                       RenderTransformOrigin="0.5,0.5"
+                       cal:Message.Attach="[Event Loaded] = [Action CreateStoryboard($source)]">
+                    <Image.RenderTransform>
+                        <RotateTransform x:Name="vinylIconAngle" Angle="0.0"/>
+                    </Image.RenderTransform>
+                </Image>
+            </Button>
             <TextBlock FontSize="24" Foreground="{DynamicResource TextForeground}"
                        Margin="10"
                        HorizontalAlignment="Center" VerticalAlignment="Center">

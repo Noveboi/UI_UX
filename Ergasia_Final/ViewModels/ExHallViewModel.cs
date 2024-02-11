@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using Ergasia_Final.Models;
+using Ergasia_Final.Views;
+using Xceed.Wpf.AvalonDock.Controls;
 
 namespace Ergasia_Final.ViewModels
 {
@@ -19,7 +23,7 @@ namespace Ergasia_Final.ViewModels
         private int _maxIndex;
         private Visibility _leftNavButtonEnabled = Visibility.Hidden;
         private Visibility _rightNavButtonEnabled = Visibility.Visible;
-
+        private Storyboard _vinylStoryboard;
 
         public Visibility LeftNavButtonEnabled
         {
@@ -133,6 +137,29 @@ namespace Ergasia_Final.ViewModels
             }
 
             CheckHideNavButtons();
+        }
+
+        public void CreateStoryboard(Image source)
+        {
+            _vinylStoryboard = new Storyboard();
+            DoubleAnimation constantRotation = new DoubleAnimation(0.0, 360.0, new Duration(TimeSpan.FromSeconds(3)));
+            constantRotation.RepeatBehavior = RepeatBehavior.Forever;
+            _vinylStoryboard.Children.Add(constantRotation);
+            Storyboard.SetTargetProperty(constantRotation, new PropertyPath("RenderTransform.Angle"));
+            Storyboard.SetTargetName(constantRotation, "vinylIcon");
+            _vinylStoryboard.Begin((Button)source.Parent, true);
+        }
+
+        public void PlayPause(Button sender)
+        {
+            if (_vinylStoryboard.GetIsPaused(sender))
+            {
+                _vinylStoryboard.Resume(sender);
+            }
+            else
+            {
+                _vinylStoryboard.Pause(sender);
+            }
         }
     }
 }
