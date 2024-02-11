@@ -24,11 +24,14 @@ namespace Ergasia_Final.ViewModels
         private IEventAggregator _djEvents;
         private bool karaokeOpen = false;
         private Brush effectsButtonColor;
-        private Brush _effectsDisabled = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
-        private Brush _effectsOff = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a01039"));
-        private Brush _effectsOn = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#13a51d"));
+        private static readonly Brush EFFECTS_DISABLED = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
+        private static readonly Brush EFFECTS_OFF = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a01039"));
+        private static readonly Brush EFFECTS_ON = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#13a51d"));
+        private static readonly Uri PLAY_IMAGE = new Uri("/Images/play.png", UriKind.Relative);
+        private static readonly Uri PAUSE_IMAGE = new Uri("/Images/pause.png", UriKind.Relative);
         private Color lightsColor = (Color)ColorConverter.ConvertFromString("#8811ff");
-        private Brush borderLightIndicator;
+        private Uri playPauseImage = PLAY_IMAGE;
+        private bool isPlaying = false;
         public double Bpm
         {
             get => bpm;
@@ -71,6 +74,25 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        public bool IsPlaying
+        {
+            get => isPlaying;
+            set
+            {
+                isPlaying = value;
+                PlayPauseImage = isPlaying ? PAUSE_IMAGE : PLAY_IMAGE;
+            }
+        }
+        public Uri PlayPauseImage
+        {
+            get => playPauseImage;
+            set
+            {
+                playPauseImage = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public Brush BorderLightIndicator { get; set; }
         #endregion
         public DJViewModel()
@@ -80,7 +102,7 @@ namespace Ergasia_Final.ViewModels
             _djEvents.SubscribeOnUIThread(this);
             AddSongs();
 
-            effectsButtonColor = _effectsDisabled;
+            effectsButtonColor = EFFECTS_DISABLED;
 
             bpm = SongQueue[0].BPM;
         }
@@ -502,6 +524,7 @@ And your knee socks
 [2x]");
         }
         #endregion
+        #region Karaoke 
         public void OpenKaraoke()
         {
             if (!karaokeOpen)
@@ -509,32 +532,32 @@ And your knee socks
                 IWindowManager manager = new WindowManager();
                 manager.ShowWindowAsync(new KaraokeViewModel(SongQueue[0], _djEvents));
                 KaraokeOpen = true;
-                EffectsButtonColor = _effectsOff;
+                EffectsButtonColor = EFFECTS_OFF;
             }
         }
 
         public void AddVoiceEffects()
         {
-            if (effectsButtonColor is null || effectsButtonColor == _effectsOff)
+            if (effectsButtonColor is null || effectsButtonColor == EFFECTS_OFF)
             {
-                EffectsButtonColor = _effectsOn;
+                EffectsButtonColor = EFFECTS_ON;
             }
             else
             {
-                EffectsButtonColor = _effectsOff;
+                EffectsButtonColor = EFFECTS_OFF;
             }
         }
-
-        // Simulate the backup of the current setup of the DJ App (song queue state, bpm setting)
-        public void OnKeyDown() 
+        #endregion
+        #region Media Controls
+        public void PlayPause()
         {
-            
+            IsPlaying = !IsPlaying;
         }
-
+        #endregion
         public async Task HandleAsync(int message, CancellationToken cancellationToken)
         {
             KaraokeOpen = false;
-            EffectsButtonColor = _effectsDisabled;
+            EffectsButtonColor = EFFECTS_DISABLED;
         }
     }
 }
