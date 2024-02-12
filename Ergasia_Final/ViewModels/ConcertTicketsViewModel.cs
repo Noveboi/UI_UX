@@ -41,6 +41,8 @@ namespace Ergasia_Final.ViewModels
         private bool vipChecked = false;
         private bool genAdChecked = true;
 
+        private bool isTicketsOutOfRange = false;
+
         // Properties
 
         public bool SideVip1Checked
@@ -101,6 +103,16 @@ namespace Ergasia_Final.ViewModels
                     SideVip2Checked = false;
                     VipChecked = false;
                 }
+            }
+        }
+
+        public bool IsTicketsOutOfRange
+        {
+            get => isTicketsOutOfRange;
+            set
+            {
+                isTicketsOutOfRange = value;
+                NotifyOfPropertyChange();
             }
         }
 
@@ -165,7 +177,19 @@ namespace Ergasia_Final.ViewModels
         public bool ValidateInput(string input)
         {
             int num;
-            return int.TryParse(input, out num) && num > 0 && num < 100;
+            bool isValid = int.TryParse(input, out num);
+            if (isValid && num > 0 && num < 100)
+            {
+                IsTicketsOutOfRange = false;
+                return true;
+            }
+            else if (isValid && num <= 0 || num >= 100)
+            {
+                IsTicketsOutOfRange = true;
+                IsTicketsOutOfRange = false;
+                return false;
+            }
+            return false;
         }
 
         public void ChooseSide1()

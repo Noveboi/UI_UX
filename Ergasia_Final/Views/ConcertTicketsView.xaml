@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
-             xmlns:cal="http://www.caliburnproject.org" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ConcertTicketsViewModel}"
+             xmlns:cal="http://www.caliburnproject.org" 
+             xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ConcertTicketsViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="{DynamicResource MainBackground}">
         <Grid.RowDefinitions>
@@ -129,7 +131,36 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
-            
+            <Grid.Resources>
+                <Style TargetType="TextBlock" x:Key="WarningTextBlock">
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#fe1155" Opacity="0.0"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="FontWeight" Value="Light"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsTicketsOutOfRange, 
+                               UpdateSourceTrigger=PropertyChanged}" 
+                     Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames 
+                                            Storyboard.TargetProperty="Foreground.Opacity"
+                                            Duration="0:0:4">
+                                            <LinearDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                                            <LinearDoubleKeyFrame KeyTime="0:0:0.4" Value="1"/>
+                                            <LinearDoubleKeyFrame KeyTime="0:0:2.4" Value="1"/>
+                                            <LinearDoubleKeyFrame KeyTime="0:0:4" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
             <!--P&D Row 0-->
             <TextBlock Text="Price" 
                        VerticalAlignment="Top"
@@ -148,17 +179,22 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
+                    <RowDefinition Height="20"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Tickets" Style="{StaticResource simpleText}" 
                            HorizontalAlignment="Center"/>
                 <TextBox FontSize="24" 
                          Grid.Row="1"
-                         MaxHeight="50"
-                         Margin="10 0 10 20"
-                         VerticalContentAlignment="Center"
-                         HorizontalContentAlignment="Center"
-                         MaxWidth="100"
+                         TextAlignment="Center"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         MinWidth="80"
                          Text="{Binding Path=TicketQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged"/>
+                <TextBlock Style="{StaticResource WarningTextBlock}"
+                           Text="You can only purchase from 1 to 99 tickets!"
+                           Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top"
+                           FontSize="11">
+                </TextBlock>
             </Grid>
             
             <!--P&D Row 3-->
