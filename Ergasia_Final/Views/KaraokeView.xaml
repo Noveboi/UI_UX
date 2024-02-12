@@ -7,6 +7,7 @@
         xmlns:cal="http://www.caliburnproject.org" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:KaraokeViewModel}"
         mc:Ignorable="d"
         Title="Karaoke" Height="600" Width="600"
+        MinHeight="450" MinWidth="400"
         cal:Message.Attach="[Event Closed] = [Action OnClose()]">
     <Grid Background="{DynamicResource MainBackground}">
         <Grid.RowDefinitions>
@@ -73,7 +74,37 @@
         
         <!--Rating System-->
         <Grid Grid.Row="1" Grid.Column="1">
-            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Style="{DynamicResource simpleText}"
+                       FontSize="48"
+                       VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock.Inlines>
+                    <Run Text="{Binding RatingsAverage, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Run Text=" / "/>
+                    <Run Text="5"/>
+                </TextBlock.Inlines>
+            </TextBlock>
+            <TextBlock Style="{DynamicResource simpleText}"
+                       Grid.Row="1" FontSize="12" FontWeight="Light"
+                       VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock.Inlines>
+                    <Run Text="{Binding RatingsCount, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Run Text=" Ratings"/>
+                </TextBlock.Inlines>
+            </TextBlock>
+            <TextBox Grid.Row="2"
+                     Margin="30" MaxHeight="100"
+                     FontSize="48"
+                     Text="{Binding RateText, 
+                            Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}"
+                     cal:Message.Attach="[Event KeyDown] = [Action OnRatingKeyDown($eventArgs)]"
+                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+            </TextBox>
         </Grid>
     </Grid>
 </Window>
