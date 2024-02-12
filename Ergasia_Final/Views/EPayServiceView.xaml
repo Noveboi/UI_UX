@@ -74,6 +74,11 @@
                 <Style TargetType="StackPanel">
                     <Setter Property="Margin" Value="20 10"/>
                 </Style>
+                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="TextAlignment" Value="Left"/>
+                    <Setter Property="Padding" Value="10"/>
+                </Style>
             </Grid.Resources>
             
             <StackPanel Grid.ColumnSpan="2">
@@ -102,7 +107,9 @@
 
             <Button x:Name="Pay"
                     Grid.Row="3" Grid.ColumnSpan="2"
-                    FontSize="36"
+                    FontSize="32"
+                    BorderBrush="#9966aa"
+                    BorderThickness="2"
                     Background="{DynamicResource ButtonBackground}"
                     Foreground="{DynamicResource TextForeground}"
                     Content="{Binding Path=Price, Mode=OneTime}"
