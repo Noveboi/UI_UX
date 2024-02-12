@@ -4,9 +4,10 @@
     <SolidColorBrush x:Key="WindowBackground"  Color="White"/>
     <SolidColorBrush x:Key="ButtonBackground"  Color="#5c9679"/>
     <SolidColorBrush x:Key="MainBackground"  Color="#3c7d5c"/>
+    <SolidColorBrush x:Key="BorderBackground"  Color="#360342"/>
 
     <!-- Foreground Colors -->
     <SolidColorBrush x:Key="TextForeground"  Color="Black"/>
     <SolidColorBrush x:Key="TitleForeground"  Color="#0b0630"/>
-    <SolidColorBrush x:Key="Foreground3"  Color="#360342"/>
+    <SolidColorBrush x:Key="BorderForeground"  Color="White"/>
 </ResourceDictionary>
