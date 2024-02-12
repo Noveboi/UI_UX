@@ -33,15 +33,18 @@
                     <ColumnDefinition Width="80"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Image Source="/Images/now_playing.png"/>
+                <Image Source="/Images/now_playing.png"
+                       Margin="5"/>
                 <TextBlock FontSize="32"
                         Grid.Column="1"
                         VerticalAlignment="Center"
                         Style="{StaticResource simpleText}">
                     <TextBlock.Inlines>
-                        <Run Text="{Binding NowPlaying.ArtistName}"/>
-                        <Run Text=" - " />
-                        <Run Text="{Binding NowPlaying.Title}"/>
+                        <Run Text="{Binding NowPlaying.Title}"
+                             FontWeight="Medium"/>
+                        <Run Text=" by " FontWeight="Light"/>
+                        <Run Text="{Binding NowPlaying.ArtistName}"
+                             FontWeight="Medium"/>
                     </TextBlock.Inlines>
                 </TextBlock>
             </Grid>

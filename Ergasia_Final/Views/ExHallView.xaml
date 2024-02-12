@@ -135,7 +135,7 @@
                        HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.Inlines>
                     <Run FontWeight="SemiBold" Text="{Binding Path=CurrentArtist.SongName}"/>
-                    <Run FontWeight="Light" Text="from"/>
+                    <Run FontWeight="Light" Text="by"/>
                     <Run FontWeight="SemiBold" Text="{Binding Path=CurrentArtist.AlbumName}"/>
                 </TextBlock.Inlines>
             </TextBlock>
