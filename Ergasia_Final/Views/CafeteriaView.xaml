@@ -6,9 +6,37 @@
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Crimson">
-        <TextBlock Text="Cafeteria!"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"
-                   FontSize="64" Foreground="Beige"/>
+    <Grid Background="{DynamicResource MainBackground}">
+        <!--Rows!-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <!--Title-->
+        <TextBlock Text="Cafeteria" Style="{StaticResource titleStyle}"/>
+        <Grid Grid.Row="1">
+            <!--Columns!-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <!--Column0, Menu-->
+            <Border Margin="20" BorderBrush="{DynamicResource BorderForeground}" BorderThickness="4" Background="{DynamicResource BorderBackground}"/>
+            <!--Column1, Checkout-->
+            <Grid Grid.Column="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="80"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Price" VerticalAlignment="Top" Style="{StaticResource titleStyle}"/>
+                <StackPanel Grid.Row="2" VerticalAlignment="Center">
+                    <TextBlock Text="Tickets" Style="{StaticResource simpleText}" HorizontalAlignment="Center"/>
+                    <TextBox FontSize="20" Padding="5" HorizontalContentAlignment="Center" MaxWidth="100"/>
+                </StackPanel>
+                <Button x:Name="EPay" FontSize="26" FontWeight="Medium" Grid.Row="3" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource TextForeground}" Content="Checkout"/>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
