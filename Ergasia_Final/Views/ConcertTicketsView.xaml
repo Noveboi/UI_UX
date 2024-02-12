@@ -49,6 +49,7 @@
                         <Setter Property="FontSize" Value="22"/>
                         <Setter Property="FontWeight" Value="SemiBold"/>
                         <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="BorderBrush" Value="Beige"/>
                         <Setter Property="Background" Value="#994444"/>
                         <Setter Property="Foreground" Value="#f0f0f0"/>
                         <Setter Property="Cursor" Value="Hand"/>
@@ -78,6 +79,26 @@
                                 </Setter>
                                 <Setter Property="Background" Value="#998888"/>
                             </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                    <Setter Property="Background" Value="#666699"/>
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsChecked" Value="False"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <MultiTrigger.Setters>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                    <Setter Property="Background" Value="#996666"/>
+                                </MultiTrigger.Setters>
+                            </MultiTrigger>
                         </Style.Triggers>
                     </Style>
                     <Style TargetType="TextBlock">
@@ -142,7 +163,7 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsTicketsOutOfRange, 
                                UpdateSourceTrigger=PropertyChanged}" 
-                     Value="True">
+                               Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>

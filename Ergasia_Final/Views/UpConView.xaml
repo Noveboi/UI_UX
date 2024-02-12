@@ -29,7 +29,6 @@
                 <!--Add custom button content template-->
                 <Style TargetType="Button">
                     <Setter Property="Cursor" Value="Hand"/>
-                    <Setter Property="BorderBrush" Value="#cccccc"/>
                     <Setter Property="BorderThickness" Value="2"/>
                     <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
                     <Setter Property="Margin" Value="20"/>
@@ -38,7 +37,7 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background">
                                 <Setter.Value>
-                                    <SolidColorBrush Color="LightGray" Opacity="0.6"/>
+                                    <SolidColorBrush Color="#aa55aa" Opacity="0.6"/>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
@@ -54,7 +53,10 @@
             <Button x:Name="LeftConcert" Grid.Column="0">
                 <Button.Template>
                     <ControlTemplate>
-                        <Border BorderBrush="Beige" BorderThickness="2">
+                        <Border BorderThickness="2">
+                            <Border.BorderBrush>
+                                <SolidColorBrush x:Name="bordBrush" Color="Beige"/>
+                            </Border.BorderBrush>
                             <Grid Background="{TemplateBinding Background}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -71,7 +73,8 @@
                                        Stretch="UniformToFill" 
                                        Grid.ColumnSpan="2"
                                        VerticalAlignment="Center"/>
-                                <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
+                                <Rectangle x:Name="imgSeparator" 
+                                        Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
 
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
@@ -92,13 +95,46 @@
                                            Style="{StaticResource infoText}"/>
                             </Grid>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="bordBrush"
+                                            Storyboard.TargetProperty="Color"
+                                            To="#aa11aa"/>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="imgSeparator"
+                                            Storyboard.TargetProperty="Stroke.Color"
+                                            To="#aa11aa"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0" 
+                                            Storyboard.TargetName="bordBrush"
+                                            Storyboard.TargetProperty="Color"
+                                            To="Beige"/>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="imgSeparator"
+                                            Storyboard.TargetProperty="Stroke.Color"
+                                            To="White"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
             <Button x:Name="MiddleConcert" Grid.Column="1">
                 <Button.Template>
                     <ControlTemplate>
-                        <Border BorderBrush="Beige" BorderThickness="2">
+                        <Border BorderThickness="2">
+                            <Border.BorderBrush>
+                                <SolidColorBrush x:Name="bordBrush" Color="Beige"/>
+                            </Border.BorderBrush>
                             <Grid Background="{TemplateBinding Background}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -115,7 +151,8 @@
                                        Stretch="UniformToFill" 
                                        Grid.ColumnSpan="2"
                                        VerticalAlignment="Center"/>
-                                <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
+                                <Rectangle x:Name="imgSeparator" 
+                                    Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
 
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
@@ -136,13 +173,46 @@
                                            Style="{StaticResource infoText}"/>
                             </Grid>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="bordBrush"
+                                            Storyboard.TargetProperty="Color"
+                                            To="#aa11aa"/>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="imgSeparator"
+                                            Storyboard.TargetProperty="Stroke.Color"
+                                            To="#aa11aa"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0" 
+                                            Storyboard.TargetName="bordBrush"
+                                            Storyboard.TargetProperty="Color"
+                                            To="Beige"/>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="imgSeparator"
+                                            Storyboard.TargetProperty="Stroke.Color"
+                                            To="White"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
             <Button x:Name="RightConcert" Grid.Column="2">
                 <Button.Template>
                     <ControlTemplate>
-                        <Border BorderBrush="Beige" BorderThickness="2">
+                        <Border BorderThickness="2">
+                            <Border.BorderBrush>
+                                <SolidColorBrush x:Name="bordBrush" Color="Beige"/>
+                            </Border.BorderBrush>
                             <Grid Background="{TemplateBinding Background}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -159,7 +229,8 @@
                                         Stretch="UniformToFill" 
                                         Grid.ColumnSpan="2"
                                         VerticalAlignment="Center"/>
-                                <Rectangle Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
+                                <Rectangle x:Name="imgSeparator" 
+                                    Stroke="White" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="2"/>
 
                                 <Rectangle Stroke="White" Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
 
@@ -180,6 +251,36 @@
                                            Style="{StaticResource infoText}"/>
                             </Grid>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="bordBrush"
+                                            Storyboard.TargetProperty="Color"
+                                            To="#aa11aa"/>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="imgSeparator"
+                                            Storyboard.TargetProperty="Stroke.Color"
+                                            To="#aa11aa"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0" 
+                                            Storyboard.TargetName="bordBrush"
+                                            Storyboard.TargetProperty="Color"
+                                            To="Beige"/>
+                                        <ColorAnimation Duration="0:0:0"
+                                            Storyboard.TargetName="imgSeparator"
+                                            Storyboard.TargetProperty="Stroke.Color"
+                                            To="White"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Button.Template>
             </Button>

@@ -50,13 +50,16 @@ namespace Ergasia_Final.ViewModels
             get => sideVip1Checked;
             set
             {
-                sideVip1Checked = value;
-                NotifyOfPropertyChange();
-                if (sideVip1Checked)
+                if (!(!value && !sideVip2Checked && !genAdChecked && !vipChecked))
                 {
-                    SideVip2Checked = false;
-                    VipChecked = false;
-                    GenAdChecked = false;
+                    sideVip1Checked = value;
+                    NotifyOfPropertyChange();
+                    if (sideVip1Checked)
+                    {
+                        SideVip2Checked = false;
+                        VipChecked = false;
+                        GenAdChecked = false;
+                    }
                 }
             }
         }
@@ -65,14 +68,18 @@ namespace Ergasia_Final.ViewModels
             get => sideVip2Checked;
             set
             {
-                sideVip2Checked = value;
-                NotifyOfPropertyChange();
-                if (sideVip2Checked)
+                if (!(!value && !sideVip1Checked && !genAdChecked && !vipChecked))
                 {
-                    SideVip1Checked = false;
-                    VipChecked = false;
-                    GenAdChecked = false;
+                    sideVip2Checked = value;
+                    NotifyOfPropertyChange();
+                    if (sideVip2Checked)
+                    {
+                        SideVip1Checked = false;
+                        VipChecked = false;
+                        GenAdChecked = false;
+                    }
                 }
+
             }
         }
         public bool VipChecked
@@ -80,13 +87,16 @@ namespace Ergasia_Final.ViewModels
             get => vipChecked;
             set
             {
-                vipChecked = value;
-                NotifyOfPropertyChange();
-                if (vipChecked)
+                if (!(!value && !sideVip1Checked && !genAdChecked && !sideVip2Checked))
                 {
-                    SideVip1Checked = false;
-                    SideVip2Checked = false;
-                    GenAdChecked = false;
+                    vipChecked = value;
+                    NotifyOfPropertyChange();
+                    if (vipChecked)
+                    {
+                        SideVip1Checked = false;
+                        SideVip2Checked = false;
+                        GenAdChecked = false;
+                    }
                 }
             }
         }
@@ -95,13 +105,16 @@ namespace Ergasia_Final.ViewModels
             get => genAdChecked;
             set
             {
-                genAdChecked = value;
-                NotifyOfPropertyChange();
-                if (genAdChecked)
+                if (!(!value && !sideVip1Checked && !sideVip2Checked && !vipChecked))
                 {
-                    SideVip1Checked = false;
-                    SideVip2Checked = false;
-                    VipChecked = false;
+                    genAdChecked = value;
+                    NotifyOfPropertyChange();
+                    if (genAdChecked)
+                    {
+                        SideVip1Checked = false;
+                        SideVip2Checked = false;
+                        VipChecked = false;
+                    }
                 }
             }
         }
