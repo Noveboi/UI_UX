@@ -3,10 +3,14 @@
     <!-- Background Colors -->
     <SolidColorBrush x:Key="WindowBackground"  Color="#160230"/>
     <SolidColorBrush x:Key="ButtonBackground"  Color="#382457"/>
+    <SolidColorBrush x:Key="TextBoxBackground" Color="#311245"/>
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#652480"/>
+    <SolidColorBrush x:Key="TextBoxMouseOverColor" Color="#8564a0"/>
     <SolidColorBrush x:Key="MainBackground"  Color="#190736"/>
+    <SolidColorBrush x:Key="BorderBackground"  Color="#69bdc9"/>
     
     <!-- Foreground Colors -->
     <SolidColorBrush x:Key="TextForeground"  Color="White"/>
     <SolidColorBrush x:Key="TitleForeground"  Color="#9e69c9"/>
-    <SolidColorBrush x:Key="Foreground"  Color="#69bdc9"/>
+    <SolidColorBrush x:Key="BorderForeground"  Color="Black"/>
 </ResourceDictionary>

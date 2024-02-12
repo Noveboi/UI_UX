@@ -12,4 +12,30 @@
         <Setter Property="FontFamily" Value="/Ergasia_Final;component/Fonts/#PlayfairDisplay-Regular"/>
         <Setter Property="FontSize" Value="16"/>
     </Style>
+    <Style TargetType="TextBox">
+        <Setter Property="Background" Value="{DynamicResource TextBoxBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Cursor" Value="IBeam"/>
+        <Setter Property="SelectionBrush" Value="#ff55aa"/>
+        <Setter Property="SelectionOpacity" Value="0.3"/>
+        <Setter Property="CaretBrush" Value="#909090"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="PART_ContentHost"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource TextBoxMouseOverColor}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

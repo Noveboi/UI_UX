@@ -37,6 +37,7 @@ namespace Ergasia_Final.ViewModels
         private Uri currentAudioSource;
         private bool isPlaying = false;
         private bool initialLoad = false;
+        private bool exitWhilePlaying = false;
         private TimeSpan savedPosition = TimeSpan.MaxValue;
 
         public double Bpm
@@ -629,14 +630,25 @@ And your knee socks
         {
             if (message == "DJ Exiting!")
             {
-                PlayPause();
+                if (IsPlaying)
+                {
+                    exitWhilePlaying = true;
+                    PlayPause();
+                }
+                else
+                {
+                    exitWhilePlaying = false;
+                }
                 savedPosition = _audioPlayer.Position;
             }
             if (message == "DJ Opening!" && savedPosition != TimeSpan.MaxValue)
             {
-                ChangeBPM();
-                _audioPlayer.Position = savedPosition;
-                PlayPause();
+                if (exitWhilePlaying)
+                {
+                    ChangeBPM();
+                    _audioPlayer.Position = savedPosition;
+                    PlayPause();
+                }
             }
         }
     }
