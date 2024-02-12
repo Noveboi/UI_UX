@@ -391,10 +391,25 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                  <!--Auto DJ Title-->
-                <TextBlock Grid.Column="1"
-                           Text="Auto-DJ"
-                           Style="{StaticResource titleStyle}"/>
-                
+                <StackPanel>
+                    <TextBlock Grid.Column="1"
+                               Text="Auto-DJ"
+                               Style="{StaticResource titleStyle}">
+                    </TextBlock>
+                    <TextBlock FontSize="14"
+                               TextWrapping="Wrap"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Style="{StaticResource simpleText}">
+                        <TextBlock.Inlines>
+                            <Run Text="Use the buttons below to sort the song queue by"/>
+                            <Run Text="genre" Foreground="HotPink"/>
+                            <Run Text="or"/>
+                            <Run Text="speed" Foreground="HotPink"/>
+                            <Run Text="!"/>
+                        </TextBlock.Inlines>
+                    </TextBlock>
+                </StackPanel>
                 <!--Genre Buttons-->
                 <Grid Grid.Column="1"
                             Grid.Row="1">
