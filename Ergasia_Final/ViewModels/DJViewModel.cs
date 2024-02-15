@@ -34,7 +34,7 @@ namespace Ergasia_Final.ViewModels
         private static readonly Brush EFFECTS_ON = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#13a51d"));
         private static readonly Uri PLAY_IMAGE = new Uri("/Images/play.png", UriKind.Relative);
         private static readonly Uri PAUSE_IMAGE = new Uri("/Images/pause.png", UriKind.Relative);
-        private Color lightsColor = (Color)ColorConverter.ConvertFromString("#8811ff");
+        private Color lightsColor;
         private Uri playPauseImage = PLAY_IMAGE;
         private MediaElement _audioPlayer;
         private Uri currentAudioSource;
@@ -179,19 +179,22 @@ namespace Ergasia_Final.ViewModels
         #endregion
         public DJViewModel(IEventAggregator eventAggregator)
         {
-            SongQueue = new BindableCollection<SongModel>();
+			eventAggregator.SubscribeOnUIThread(this);
+			_djEvents = new EventAggregator();
+			_localThreadEvents = new EventAggregator();
+			_djEvents.SubscribeOnUIThread(this);
+			_localThreadEvents.SubscribeOnUIThread(this);
+
+            LightsColor = (Color)ColorConverter.ConvertFromString("#cc1188");
+
+			SongQueue = new BindableCollection<SongModel>();
             AddSongs();
 
             // shuffle the song queue (Blank Space first every time is annoying ( sick song tho >:] ))
             SongQueue = new BindableCollection<SongModel>(SongQueue.OrderBy(_ => Guid.NewGuid()).ToList());
+			UpdateSongs();
 
-            currentAudioSource = SongQueue[0].AudioPath;
-
-            eventAggregator.SubscribeOnUIThread(this);
-            _djEvents = new EventAggregator();
-            _localThreadEvents = new EventAggregator();
-            _djEvents.SubscribeOnUIThread(this);
-            _localThreadEvents.SubscribeOnUIThread(this);
+			currentAudioSource = SongQueue[0].AudioPath;
 
             effectsButtonColor = EFFECTS_DISABLED;
             bpm = SongQueue[0].BPM;
@@ -274,6 +277,7 @@ namespace Ergasia_Final.ViewModels
             }
             SongQueue.Refresh();
 
+            // Send the current song to KaraokeViewModel (if open)
             _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
             Bpm = SongQueue[0].BPM;
             CurrentAudioSource = SongQueue[0].AudioPath;
@@ -835,9 +839,12 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
 
         public void OnUserSeeking()
         {
-            // Stop the seeker's value from changing
-            cancelSeekerPositionUpdate.Cancel();
-            userSeeking = true;
+            if (hasMediaOpened)
+            {
+                // Stop the seeker's value from changing
+                cancelSeekerPositionUpdate.Cancel();
+                userSeeking = true;
+            }
         }
 
         /// <summary>

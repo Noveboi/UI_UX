@@ -23,7 +23,10 @@ namespace Ergasia_Final.ViewModels
         }
         public void OpenExHall()
         {
-            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<ExHallViewModel>());
+            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<ExHallViewModel>(_eventAggregator));
+
+            // Send a message to ExHallViewModel to start playing audio
+            _eventAggregator.PublishOnUIThreadAsync("ExHall Opening!");
         }
         public void OpenVRoom()
         {
@@ -32,7 +35,9 @@ namespace Ergasia_Final.ViewModels
         public void OpenDJ()
         {
             _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<DJViewModel>(_eventAggregator));
-            _eventAggregator.PublishOnUIThreadAsync("DJ Opening!");
+
+			// Send a message to DJViewModel to start playing audio
+			_eventAggregator.PublishOnUIThreadAsync("DJ Opening!");
         }
     }
 }

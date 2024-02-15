@@ -204,6 +204,26 @@ namespace Ergasia_Final.ViewModels
             return false;
         }
 
+        public void RemoveTicket()
+        {
+            int ticketAmt;
+			if (int.TryParse(TicketQuantity, out ticketAmt) && ticketAmt > 1)
+            {
+                ticketAmt--;
+                TicketQuantity = ticketAmt.ToString();
+            }
+        }
+
+        public void AddTicket()
+        {
+            int ticketAmt;
+            if (int.TryParse(TicketQuantity, out ticketAmt) && ticketAmt < 99)
+            {
+                ticketAmt++;
+                TicketQuantity = ticketAmt.ToString();
+            }
+        }
+
         public void ChooseSide1()
         {
             _seatPriceMultiplier = 1.5;

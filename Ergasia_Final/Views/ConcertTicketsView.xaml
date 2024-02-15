@@ -205,13 +205,32 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Tickets" Style="{StaticResource simpleText}" 
                            HorizontalAlignment="Center"/>
-                <TextBox FontSize="24" 
-                         Grid.Row="1"
-                         TextAlignment="Center"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         MinWidth="80"
-                         Text="{Binding Path=TicketQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged"/>
+                <Grid Grid.Row="1" MaxHeight="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="RemoveTicket"
+                            Background="#cc1133"
+                            FontSize="20"
+                            BorderThickness="0"
+                            Content="-"/>
+                    <TextBox FontSize="24" 
+                             Grid.Column="1"
+                             TextAlignment="Center"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             Text="{Binding Path=TicketQuantity, 
+                                    Mode=TwoWay, 
+                                    UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button x:Name="AddTicket"
+                            Background="#33cc11"
+                            BorderThickness="0"
+                            FontSize="20"
+                            Content="+"
+                            Grid.Column="2"/>
+                </Grid>
                 <TextBlock Style="{StaticResource WarningTextBlock}"
                            Text="You can only purchase from 1 to 99 tickets!"
                            Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top"

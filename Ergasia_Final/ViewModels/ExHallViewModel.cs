@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,11 +12,10 @@ using System.Windows.Media.Imaging;
 using Caliburn.Micro;
 using Ergasia_Final.Models;
 using Ergasia_Final.Views;
-using Xceed.Wpf.AvalonDock.Controls;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class ExHallViewModel : Screen
+	public class ExHallViewModel : Screen, IHandle<string>
     {
         private List<ArtistModel> _artists;
         private ArtistModel _currentArtist;
@@ -26,6 +26,8 @@ namespace Ergasia_Final.ViewModels
         private Storyboard _vinylStoryboard;
         private MediaElement _audioPlayer;
         private Uri _currentSong;
+        private bool _isPlaying = true;
+        private bool _hasInitialized = false;
 
         public Uri CurrentSong
         {
@@ -64,7 +66,7 @@ namespace Ergasia_Final.ViewModels
                 NotifyOfPropertyChange();
             }
         }
-        public ExHallViewModel()
+        public ExHallViewModel(IEventAggregator shellEvents)
         {
             _artists = new List<ArtistModel>();
             addArtists();
@@ -72,6 +74,8 @@ namespace Ergasia_Final.ViewModels
             _currentArtist = _artists[0];
             _maxIndex = _artists.Count - 1;
             _currentSong = _currentArtist.SongPath;
+
+            shellEvents.SubscribeOnUIThread(this);
         }
         private void addArtists()
         {
@@ -126,7 +130,7 @@ namespace Ergasia_Final.ViewModels
                 SongPath = new Uri("./Audio/altj_breezeblocks.mp3", UriKind.RelativeOrAbsolute)
             });
         }
-        
+
         private void CheckHideNavButtons()
         {
             LeftNavButtonEnabled = _currentIndex > 0 ? Visibility.Visible : Visibility.Hidden;
@@ -170,20 +174,41 @@ namespace Ergasia_Final.ViewModels
         {
             if (_vinylStoryboard.GetIsPaused(sender))
             {
-                _audioPlayer.Play();
+                _isPlaying = true;
+				_audioPlayer.Play();
                 _vinylStoryboard.Resume(sender);
             }
             else
             {
-                _audioPlayer.Pause();
+				_isPlaying = false;
+				_audioPlayer.Pause();
                 _vinylStoryboard.Pause(sender);
             }
         }
 
         public void OnViewLoaded(ExHallView view)
         {
-            _audioPlayer = view.AudioPlayer;
-            _audioPlayer.Play();
-        }
-    }
+            if (!_hasInitialized)
+            {
+                _audioPlayer = view.AudioPlayer;
+                _audioPlayer.Play();
+
+                _hasInitialized = true;
+            }
+		}
+
+		public Task HandleAsync(string message, CancellationToken cancellationToken)
+		{
+            if (message == "ExHall Exiting!")
+            {
+                _audioPlayer.Pause();
+            }
+            else if (message == "ExHall Opening!" && _isPlaying && _hasInitialized)
+            {
+                _audioPlayer.Play();
+            }
+
+            return Task.CompletedTask;
+		}
+	}
 }

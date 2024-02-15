@@ -79,6 +79,10 @@ namespace Ergasia_Final.ViewModels
                     if (activeViewModel == typeof(DJViewModel).Name)
                     {
                         _events.PublishOnUIThreadAsync("DJ Exiting!");
+                    } 
+                    else if (activeViewModel == typeof(ExHallViewModel).Name)
+                    {
+                        _events.PublishOnUIThreadAsync("ExHall Exiting!");
                     }
                     _windowStack.Pop();
                     var newWindow = _windowStack.Peek();

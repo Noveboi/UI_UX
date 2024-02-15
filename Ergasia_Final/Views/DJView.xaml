@@ -581,7 +581,7 @@
                     <!--Seeker-->
                     <Slider Grid.ColumnSpan="3"
                             VerticalAlignment="Center"
-                            Margin="5"
+                            Margin="10 5 5 5"
                             Minimum="0"
                             Style="{StaticResource SeekerSlider}"
                             Maximum="{Binding CurrentSeekerMaximum,
@@ -594,12 +594,14 @@
                                                 [Event ValueChanged] = [Action OnSeekerValueChanged($source)]"/>
                     <!--Song Times-->
                     <TextBlock Grid.Column="0"
+                               FontWeight="Light"
                                VerticalAlignment="Bottom"
                                Text="{Binding CurrentSongTime,
                                       UpdateSourceTrigger=PropertyChanged}"
                                Margin="5"
                                Style="{StaticResource simpleText}"/>
                     <TextBlock Grid.Column="2"
+                               FontWeight="Light"
                                VerticalAlignment="Bottom"
                                Text="{Binding CurrentSongDuration,
                                       UpdateSourceTrigger=PropertyChanged}"
