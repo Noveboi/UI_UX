@@ -107,6 +107,7 @@
                         <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
                 </Grid.Resources>
+                
                 <!--Side VIP-->
                 <ToggleButton x:Name="ChooseSide1" 
                               IsChecked="{Binding SideVip1Checked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

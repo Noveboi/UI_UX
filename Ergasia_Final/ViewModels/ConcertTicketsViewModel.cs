@@ -79,7 +79,6 @@ namespace Ergasia_Final.ViewModels
                         GenAdChecked = false;
                     }
                 }
-
             }
         }
         public bool VipChecked
