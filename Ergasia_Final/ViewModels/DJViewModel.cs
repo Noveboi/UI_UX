@@ -40,7 +40,9 @@ namespace Ergasia_Final.ViewModels
         private Uri currentAudioSource;
         private bool isPlaying = false;
         private bool hasMediaOpened = false;
+        private bool hasFinishedLoading = true;
         private bool initialLoad = false;
+        private bool userSeeking = false;
         private bool exitWhilePlaying = false;
         private TimeSpan savedPosition = TimeSpan.MaxValue;
 
@@ -49,9 +51,19 @@ namespace Ergasia_Final.ViewModels
         private string currentSongTime = "00:00";
         private double currentSongTimeSpan = 0.0;
 
-        private CancellationTokenSource cancelSource;
-        private CancellationToken cancelToken;
+        private CancellationTokenSource cancelSeekerPositionUpdate;
+        private CancellationToken seekerCancelToken;
 
+
+        public bool PauseAvailable
+        {
+            get => hasFinishedLoading;
+            set
+            {
+                hasFinishedLoading = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public int CurrentSeekerMaximum
         {
             get => currentSeekerMaximum;
@@ -641,19 +653,20 @@ And your knee socks
             IsPlaying = !IsPlaying;
             if (IsPlaying)
             {
+                PauseAvailable = false || hasMediaOpened;
                 // Do NOT use _audioPlayer.Play() anywhere else!
                 _audioPlayer.Play();
                 if (hasMediaOpened)
                 {
-                    cancelSource = new CancellationTokenSource();
-                    cancelToken = cancelSource.Token;
-                    await UpdateSeekerPositionAsync(cancelToken);
+                    cancelSeekerPositionUpdate = new CancellationTokenSource();
+                    seekerCancelToken = cancelSeekerPositionUpdate.Token;
+                    await StartSeekerPositionUpdateAsync(seekerCancelToken);
                 }
             }
             else
             {
                 _audioPlayer.Pause();
-                cancelSource.Cancel();
+                cancelSeekerPositionUpdate.Cancel();
             }
         }
 
@@ -684,7 +697,6 @@ And your knee socks
                 _audioPlayer = source.FindName("AudioPlayer") as MediaElement;
                 initialLoad = true;
             }
-
         }
 
         public async Task OnSongChanged()
@@ -692,10 +704,11 @@ And your knee socks
             CurrentSongDuration = _audioPlayer.NaturalDuration.TimeSpan.ToString("mm':'ss");
             CurrentSeekerMaximum = (int)_audioPlayer.NaturalDuration.TimeSpan.TotalSeconds;
 
-            cancelSource = new CancellationTokenSource();
-            cancelToken = cancelSource.Token;
+            cancelSeekerPositionUpdate = new CancellationTokenSource();
+            seekerCancelToken = cancelSeekerPositionUpdate.Token;
             hasMediaOpened = true;
-            await UpdateSeekerPositionAsync(cancelToken);
+            PauseAvailable = true;
+            await StartSeekerPositionUpdateAsync(seekerCancelToken);
         }
 
         public void ChangeBPM()
@@ -707,32 +720,50 @@ And your knee socks
         /// When the user manually changes the seeker's position, fire.
         /// This function fires when the MouseUp Event is fired on the Seeker Slider control.
         /// </summary>
-        public void OnUserSeekerValueChanged()
+        public async void OnUserSeekerValueChanged()
         {
+            userSeeking = false;
+            _audioPlayer.Position = TimeSpan.FromSeconds(CurrentSongTimeSpan);
+            cancelSeekerPositionUpdate = new CancellationTokenSource();
+            seekerCancelToken = cancelSeekerPositionUpdate.Token;
+            await StartSeekerPositionUpdateAsync(seekerCancelToken);
+        }
 
+        public void OnSeekerValueChanged(Slider source)
+        {
+            if (userSeeking)
+            {
+                CurrentSongTime = TimeSpan.FromSeconds(source.Value).ToString("mm':'ss");
+            }
+        }
+
+        public void OnUserSeeking()
+        {
+            // Stop the seeker's value from changing
+            cancelSeekerPositionUpdate.Cancel();
+            userSeeking = true;
         }
 
         /// <summary>
-        /// Periodically update the seeker's position every given interval.
+        /// Periodically update send messages indicating the seeker's current positions
+        /// to the UI Thread.
         /// </summary>
-        private async Task UpdateSeekerPositionAsync(CancellationToken cancellationToken)
+        private async Task StartSeekerPositionUpdateAsync(CancellationToken cancellationToken)
         {
             try
             {
-                while (_audioPlayer.Position.TotalSeconds <= _audioPlayer.NaturalDuration.TimeSpan.TotalSeconds)
+                while (_audioPlayer.NaturalDuration.HasTimeSpan
+                       && _audioPlayer.Position.TotalSeconds <= _audioPlayer.NaturalDuration.TimeSpan.TotalSeconds)
                 {
-                    // Ensure the properties values are changed on the UI Thread!
-                    Tuple<string, double> message = Tuple.Create(
-                                                                _audioPlayer.Position.ToString("mm':'ss"),
+                    Tuple<string, double> message = Tuple.Create(_audioPlayer.Position.ToString("mm':'ss"),
                                                                 _audioPlayer.Position.TotalSeconds);
+                    // Ensure the properties values are changed on the UI Thread!
+                    // This is why we don't change the properties from here and rather send a message to the UIThread
                     await _localThreadEvents.PublishOnUIThreadAsync(message);
                     await Task.Delay(500, cancellationToken);
                 }
             } 
-            catch (TaskCanceledException)
-            {
-                MessageBox.Show("Task Cancelled!");
-            }
+            catch (TaskCanceledException) { }
         }
         #endregion
 

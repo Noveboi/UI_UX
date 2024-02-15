@@ -204,6 +204,101 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
+                
+                <!--Song Time Seeker Slider-->
+                <Style x:Key="SeekerSliderThumb" TargetType="Thumb">
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="Width" Value="25"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Height" Value="25"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Thumb">
+                                <Grid Height="{TemplateBinding Height}"
+                                      Width="{TemplateBinding Width}">
+                                    <Ellipse StrokeThickness="1"
+                                             Stroke="White"
+                                             Name="ThumbEllipse">
+                                        <Ellipse.Fill>
+                                            <RadialGradientBrush>
+                                                <GradientStop Offset="0" 
+                                                              Color="#aa4155"/>
+                                                <GradientStop Offset="1" Color="#9a3145"/>
+                                            </RadialGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="ThumbEllipse" Property="Fill">
+                                            <Setter.Value>
+                                                <RadialGradientBrush>
+                                                    <GradientStop Offset="0" Color="#8a2135"/>
+                                                    <GradientStop Offset="1" Color="#6a0115"/>
+                                                </RadialGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter TargetName="ThumbEllipse" Property="Stroke"
+                                                Value="#d0a0ff"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="SeekerSlider" TargetType="Slider">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Slider">
+                                <Grid Height="40">
+                                    <Border x:Name="TrackBackground"
+                                            Height="12"
+                                            CornerRadius="10"
+                                            BorderThickness="2">
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                <LinearGradientBrush.GradientStops>
+                                                    <GradientStopCollection>
+                                                        <GradientStop Color="#bb11aa"
+                                                                      Offset="1.0" />
+                                                        <GradientStop Color="#ffffff"
+                                                                      Offset="0.0" />
+                                                    </GradientStopCollection>
+                                                </LinearGradientBrush.GradientStops>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                                                <LinearGradientBrush.GradientStops>
+                                                    <GradientStopCollection>
+                                                        <GradientStop Color="#ff11aa" Offset="0.0" />
+                                                        <GradientStop Color="#bb11aa" Offset="1.0"/>
+                                                    </GradientStopCollection>
+                                                </LinearGradientBrush.GradientStops>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                    </Border>
+                                    <Grid Height="40" VerticalAlignment="Center">
+                                        <Track x:Name="PART_Track">
+                                            <Track.DecreaseRepeatButton>
+                                                <RepeatButton Style="{StaticResource SliderButtonStyle}"
+                                                              Command="Slider.DecreaseLarge" />
+                                            </Track.DecreaseRepeatButton>
+                                            <Track.Thumb>
+                                                <Thumb VerticalAlignment="Center" 
+                                                       Style="{StaticResource SeekerSliderThumb}"/>
+                                            </Track.Thumb>
+                                            <Track.IncreaseRepeatButton>
+                                                <RepeatButton Style="{StaticResource SliderButtonStyle}"
+                                                              Command="Slider.IncreaseLarge" />
+                                            </Track.IncreaseRepeatButton>
+                                        </Track>
+                                    </Grid>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
 
                 <!--Color Canvas Style (Color Selector)-->
                 <Style TargetType="ex:ColorCanvas">
@@ -464,6 +559,7 @@
                     </Button>
                     <Button x:Name="PlayPause"
                             Style="{StaticResource MediaControlStyle}"
+                            IsEnabled="{Binding PauseAvailable, UpdateSourceTrigger=PropertyChanged}"
                             Grid.Column="1">
                         <Image Source="{Binding PlayPauseImage, 
                                         UpdateSourceTrigger=PropertyChanged}"/>
@@ -487,12 +583,15 @@
                             VerticalAlignment="Center"
                             Margin="5"
                             Minimum="0"
+                            Style="{StaticResource SeekerSlider}"
                             Maximum="{Binding CurrentSeekerMaximum,
                                       UpdateSourceTrigger=PropertyChanged}"
                             Value="{Binding CurrentSongTimeSpan,
                                     Mode=TwoWay,
                                     UpdateSourceTrigger=PropertyChanged}"
-                            cal:Message.Attach="[Event MouseUp] = [Action OnUserSeekerValueChanged()]"/>
+                            cal:Message.Attach="[Event PreviewMouseUp] = [Action OnUserSeekerValueChanged()];
+                                                [Event PreviewMouseDown] = [Action OnUserSeeking()];
+                                                [Event ValueChanged] = [Action OnSeekerValueChanged($source)]"/>
                     <!--Song Times-->
                     <TextBlock Grid.Column="0"
                                VerticalAlignment="Bottom"
