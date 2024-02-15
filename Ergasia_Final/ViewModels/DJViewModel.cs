@@ -182,6 +182,9 @@ namespace Ergasia_Final.ViewModels
             SongQueue = new BindableCollection<SongModel>();
             AddSongs();
 
+            // shuffle the song queue (Blank Space first every time is annoying ( sick song tho >:] ))
+            SongQueue = new BindableCollection<SongModel>(SongQueue.OrderBy(_ => Guid.NewGuid()).ToList());
+
             currentAudioSource = SongQueue[0].AudioPath;
 
             eventAggregator.SubscribeOnUIThread(this);
@@ -193,7 +196,6 @@ namespace Ergasia_Final.ViewModels
             effectsButtonColor = EFFECTS_DISABLED;
             bpm = SongQueue[0].BPM;
         }
-
         #region Sort Buttons
         // The sorting is done as follows:
         //   - Create 2 lists
@@ -860,7 +862,7 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
             catch (TaskCanceledException) { }
         }
         #endregion
-
+        #region EventAggregator Handlers (Implemented from IHandle<TMessage>)
         public Task HandleAsync(int message, CancellationToken cancellationToken)
         {
             KaraokeOpen = false;
@@ -903,5 +905,7 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
             CurrentSongTimeSpan = message.Item2;
             return Task.CompletedTask;
         }
+
+        #endregion
     }
 }

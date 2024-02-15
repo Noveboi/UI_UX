@@ -24,7 +24,18 @@ namespace Ergasia_Final.ViewModels
         private Visibility _leftNavButtonEnabled = Visibility.Hidden;
         private Visibility _rightNavButtonEnabled = Visibility.Visible;
         private Storyboard _vinylStoryboard;
+        private MediaElement _audioPlayer;
+        private Uri _currentSong;
 
+        public Uri CurrentSong
+        {
+            get => _currentSong;
+            set
+            {
+                _currentSong = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public Visibility LeftNavButtonEnabled
         {
             get => _leftNavButtonEnabled;
@@ -49,6 +60,7 @@ namespace Ergasia_Final.ViewModels
             set
             {
                 _currentArtist = value;
+                CurrentSong = _currentArtist.SongPath;
                 NotifyOfPropertyChange();
             }
         }
@@ -59,6 +71,7 @@ namespace Ergasia_Final.ViewModels
 
             _currentArtist = _artists[0];
             _maxIndex = _artists.Count - 1;
+            _currentSong = _currentArtist.SongPath;
         }
         private void addArtists()
         {
@@ -76,7 +89,8 @@ namespace Ergasia_Final.ViewModels
                "modern-day pop icon, Taylor Swift continues to shape the industry with her unparalleled creativity and unwavering authenticity.",
                 SongName = "Cruel Summer",
                 Portrait = new BitmapImage(new Uri(@"/Ergasia_Final;component/Images/taylor_portrait.jpg", UriKind.Relative)),
-                AlbumName = "Lover"
+                AlbumName = "Lover",
+                SongPath = new Uri("./Audio/ts_cruelSummer.mp3", UriKind.RelativeOrAbsolute)
             });
 
             _artists.Add(new ArtistModel
@@ -91,7 +105,8 @@ namespace Ergasia_Final.ViewModels
                 " Over the years, M83 has continued to evolve its sound, creating immersive sonic landscapes that resonate with a diverse audience.",
                 SongName = "Midnight City",
                 Portrait = new BitmapImage(new Uri(@"/Ergasia_Final;component/Images/m83_portrait.jpg", UriKind.Relative)),
-                AlbumName = "Hurry up, We're Dreaming"
+                AlbumName = "Hurry up, We're Dreaming",
+                SongPath = new Uri("./Audio/m83_midnightCity.mp3", UriKind.RelativeOrAbsolute)
             });
 
             _artists.Add(new ArtistModel
@@ -107,7 +122,8 @@ namespace Ergasia_Final.ViewModels
                 " enigmatic lyrics, contribute to their reputation as one of the more inventive and genre-crossing acts in contemporary indie music.",
                 SongName = "Breezeblocks",
                 Portrait = new BitmapImage(new Uri(@"/Ergasia_Final;component/Images/altj_portrait.jpg", UriKind.Relative)),
-                AlbumName = "An Awesome Wave"
+                AlbumName = "An Awesome Wave",
+                SongPath = new Uri("./Audio/altj_breezeblocks.mp3", UriKind.RelativeOrAbsolute)
             });
         }
         
@@ -154,12 +170,20 @@ namespace Ergasia_Final.ViewModels
         {
             if (_vinylStoryboard.GetIsPaused(sender))
             {
+                _audioPlayer.Play();
                 _vinylStoryboard.Resume(sender);
             }
             else
             {
+                _audioPlayer.Pause();
                 _vinylStoryboard.Pause(sender);
             }
+        }
+
+        public void OnViewLoaded(ExHallView view)
+        {
+            _audioPlayer = view.AudioPlayer;
+            _audioPlayer.Play();
         }
     }
 }
