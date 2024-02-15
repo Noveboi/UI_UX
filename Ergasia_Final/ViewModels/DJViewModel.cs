@@ -621,6 +621,100 @@ When you know who's calling even though the number is blocked
 When you walked around your house wearing my sky blue Lacoste
 And your knee socks
 [2x]", new Uri("./Audio/am_kneeSocks.mp3", UriKind.RelativeOrAbsolute));
+
+            AddToQueue("alt-J", "Breezeblocks", GenreTypes.Rock, 150, @"She may contain the urge to run away
+But hold her down with soggy clothes and breezeblocks
+Citrezene, your fevers gripped me again
+Never kisses, all you ever send are fullstops
+(La la la la)
+
+Do you know where the wild things go?
+They go along to take your honey
+(La la la la)
+Break down, now weep
+Build up breakfast, now let's eat
+My love, my love, love, love
+(La la la la)
+
+Muscle to muscle and toe to toe
+The fear has gripped me but here I go
+My heart sinks as I jump up
+Your hand grips hand as my eyes shut
+
+Do you know where the wild things go?
+They go along to take our honey
+(La la la la)
+Break down, now sleep
+Build up breakfast now let's eat
+My love, my love, love, love
+
+She bruises, coughs, she splutters pistol shots
+Hold her down with soggy clothes and breezeblocks
+(La la la la)
+She's morphine, queen of my vaccine
+My love, my love, love, love
+(La la la la)
+
+Muscle to muscle and toe to toe
+The fear has gripped me but here I go
+My heart sinks as I jump up
+Your hand grips hand as my eyes shut
+
+She may contain the urge to runaway
+But hold her down with soggy clothes and breezeblocks
+Germaline, disinfect the scene
+My love, my love, love, love
+Please don't go
+I love you so
+My lovely
+
+Please don't go, please don't go
+I love you so, I love you so
+Please don't go, please don't go
+I love you so, I love you so
+Please break my heart (hey)
+
+Please don't go, please don't go
+I love you so, I love you so
+Please don't go, please don't go
+I love you so, I love you so
+Please break my heart
+
+Please don't go
+(Please don't go) I'll eat you whole
+(I'll eat you whole) I love you so
+(I love you so) I love you so, I love you so
+(I love you so, I love you so) please don't go
+(Please don't go) I'll eat you whole
+(I'll eat you whole) I love you so
+(I love you so)
+
+(I love you so, I love you so) please don't go
+(Please don't go) I'll eat you whole
+(I'll eat you whole) I love you so
+(I love you so) I love you so, I love you so
+(I love you so, I love you so) please don't go
+(Please don't go) I'll eat you whole
+(I'll eat you whole) I love you so
+(I love you so)
+
+(I love you so, I love you so) please don't go
+(Please don't go) I'll eat you whole
+(I'll eat you whole) I love you so
+(I love you so) I love you so, I love you so
+(I love you so, I love you so) please don't go
+(Please don't go) I'll eat you whole
+(I'll eat you whole) I love you so
+(I love you so)
+
+(I love you so, I love you so) please don't go
+I'll eat you whole
+I love you so
+I love you so, I love you so
+Please don't go
+I'll eat you whole
+I love you so
+I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.RelativeOrAbsolute));
         }
         #endregion
         #region Karaoke 
