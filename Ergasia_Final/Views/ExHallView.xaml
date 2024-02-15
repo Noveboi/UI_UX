@@ -26,15 +26,12 @@
         </Grid.ColumnDefinitions>
 
         <Grid.Resources>
-            <Style TargetType="Button" x:Key="NavButtonStyle">
-                <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
-                <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+            <Style TargetType="Button" x:Key="NavButtonStyle" BasedOn="{StaticResource {x:Type Button}}">
                 <Setter Property="Height" Value="95"/>
                 <Setter Property="Width" Value="50"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="Margin" Value="10"/>
-                <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
             </Style>
             <Style TargetType="TextBlock" x:Key="buttonArrow">

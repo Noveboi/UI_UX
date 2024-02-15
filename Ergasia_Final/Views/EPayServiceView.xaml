@@ -107,13 +107,17 @@
 
             <Button x:Name="Pay"
                     Grid.Row="3" Grid.ColumnSpan="2"
-                    FontSize="32"
-                    BorderBrush="#9966aa"
-                    BorderThickness="2"
-                    Background="{DynamicResource ButtonBackground}"
-                    Foreground="{DynamicResource TextForeground}"
-                    Content="{Binding Path=Price, Mode=OneTime}"
-                    Margin="20 10"/>
+                    FontSize="26"
+                    Margin="20 10">
+                <TextBlock>
+                    <TextBlock.Inlines>
+                        <Run Text="Finalize Payment"/>
+                        <Run Text="(" FontWeight="Light"/>
+                        <Run Text="{Binding Price, Mode=OneTime}" FontWeight="Light"/>
+                        <Run Text=")" FontWeight="Light"/>
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

@@ -44,7 +44,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                <Style TargetType="Thumb">
+                <Style TargetType="Thumb" x:Key="BPM_Slider_Thumb">
                     <Setter Property="OverridesDefaultStyle" Value="True"/>
                     <Setter Property="Width" Value="50"/>
                     <Setter Property="Cursor" Value="Hand"/>
@@ -93,7 +93,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                <Style TargetType="Slider">
+                <Style TargetType="Slider" x:Key="BPM_Slider">
                     <Setter Property="Minimum" Value="60"/>
                     <Setter Property="Maximum" Value="180"/>
                     <Setter Property="Template">
@@ -138,7 +138,7 @@
                                                           Command="Slider.DecreaseLarge" />
                                             </Track.DecreaseRepeatButton>
                                             <Track.Thumb>
-                                                <Thumb/>
+                                                <Thumb Style="{StaticResource BPM_Slider_Thumb}"/>
                                             </Track.Thumb>
                                             <Track.IncreaseRepeatButton>
                                                 <RepeatButton Style="{StaticResource SliderButtonStyle}"
@@ -229,12 +229,10 @@
                 <!--Rows-->
                 <Style TargetType="DataGridRow">
                     <Setter Property="MinHeight" Value="50"/>
+                    <Setter Property="Background" Value="#222233"/>
                     <Style.Triggers>
                         <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="#222233"/>
-                        </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="#332233"/>
+                            <Setter Property="Background" Value="#4455dd"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background">
@@ -311,7 +309,7 @@
                       SelectionUnit="FullRow"
                       BorderThickness="2"
                       BorderBrush="#7050aa"
-                      AlternationCount="2"
+                      AlternationCount="10000"
                       ColumnWidth="*"
                       dd:DragDrop.DropHandler="{Binding}"
                       dd:DragDrop.IsDragSource="True"
@@ -448,8 +446,10 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <MediaElement x:Name="AudioPlayer" 
-                              Source="{Binding CurrentAudioSource, UpdateSourceTrigger=PropertyChanged}"
-                              cal:Message.Attach="[Event MediaEnded] = [Action NextInQueue()]"
+                              Source="{Binding CurrentAudioSource, 
+                                       UpdateSourceTrigger=PropertyChanged}"
+                              cal:Message.Attach="[Event MediaEnded] = [Action NextInQueue()];
+                                                  [Event MediaOpened] = [Action OnSongChanged()];"
                               LoadedBehavior="Manual" UnloadedBehavior="Manual"/>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
@@ -458,6 +458,7 @@
                         </Style>
                     </StackPanel.Resources>
                     <Button Style="{StaticResource MediaControlStyle}"
+                            cal:Message.Attach="[Event Click] = [Action PreviousInQueue()]"
                             Grid.Column="0">
                         <Image Source="/Images/skip_back.png"/>
                     </Button>
@@ -473,6 +474,40 @@
                         <Image Source="/Images/skip_forward.png"/>
                     </Button>
                 </StackPanel>
+                
+                <!--Song Time Position Slider-->
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <!--Seeker-->
+                    <Slider Grid.ColumnSpan="3"
+                            VerticalAlignment="Center"
+                            Margin="5"
+                            Minimum="0"
+                            Maximum="{Binding CurrentSeekerMaximum,
+                                      UpdateSourceTrigger=PropertyChanged}"
+                            Value="{Binding CurrentSongTimeSpan,
+                                    Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged}"
+                            cal:Message.Attach="[Event MouseUp] = [Action OnUserSeekerValueChanged()]"/>
+                    <!--Song Times-->
+                    <TextBlock Grid.Column="0"
+                               VerticalAlignment="Bottom"
+                               Text="{Binding CurrentSongTime,
+                                      UpdateSourceTrigger=PropertyChanged}"
+                               Margin="5"
+                               Style="{StaticResource simpleText}"/>
+                    <TextBlock Grid.Column="2"
+                               VerticalAlignment="Bottom"
+                               Text="{Binding CurrentSongDuration,
+                                      UpdateSourceTrigger=PropertyChanged}"
+                               Margin="5"
+                               Style="{StaticResource simpleText}"/>
+
+                </Grid>
             </Grid>
             
             <!--Karaoke & Effects-->
@@ -501,12 +536,14 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Slider VerticalAlignment="Center"
+                        Style="{StaticResource BPM_Slider}"
                         Value="{Binding Path=Bpm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Margin="10"
                         cal:Message.Attach="[Event PreviewMouseUp] = [Action ChangeBPM()]"/>
-                
+
+
                 <ToggleButton x:Name="colorWheel"
                               Grid.Column="1"
                               Style="{StaticResource cWheelButton}"/>

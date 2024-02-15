@@ -224,8 +224,6 @@
                     FontSize="26"
                     FontWeight="Medium"
                     Grid.Row="3"
-                    Background="{DynamicResource ButtonBackground}"
-                    Foreground="{DynamicResource TextForeground}"
                     Content="Checkout"></Button>
         </Grid>
     </Grid>

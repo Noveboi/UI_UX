@@ -13,7 +13,7 @@ namespace Ergasia_Final.ViewModels
         public EPayServiceViewModel(double price, IEventAggregator events)
         {
             _eventAggregator = events;
-            _price = $"Finalize Payment (€{price})";
+            _price = $"€{price}";
         }
 
         // Fields

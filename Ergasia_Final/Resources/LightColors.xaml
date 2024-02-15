@@ -5,9 +5,12 @@
     <SolidColorBrush x:Key="ButtonBackground"  Color="#5c9679"/>
     <SolidColorBrush x:Key="TextBoxBackground" Color="#defade"/>
     <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#daaaae"/>
-    <SolidColorBrush x:Key="TextBoxMouseOverColor" Color="#ff8a8e"/>
     <SolidColorBrush x:Key="MainBackground"  Color="#3c7d5c"/>
     <SolidColorBrush x:Key="BorderBackground"  Color="#360342"/>
+    
+    <!--Triggers (MouseOver)-->
+    <SolidColorBrush x:Key="TextBoxMouseOverColor" Color="#ff8a8e"/>
+    <SolidColorBrush x:Key="ButtonMouseOverColor" Color="#76a78f"/>
 
     <!-- Foreground Colors -->
     <SolidColorBrush x:Key="TextForeground"  Color="Black"/>

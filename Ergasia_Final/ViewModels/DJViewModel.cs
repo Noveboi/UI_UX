@@ -12,10 +12,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Ergasia_Final.ViewModels
 {
-    public class DJViewModel : Screen, IDropTarget, IHandle<int>, IHandle<string>
+    public class DJViewModel : Screen, IDropTarget, 
+                               IHandle<int>, IHandle<string>, IHandle<Tuple<string, double>>
     {
         #region Fields & Properties
         private double bpm;
@@ -24,6 +26,7 @@ namespace Ergasia_Final.ViewModels
         /// </summary>
         private readonly IEventAggregator _djEvents;
         private readonly IEventAggregator _shellEvents;
+        private readonly IEventAggregator _localThreadEvents;
         private bool karaokeOpen = false;
         private Brush effectsButtonColor;
         private static readonly Brush EFFECTS_DISABLED = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
@@ -36,9 +39,58 @@ namespace Ergasia_Final.ViewModels
         private MediaElement _audioPlayer;
         private Uri currentAudioSource;
         private bool isPlaying = false;
+        private bool hasMediaOpened = false;
         private bool initialLoad = false;
         private bool exitWhilePlaying = false;
         private TimeSpan savedPosition = TimeSpan.MaxValue;
+
+        private int currentSeekerMaximum;
+        private string currentSongDuration;
+        private string currentSongTime = "00:00";
+        private double currentSongTimeSpan = 0.0;
+
+        private CancellationTokenSource cancelSource;
+        private CancellationToken cancelToken;
+
+        public int CurrentSeekerMaximum
+        {
+            get => currentSeekerMaximum;
+            set
+            {
+                currentSeekerMaximum = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public double CurrentSongTimeSpan
+        {
+            get => currentSongTimeSpan;
+            set
+            {
+                currentSongTimeSpan = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public string CurrentSongDuration
+        {
+            get => currentSongDuration;
+            set
+            {
+                currentSongDuration = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
+        public string CurrentSongTime
+        {
+            get => currentSongTime;
+            set
+            {
+                currentSongTime = value;
+                NotifyOfPropertyChange();
+            }
+        }
 
         public double Bpm
         {
@@ -122,10 +174,11 @@ namespace Ergasia_Final.ViewModels
 
             eventAggregator.SubscribeOnUIThread(this);
             _djEvents = new EventAggregator();
+            _localThreadEvents = new EventAggregator();
             _djEvents.SubscribeOnUIThread(this);
+            _localThreadEvents.SubscribeOnUIThread(this);
 
             effectsButtonColor = EFFECTS_DISABLED;
-
             bpm = SongQueue[0].BPM;
         }
 
@@ -232,15 +285,6 @@ namespace Ergasia_Final.ViewModels
             }
 
             SongQueue.Add(song);
-        }
-
-        public void NextInQueue()
-        {
-            SongModel justFinished = SongQueue[0];
-            SongQueue.RemoveAt(0);
-            SongQueue.Add(justFinished);
-            _audioPlayer.SpeedRatio = 1;
-            UpdateSongs();
         }
 
         public void AddSongs()
@@ -592,17 +636,44 @@ And your knee socks
         }
         #endregion
         #region Media Controls
-        public void PlayPause()
+        public async Task PlayPause()
         {
             IsPlaying = !IsPlaying;
             if (IsPlaying)
             {
+                // Do NOT use _audioPlayer.Play() anywhere else!
                 _audioPlayer.Play();
+                if (hasMediaOpened)
+                {
+                    cancelSource = new CancellationTokenSource();
+                    cancelToken = cancelSource.Token;
+                    await UpdateSeekerPositionAsync(cancelToken);
+                }
             }
             else
             {
                 _audioPlayer.Pause();
+                cancelSource.Cancel();
             }
+        }
+
+        public void NextInQueue()
+        {
+            SongModel justFinished = SongQueue[0];
+            SongQueue.RemoveAt(0);
+            SongQueue.Add(justFinished);
+            _audioPlayer.SpeedRatio = 1;
+            UpdateSongs();
+        }
+
+        public void PreviousInQueue()
+        {
+            int lastIndex = SongQueue.Count - 1;
+            SongModel lastSong = SongQueue[lastIndex];
+            SongQueue.RemoveAt(lastIndex);
+            SongQueue.Insert(0, lastSong);
+            _audioPlayer.SpeedRatio = 1;
+            UpdateSongs();
         }
 
         // Grab the MediaElement control from the View
@@ -613,17 +684,63 @@ And your knee socks
                 _audioPlayer = source.FindName("AudioPlayer") as MediaElement;
                 initialLoad = true;
             }
+
+        }
+
+        public async Task OnSongChanged()
+        {
+            CurrentSongDuration = _audioPlayer.NaturalDuration.TimeSpan.ToString("mm':'ss");
+            CurrentSeekerMaximum = (int)_audioPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+
+            cancelSource = new CancellationTokenSource();
+            cancelToken = cancelSource.Token;
+            hasMediaOpened = true;
+            await UpdateSeekerPositionAsync(cancelToken);
         }
 
         public void ChangeBPM()
         {
             _audioPlayer.SpeedRatio = Bpm / SongQueue[0].BPM;
         }
+
+        /// <summary>
+        /// When the user manually changes the seeker's position, fire.
+        /// This function fires when the MouseUp Event is fired on the Seeker Slider control.
+        /// </summary>
+        public void OnUserSeekerValueChanged()
+        {
+
+        }
+
+        /// <summary>
+        /// Periodically update the seeker's position every given interval.
+        /// </summary>
+        private async Task UpdateSeekerPositionAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                while (_audioPlayer.Position.TotalSeconds <= _audioPlayer.NaturalDuration.TimeSpan.TotalSeconds)
+                {
+                    // Ensure the properties values are changed on the UI Thread!
+                    Tuple<string, double> message = Tuple.Create(
+                                                                _audioPlayer.Position.ToString("mm':'ss"),
+                                                                _audioPlayer.Position.TotalSeconds);
+                    await _localThreadEvents.PublishOnUIThreadAsync(message);
+                    await Task.Delay(500, cancellationToken);
+                }
+            } 
+            catch (TaskCanceledException)
+            {
+                MessageBox.Show("Task Cancelled!");
+            }
+        }
         #endregion
-        public async Task HandleAsync(int message, CancellationToken cancellationToken)
+
+        public Task HandleAsync(int message, CancellationToken cancellationToken)
         {
             KaraokeOpen = false;
             EffectsButtonColor = EFFECTS_DISABLED;
+            return Task.CompletedTask;
         }
 
         public async Task HandleAsync(string message, CancellationToken cancellationToken)
@@ -633,7 +750,7 @@ And your knee socks
                 if (IsPlaying)
                 {
                     exitWhilePlaying = true;
-                    PlayPause();
+                    await PlayPause();
                 }
                 else
                 {
@@ -647,9 +764,19 @@ And your knee socks
                 {
                     ChangeBPM();
                     _audioPlayer.Position = savedPosition;
-                    PlayPause();
+                    await PlayPause();
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles song times sent from the UpdateSeekerPositionAsync thread!
+        /// </summary>
+        public Task HandleAsync(Tuple<string, double> message, CancellationToken cancellationToken)
+        {
+            CurrentSongTime = message.Item1;
+            CurrentSongTimeSpan = message.Item2;
+            return Task.CompletedTask;
         }
     }
 }
