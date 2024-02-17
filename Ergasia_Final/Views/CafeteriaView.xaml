@@ -21,7 +21,9 @@
                 <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
             <!--Column0, Menu-->
-            <Border Margin="20" BorderBrush="{DynamicResource BorderForeground}" BorderThickness="4" Background="{DynamicResource BorderBackground}"/>
+            <ListView>
+                
+            </ListView>
             <!--Column1, Checkout-->
             <Grid Grid.Column="1" Margin="20">
                 <Grid.RowDefinitions>
