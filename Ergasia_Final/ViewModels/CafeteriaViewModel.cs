@@ -57,5 +57,10 @@ namespace Ergasia_Final.ViewModels
             _eventAggregator.PublishOnUIThreadAsync(new EPayServiceViewModel(OrderCost, _eventAggregator));
         }
 
+        public void OpenStaffQNA()
+        {
+            new WindowManager().ShowWindowAsync(new StaffQueAnsViewModel());
+        }
+
 	}
 }
