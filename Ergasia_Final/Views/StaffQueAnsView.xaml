@@ -6,7 +6,67 @@
         xmlns:local="clr-namespace:Ergasia_Final.Views"
         mc:Ignorable="d"
         Title="StaffQueAnsView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <Border Background="{DynamicResource MainBackground}"
+            BorderBrush="Beige"
+            BorderThickness="10">
+        <Border.Resources>
+            <Style TargetType="TextBlock" x:Key="HeaderStyle">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#aa0077" Opacity="0.9"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" Value="#fcfcd0"/>
+                <Setter Property="FontSize" Value="32"/>
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="Padding" Value="10"/>
+            </Style>
+            <Style TargetType="TextBlock" x:Key="ParagraphStyle">
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+        </Border.Resources>
+        <ScrollViewer>
+            <StackPanel>
+                <TextBlock Style="{StaticResource HeaderStyle}">
+                    <Run Text="Q:" FontWeight="Bold"/>
+                    How do I order?
+                </TextBlock>
+                <TextBlock Style="{StaticResource ParagraphStyle}">
+                    Ordering using this application is very simple! Follow these steps:
+                    <LineBreak/>
+                    <TextBlock FontSize="18" Margin="40 0 0 0"
+                               TextWrapping="Wrap">
+                        1. <Bold>Hover</Bold> your mouse over any item on the catalogue
+                        <LineBreak/>
+                        2. Click the <Bold>[+] button</Bold> that appears when hovering over an item
+                        <LineBreak/>
+                        3. The item has now appeared in the <Bold>"Your Orders"</Bold> list, you can add
+                        as many items as you want!
+                        <LineBreak/>
+                        4. To finalize your order and pay, click the <Bold>"Checkout"</Bold> button
+                    </TextBlock>
+                </TextBlock>
+                <TextBlock Style="{StaticResource HeaderStyle}">
+                    <Run Text="Q:" FontWeight="Bold"/>
+                    Can I order physically instead?
+                </TextBlock>
+                <TextBlock Style="{StaticResource ParagraphStyle}">
+                    Naturally! Head over to the <Bold>cafeteria bar</Bold> in
+                    the viewing room and order as you normally would.
+                </TextBlock>
+                <TextBlock Style="{StaticResource HeaderStyle}">
+                    <Run Text="Q:" FontWeight="Bold"/>
+                    I have allergies, are there any warnings?
+                </TextBlock>
+                <TextBlock Style="{StaticResource ParagraphStyle}">
+                    Yes! Any items on the catalogue marked as <Run Foreground="#ffbb55" Text="yellow"/>
+                    contain ingredients that can cause allergic reaction.
+                </TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
 </Window>

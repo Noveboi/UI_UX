@@ -31,9 +31,13 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <!--Title-->
-        <Button x:Name="OpenStaffQNA"
-                HorizontalAlignment="Left" Content="Got a question?"
-                Margin="20 10"/>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="/Images/singer_staff.png"
+                   Margin="5 5 0 5"/>
+            <Button x:Name="OpenStaffQNA"
+                    HorizontalAlignment="Left" Content="Got a question?"
+                    Margin="5 10 10 10"/>
+        </StackPanel>
         <TextBlock Text="Cafeteria" FontWeight="Bold" Style="{StaticResource titleStyle}"/>
         <Grid Grid.Row="1">
             <!--Columns!-->
