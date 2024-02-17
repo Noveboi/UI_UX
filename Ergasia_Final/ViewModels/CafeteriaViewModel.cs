@@ -12,33 +12,12 @@ namespace Ergasia_Final.ViewModels
 {
     public class CafeteriaViewModel : Screen
     {
-        private List<CatalogueItemModel> _catalogueItems;
-
-        public BindableCollection<CatalogueItemModel> CoffeeItems { get; private set; }
-        public BindableCollection<CatalogueItemModel> TeaItems { get; private set; }
-        public BindableCollection<CatalogueItemModel> SoftDrinkItems { get; private set; }
-        public BindableCollection<CatalogueItemModel> SnackItems { get; private set; }
-        public BindableCollection<CatalogueItemModel> SweetItems { get; private set; }
+        public List<CatalogueItemModel> CatalogueItems { get; }
 
         public CafeteriaViewModel()
         {
-            _catalogueItems = new List<CatalogueItemModel>();
-            PopulateUtility.AddCatalogueItems(_catalogueItems);
-            CategoricalSplitList();
+            CatalogueItems = new List<CatalogueItemModel>();
+            PopulateUtility.AddCatalogueItems(CatalogueItems);
         }
-
-        private void CategoricalSplitList()
-        {
-            CoffeeItems = new BindableCollection<CatalogueItemModel>
-                (_catalogueItems.Where(item => item.Type == CatalogueItemTypes.Coffee));
-            TeaItems = new BindableCollection<CatalogueItemModel>
-                (_catalogueItems.Where(item => item.Type == CatalogueItemTypes.Tea));
-			SoftDrinkItems = new BindableCollection<CatalogueItemModel>
-				(_catalogueItems.Where(item => item.Type == CatalogueItemTypes.SoftDrink));
-			SnackItems = new BindableCollection<CatalogueItemModel>
-				(_catalogueItems.Where(item => item.Type == CatalogueItemTypes.Snack));
-			SweetItems = new BindableCollection<CatalogueItemModel>
-				(_catalogueItems.Where(item => item.Type == CatalogueItemTypes.Sweet));
-		}
     }
 }

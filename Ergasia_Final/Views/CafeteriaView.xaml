@@ -7,6 +7,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="{DynamicResource MainBackground}">
+        <Grid.Resources>
+            <CollectionViewSource x:Key="source"
+                                  Source="{Binding CatalogueItems}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Type"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+        </Grid.Resources>
         <!--Rows!-->
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
@@ -22,16 +30,78 @@
             </Grid.ColumnDefinitions>
             <!--Column0, Menu-->
             <Grid>
-                <StackPanel x:Name="Coffees">
-                    <TextBlock Text="Coffee"/>
-                    <ListView d:ItemsSource="{d:SampleData}">
-                        <ListView.View>
-                            <GridView>
-                                
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </StackPanel>
+                <ListView ItemsSource="{Binding Source={StaticResource source}}"
+                          Background="#231242">
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="GroupItem">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="GroupItem">
+                                                <StackPanel>
+                                                    <TextBlock 
+                                                        Background="#881242"
+                                                        Foreground="#f0f0f0"
+                                                        TextAlignment="Center"
+                                                        Padding="10"
+                                                        FontSize="26"
+                                                        FontWeight="Medium"
+                                                        Text="{Binding Name}"/>
+                                                    <ItemsPresenter/>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Foreground" Value="#d0d0d0"/>
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="Padding" Value="0 15"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Grid Background="{TemplateBinding Background}"
+                                              HorizontalAlignment="Stretch">
+                                            <StackPanel Margin="{TemplateBinding Margin}">
+                                                <TextBlock x:Name="ItemName"
+                                                           Text="{Binding Name}"
+                                                           VerticalAlignment="Center"
+                                                           FontWeight="Medium"/>
+                                                <TextBlock x:Name="DescriptionText"
+                                                           Text="{Binding OptionalDescription}"
+                                                           FontWeight="Light"
+                                                           FontSize="16"/>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding Price}"
+                                                       HorizontalAlignment="Right"
+                                                       Margin="{TemplateBinding Margin}"
+                                                       Padding="{TemplateBinding Padding}"/>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding OptionalDescription}" Value="{x:Null}">
+                                                <Setter TargetName="DescriptionText" Property="Height" Value="0"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AllergyWarning}" Value="True">
+                                                <Setter TargetName="ItemName" Property="Foreground" Value="#ffbb55"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#423460"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
             </Grid>
             <!--Column1, Checkout-->
             <Grid Grid.Column="1" Margin="20">
