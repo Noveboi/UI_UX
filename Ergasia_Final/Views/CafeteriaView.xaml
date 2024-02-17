@@ -29,9 +29,11 @@
                 <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
             <!--Column0, Menu-->
-            <Grid>
+            <Grid Margin="20 20 20 0">
                 <ListView ItemsSource="{Binding Source={StaticResource source}}"
-                          Background="#231242">
+                          Background="#231242"
+                          Margin="0 0 0 40"
+                          SelectionMode="Single">
                     <ListView.GroupStyle>
                         <GroupStyle>
                             <GroupStyle.ContainerStyle>
@@ -61,27 +63,39 @@
                         <Style TargetType="ListViewItem">
                             <Setter Property="Foreground" Value="#d0d0d0"/>
                             <Setter Property="FontSize" Value="20"/>
-                            <Setter Property="Padding" Value="0 15"/>
-                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="MinHeight" Value="40"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListViewItem">
                                         <Grid Background="{TemplateBinding Background}"
-                                              HorizontalAlignment="Stretch">
-                                            <StackPanel Margin="{TemplateBinding Margin}">
-                                                <TextBlock x:Name="ItemName"
-                                                           Text="{Binding Name}"
-                                                           VerticalAlignment="Center"
-                                                           FontWeight="Medium"/>
-                                                <TextBlock x:Name="DescriptionText"
-                                                           Text="{Binding OptionalDescription}"
-                                                           FontWeight="Light"
-                                                           FontSize="16"/>
-                                            </StackPanel>
-                                            <TextBlock Text="{Binding Price}"
-                                                       HorizontalAlignment="Right"
-                                                       Margin="{TemplateBinding Margin}"
-                                                       Padding="{TemplateBinding Padding}"/>
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition x:Name="ButtonColumn" Width="50"/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0">
+                                                    <Button Content="+" MinHeight="30"/>
+                                                    <Button Content="-" MinHeight="30"/>
+                                                </StackPanel>
+                                                <StackPanel x:Name="ItemContainer"
+                                                            Margin="10"
+                                                            Grid.Column="1">
+                                                    <TextBlock x:Name="ItemName"
+                                                               Text="{Binding Name}"
+                                                               VerticalAlignment="Center"
+                                                               FontWeight="Medium"/>
+                                                    <TextBlock x:Name="DescriptionText"
+                                                               Text="{Binding OptionalDescription}"
+                                                               FontWeight="Light"
+                                                               FontSize="16"/>
+                                                </StackPanel>
+                                            </Grid>
+                                            <TextBlock Margin="10"
+                                                       HorizontalAlignment="Right">
+                                                €<Run Text="{Binding Price}" FontWeight="Bold"/>
+                                            </TextBlock>
                                         </Grid>
                                         <ControlTemplate.Triggers>
                                             <DataTrigger Binding="{Binding OptionalDescription}" Value="{x:Null}">
@@ -90,6 +104,9 @@
                                             <DataTrigger Binding="{Binding AllergyWarning}" Value="True">
                                                 <Setter TargetName="ItemName" Property="Foreground" Value="#ffbb55"/>
                                             </DataTrigger>
+                                            <Trigger Property="IsSelected" Value="False">
+                                                <Setter TargetName="ButtonColumn" Property="Width" Value="0"/>
+                                            </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -98,10 +115,20 @@
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Background" Value="#423460"/>
                                 </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#803460"/>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
+                <TextBlock VerticalAlignment="Bottom" Margin="0 0 0 10"
+                           Foreground="{DynamicResource TextForeground}"
+                           TextWrapping="Wrap">
+                    <Run Text="*Foods that are marked"/>
+                    <Run Text="yellow" Foreground="#ffbb55"/>
+                    <Run Text="contain ingredients that can cause allergic reactions, please inform our staff about any allergies you might have."/>
+                </TextBlock>
             </Grid>
             <!--Column1, Checkout-->
             <Grid Grid.Column="1" Margin="20">
