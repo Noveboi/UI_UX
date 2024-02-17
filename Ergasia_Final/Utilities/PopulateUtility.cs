@@ -490,5 +490,157 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
 				SongPath = new Uri("./Audio/altj_breezeblocks.mp3", UriKind.RelativeOrAbsolute)
 			});
 		}
+
+		public static void AddCatalogueItems(List<CatalogueItemModel> catalogueItems)
+		{
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Freddo Espresso",
+				Type = CatalogueItemTypes.Coffee,
+				Price = 2.5
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Freddo Cappuccino",
+				Type = CatalogueItemTypes.Coffee,
+				Price = 2.8
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Espresso",
+				Type = CatalogueItemTypes.Coffee,
+				Price = 1.8
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Cappuccino",
+				Type = CatalogueItemTypes.Coffee,
+				Price = 2.2
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Macchiato",
+				Type = CatalogueItemTypes.Coffee,
+				Price = 2,
+				OptionalDescription = "Espresso with foam milk on top."
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Latte",
+				Type = CatalogueItemTypes.Coffee,
+				Price = 2.5
+			});
+
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Green Tea",
+				Type = CatalogueItemTypes.Tea,
+				Price = 3
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Black Tea",
+				Type = CatalogueItemTypes.Tea,
+				Price = 3
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Oolong Tea",
+				Type = CatalogueItemTypes.Tea,
+				Price = 3.2
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Ice Tea",
+				Type = CatalogueItemTypes.Tea,
+				Price = 2.5,
+				OptionalDescription = "Choose between: Peach, Lemon, Berry, Watermelon."
+			});
+
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Coca Cola",
+				Type = CatalogueItemTypes.SoftDrink,
+				Price = 2,
+				OptionalDescription = "Choose between: Normal, Light, Zero"
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Sprite",
+				Type = CatalogueItemTypes.SoftDrink,
+				Price = 2
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Fanta",
+				Type = CatalogueItemTypes.SoftDrink,
+				Price = 2,
+				OptionalDescription = "Choose between: Carbonated, Not Carbonated"
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Fanta Lemon",
+				Type = CatalogueItemTypes.SoftDrink,
+				Price = 2
+			});
+
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Chips",
+				Type = CatalogueItemTypes.Snack,
+				Price = 3.6,
+				OptionalDescription = "Choose between: Salted, Oregano, Barbeque, Sour Cream"
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Doritos",
+				Type = CatalogueItemTypes.Snack,
+				Price = 3.5,
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Sandwich",
+				Type = CatalogueItemTypes.Snack,
+				Price = 4,
+				AllergyWarning = true
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Club Sandwich",
+				Type = CatalogueItemTypes.Snack,
+				Price = 6.7,
+				AllergyWarning = true
+			});
+
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Butter Croissant",
+				Type = CatalogueItemTypes.Sweet,
+				Price = 2,
+				AllergyWarning = true
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Chocolate Croissant",
+				Type = CatalogueItemTypes.Sweet,
+				Price = 2.4,
+				AllergyWarning = true
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Pancakes",
+				Type = CatalogueItemTypes.Sweet,
+				Price = 5.5,
+				OptionalDescription = "Choose syrup: Chocolate, Sour Cherry, Strawberry, Bueno"
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Ice Cream",
+				Type = CatalogueItemTypes.Sweet,
+				Price = 3.5,
+				OptionalDescription = "1 serving (ball): Chocolate, Vanilla, Strawberry, Lila Pause, Bitter Chocolate, Kaimaki"
+			});
+
+		}
 	}
 }

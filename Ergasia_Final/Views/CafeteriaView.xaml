@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ergasia_Final.Views"
+             xmlns:local="clr-namespace:Ergasia_Final.Views" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CafeteriaViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="{DynamicResource MainBackground}">
@@ -21,9 +21,18 @@
                 <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
             <!--Column0, Menu-->
-            <ListView>
-                
-            </ListView>
+            <Grid>
+                <StackPanel x:Name="Coffees">
+                    <TextBlock Text="Coffee"/>
+                    <ListView d:ItemsSource="{d:SampleData}">
+                        <ListView.View>
+                            <GridView>
+                                
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </Grid>
             <!--Column1, Checkout-->
             <Grid Grid.Column="1" Margin="20">
                 <Grid.RowDefinitions>
