@@ -15,7 +15,7 @@ namespace Ergasia_Final.ViewModels
         public void OpenFoodAndDrink()
         {
             // Keep a singleton instance of CafeteriaViewModel in order to maintain the user's order state
-            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<CafeteriaViewModel>());
+            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<CafeteriaViewModel>(_eventAggregator));
         }
 
         public void GoToArtistHall(Button source)

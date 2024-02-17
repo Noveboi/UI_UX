@@ -3,7 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ergasia_Final.Views" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CafeteriaViewModel}"
+             xmlns:local="clr-namespace:Ergasia_Final.Views" 
+             xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:CafeteriaViewModel}"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:cal="http://caliburnmicro.com"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="{DynamicResource MainBackground}">
@@ -14,6 +18,12 @@
                     <PropertyGroupDescription PropertyName="Type"/>
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
+            <CollectionViewSource x:Key="cartSource"
+                                  Source="{Binding Cart}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="Name"/>
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>                                 
         </Grid.Resources>
         <!--Rows!-->
         <Grid.RowDefinitions>
@@ -21,12 +31,15 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <!--Title-->
-        <TextBlock Text="Cafeteria" Style="{StaticResource titleStyle}"/>
+        <Button x:Name="OpenStaffQNA"
+                HorizontalAlignment="Left" Content="Got a question?"
+                Margin="20 10"/>
+        <TextBlock Text="Cafeteria" FontWeight="Bold" Style="{StaticResource titleStyle}"/>
         <Grid Grid.Row="1">
             <!--Columns!-->
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <!--Column0, Menu-->
             <Grid Margin="20 20 20 0">
@@ -75,10 +88,15 @@
                                                     <ColumnDefinition x:Name="ButtonColumn" Width="50"/>
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
-                                                <StackPanel Grid.Column="0">
-                                                    <Button Content="+" MinHeight="30"/>
-                                                    <Button Content="-" MinHeight="30"/>
-                                                </StackPanel>
+                                                <Button Content="+" MinHeight="50">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="Click">
+                                                            <cal:ActionMessage MethodName="AddItemToCart">
+                                                                <cal:Parameter Value="{Binding}"/>
+                                                            </cal:ActionMessage>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </Button>
                                                 <StackPanel x:Name="ItemContainer"
                                                             Margin="10"
                                                             Grid.Column="1">
@@ -104,7 +122,7 @@
                                             <DataTrigger Binding="{Binding AllergyWarning}" Value="True">
                                                 <Setter TargetName="ItemName" Property="Foreground" Value="#ffbb55"/>
                                             </DataTrigger>
-                                            <Trigger Property="IsSelected" Value="False">
+                                            <Trigger Property="IsMouseOver" Value="False">
                                                 <Setter TargetName="ButtonColumn" Property="Width" Value="0"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
@@ -114,9 +132,6 @@
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Background" Value="#423460"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#803460"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -133,17 +148,78 @@
             <!--Column1, Checkout-->
             <Grid Grid.Column="1" Margin="20">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="80"/>
-                    <RowDefinition Height="80"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="2.6*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="80"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Price" VerticalAlignment="Top" Style="{StaticResource titleStyle}"/>
-                <StackPanel Grid.Row="2" VerticalAlignment="Center">
-                    <TextBlock Text="Tickets" Style="{StaticResource simpleText}" HorizontalAlignment="Center"/>
-                    <TextBox FontSize="20" Padding="5" HorizontalContentAlignment="Center" MaxWidth="100"/>
-                </StackPanel>
-                <Button x:Name="EPay" FontSize="26" FontWeight="Medium" Grid.Row="3" Background="{DynamicResource ButtonBackground}" Foreground="{DynamicResource TextForeground}" Content="Checkout"/>
+                <Grid.Resources>
+                </Grid.Resources>
+                <TextBlock Text="Your Order" FontSize="36" 
+                           VerticalAlignment="Top" Style="{StaticResource titleStyle}"/>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <ListView ItemsSource="{Binding Source={StaticResource cartSource}}"
+                              Background="#222244" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="GroupItem">
+                                        <Setter Property="Foreground" Value="#f0f0f0"/>
+                                        <Setter Property="FontSize" Value="18"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="GroupItem">
+                                                    <Grid Background="{TemplateBinding Background}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition x:Name="ButtonColumn" Width="35"/>
+                                                            <ColumnDefinition Width="35"/>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Button Content="-" MaxHeight="50" MinWidth="0">
+                                                            <i:Interaction.Triggers>
+                                                                <i:EventTrigger EventName="Click">
+                                                                    <cal:ActionMessage MethodName="RemoveItemFromCart">
+                                                                        <cal:Parameter Value="{Binding Name}"/>
+                                                                    </cal:ActionMessage>
+                                                                </i:EventTrigger>
+                                                            </i:Interaction.Triggers>
+                                                        </Button>
+                                                        <TextBlock Grid.Column="1" Margin="5">
+                                                            <Run Text="{Binding ItemCount, Mode=OneWay}"/>x
+                                                        </TextBlock>
+                                                        <TextBlock Text="{Binding Name}"
+                                                                   Grid.Column="2"
+                                                                   Margin="5"
+                                                                   TextWrapping="Wrap"/>
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#352244"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+                    <TextBlock Style="{DynamicResource simpleText}"
+                               FontSize="22" TextAlignment="Center"
+                               Grid.Row="1" VerticalAlignment="Center">
+                        €<Run Text="{Binding OrderCost, UpdateSourceTrigger=PropertyChanged}"/>
+                    </TextBlock>
+                </Grid>
+                <Button x:Name="GoToEPay"
+                        Margin="15"
+                        FontSize="22" 
+                        FontWeight="Medium" 
+                        Grid.Row="3" Content="Checkout"
+                        IsEnabled="{Binding CanPay}"/>
             </Grid>
         </Grid>
     </Grid>
