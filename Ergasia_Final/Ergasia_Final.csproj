@@ -21,7 +21,9 @@
     <None Remove="Images\altj_portrait.jpg" />
     <None Remove="Images\avatar.png" />
     <None Remove="Images\clock.png" />
+    <None Remove="Images\coffee.png" />
     <None Remove="Images\color_wheel.png" />
+    <None Remove="Images\drink.png" />
     <None Remove="Images\fast_bunny.png" />
     <None Remove="Images\M83.jpg" />
     <None Remove="Images\m83_concert.jpg" />
@@ -33,6 +35,7 @@
     <None Remove="Images\skip_back.png" />
     <None Remove="Images\skip_forward.png" />
     <None Remove="Images\slow_turtle.png" />
+    <None Remove="Images\snacks.png" />
     <None Remove="Images\taylor_concert.jpg" />
     <None Remove="Images\taylor_portrait.jpg" />
     <None Remove="Images\TS_Eras_Tour.jpg" />
@@ -40,6 +43,7 @@
 
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
   </ItemGroup>
@@ -113,8 +117,10 @@
     <Resource Include="Images\altj_portrait.jpg" />
     <Resource Include="Images\avatar.png" />
     <Resource Include="Images\clock.png" />
+    <Resource Include="Images\coffee.png" />
     <Resource Include="Images\color_wheel.png" />
     <Resource Include="Images\contactless.png" />
+    <Resource Include="Images\drink.png" />
     <Resource Include="Images\fast_bunny.png" />
     <Resource Include="Images\M83.jpg" />
     <Resource Include="Images\m83_concert.jpg" />
@@ -127,6 +133,7 @@
     <Resource Include="Images\skip_back.png" />
     <Resource Include="Images\skip_forward.png" />
     <Resource Include="Images\slow_turtle.png" />
+    <Resource Include="Images\snacks.png" />
     <Resource Include="Images\taylor_concert.jpg" />
     <Resource Include="Images\taylor_portrait.jpg" />
     <Resource Include="Images\TS_Eras_Tour.jpg" />

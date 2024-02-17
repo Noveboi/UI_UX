@@ -12,38 +12,41 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="Personal Artist Hall" Style="{StaticResource titleStyle}"/>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="130"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="130"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <!--SmallTitles-->
-            <TextBlock Text="Concerts" FontSize="30" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Interviews" Grid.Row="3" FontSize="30" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Covers/Tributes" Grid.Column="2" FontSize="30" Foreground="{DynamicResource TextForeground}"/>
-            <!--Videos-->
-            <Rectangle Fill="AntiqueWhite" Grid.Row="1" Margin="10"/>
-            <Rectangle Fill="AntiqueWhite" Grid.Row="1" Grid.Column="1" Margin="10"/>
-            <Rectangle Fill="AntiqueWhite" Grid.Row="1" Grid.Column="2" Margin="10"/>
-            <Rectangle Fill="AntiqueWhite" Grid.Row="4" Margin="10"/>
-            <Rectangle Fill="AntiqueWhite" Grid.Row="4" Grid.Column="1" Margin="10"/>
-            <Rectangle Fill="AntiqueWhite" Grid.Row="4" Grid.Column="2" Margin="10"/>
-            <!--VideoTitles-->
-            <TextBlock Text="Concert Video 1" Grid.Row="2" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Concert Video 2" Grid.Row="2" Grid.Column="1" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Cover Video 1" Grid.Row="2" Grid.Column="2" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Cover Video 2" Grid.Row="5" Grid.Column="2" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Interview Video 1" Grid.Row="5" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="Interview Video 2" Grid.Row="5" Grid.Column="1" FontSize="15" Foreground="{DynamicResource TextForeground}"/>
+            <Grid.Resources>
+                <Style TargetType="Rectangle">
+                    <Setter Property="MinHeight" Value="90"/>
+                    <Setter Property="MaxWidth" Value="160"/>
+                    <Setter Property="Margin" Value="10"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource TextForeground}"/>
+                    <Setter Property="FontSize" Value="24"/>
+                    <Setter Property="TextAlignment" Value="Center"/>
+                </Style>
+            </Grid.Resources>
+            <StackPanel Grid.Row="0" VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch">
+                <TextBlock Text="Concerts" />
+                <Rectangle Fill="SandyBrown"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                <TextBlock Text="Interviews"/>
+                <Rectangle Fill="SandyBrown"/>
+            </StackPanel>
+            <StackPanel Grid.RowSpan="2" Grid.Column="1"
+                        VerticalAlignment="Center">
+                <TextBlock Text="Covers"/>
+                <Rectangle Fill="SandyBrown"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

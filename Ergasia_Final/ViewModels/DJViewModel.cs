@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using CommunityToolkit.Mvvm.Input;
 using Ergasia_Final.Models;
 using Ergasia_Final.Views;
 using GongSolutions.Wpf.DragDrop;
@@ -54,8 +55,7 @@ namespace Ergasia_Final.ViewModels
         private CancellationTokenSource cancelSeekerPositionUpdate;
         private CancellationToken seekerCancelToken;
 
-
-        public bool PauseAvailable
+		public bool PauseAvailable
         {
             get => hasFinishedLoading;
             set
@@ -869,8 +869,8 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
             catch (TaskCanceledException) { }
         }
         #endregion
-        #region EventAggregator Handlers (Implemented from IHandle<TMessage>)
-        public Task HandleAsync(int message, CancellationToken cancellationToken)
+		#region EventAggregator Handlers (Implemented from IHandle<TMessage>)
+		public Task HandleAsync(int message, CancellationToken cancellationToken)
         {
             KaraokeOpen = false;
             EffectsButtonColor = EFFECTS_DISABLED;

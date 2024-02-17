@@ -5,41 +5,129 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
+             xmlns:cal="http://caliburnmicro.com"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="{DynamicResource MainBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition/>
+            <RowDefinition Height="1*"
+                           MinHeight="80"/>
+            <RowDefinition Height="1.5*"
+                           MinHeight="100"/>
+            <RowDefinition Height="4*"
+                           MinHeight="260"/>
         </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="Button" x:Key="foodAndDrinkButton">
+                <Setter Property="Background" Value="#cc0032"/>
+                <Setter Property="BorderBrush" Value="Beige"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <ControlTemplate.Resources>
+                                <Style TargetType="Image">
+                                    <Setter Property="Margin" Value="5"/>
+                                </Style>
+                            </ControlTemplate.Resources>
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="/Images/coffee.png"/>
+                                    <Image Source="/Images/drink.png"
+                                           Grid.Column="1"/>
+                                    <Image Source="/Images/snacks.png"
+                                           Grid.Column="2"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#d72b71"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
         <!--1st Row, Title and Catalog Button-->
         <TextBlock Text="Artists Hall" Style="{StaticResource titleStyle}"/>
-        <Button x:Name="Catalog" Height="50" Width="70" HorizontalAlignment="Right" Margin="10"/>
+        <Button x:Name="OpenFoodAndDrink" 
+                Style="{StaticResource foodAndDrinkButton}"
+                HorizontalAlignment="Right" Margin="10"/>
         <!--2nd Row-->
         <StackPanel Grid.Row="1" Margin="20 10">
-            <TextBlock Text="Click on any artist's icon!" FontSize="30" Foreground="{DynamicResource TextForeground}"/>
-            <TextBlock Text="See the Museum's featured artists in-concert, or get more personal with recorded interviews." Style="{StaticResource simpleText}"/>
-            <TextBlock Text="*This room has food and drink available. To order click the red button in the top-right corner." Style="{StaticResource simpleText}"/>
+            <TextBlock Text="Click on any artist's icon!" 
+                       FontSize="30" Foreground="{DynamicResource TextForeground}" FontWeight="Medium"/>
+            <TextBlock Text="See the Museum's featured artists in-concert, or get more personal with recorded interviews." 
+                       Style="{StaticResource simpleText}"
+                       FontWeight="Light"/>
+            <TextBlock Style="{StaticResource simpleText}"
+                       FontWeight="Light">
+                <TextBlock.Inlines>
+                    <Run Text="*This room has food and drink available. To order click the"/>
+                    <Run Text="red button" FontWeight="Regular" Foreground="#ff0042"/>
+                    <Run Text="in the top-right corner!"/>
+                </TextBlock.Inlines>
+            </TextBlock>
         </StackPanel>
         <!--3rd Row, Artists-->
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="200"/>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="10" Width="200">
-                <Image Source="/Images/altJ.jpg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="cal:Message.Attach"
+                            Value="[Event Click] = [Action GoToArtistHall($source)]"/>
+                    <Setter Property="Margin" Value="40 10"/>
+                    <Setter Property="Background" Value="MediumPurple"/>
+                    <Setter Property="BorderBrush" Value="MediumPurple"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderThickness" Value="4"/>
+                            <Setter Property="BorderBrush" Value="MediumPurple"/>
+                            <Setter Property="Background" Value="MediumPurple"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
+            <Button x:Name="altj">
+                <Grid>
+                    <Image Source="/Images/altJ.jpg" 
+                           Stretch="UniformToFill" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
             </Button>
-            <Button Margin="10" Grid.Column="1" Width="200">
-                <Image Source="/Images/TS_Eras_Tour.jpg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button x:Name="taylor" Grid.Column="1">
+                <Grid>
+                    <Image Source="/Images/TS_Eras_Tour.jpg" 
+                           Stretch="UniformToFill" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
             </Button>
-            <Button Margin="10" Grid.Column="2" Width="200">
-                <Image Source="/Images/M83.jpg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button x:Name="m83"
+                    Grid.Column="2">
+                <Grid>
+                    <Image Source="/Images/M83.jpg" 
+                           Stretch="UniformToFill" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
             </Button>
             <TextBlock Text="alt-J" Grid.Row="1" FontSize="30" Foreground="#fc8c03" HorizontalAlignment="Center"/>
             <TextBlock Text="Taylor Swift" Grid.Row="1" Grid.Column="1" FontSize="30" Foreground="#d303fc" HorizontalAlignment="Center"/>
