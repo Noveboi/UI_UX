@@ -16,7 +16,7 @@
     <Grid Background="{DynamicResource MainBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
-            <RowDefinition Height="260"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -71,7 +71,9 @@
         </Border>
         
         <!--Window Title-->
-        <TextBlock Text="About The Artist" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
+        <TextBlock Text="About The Artist" 
+                   FontWeight="Bold"
+                   Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
                    FontSize="40" Foreground="{DynamicResource TextForeground}"/>
         
         <!--Navigation Buttons-->
@@ -95,7 +97,7 @@
 
         <!--Artist Name-->
         <TextBlock x:Name="CurrentArtist_Name"
-                   Margin="10"
+                   Margin="5"
                    Style="{StaticResource titleStyle}"
                    TextWrapping="Wrap"
                    TextAlignment="Center"

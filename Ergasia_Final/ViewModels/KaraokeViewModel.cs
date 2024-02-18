@@ -55,19 +55,6 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public string RateText
-        {
-            get => rateText;
-            set
-            {
-                if (TextIsValid(value))
-                {
-                    rateText = value;
-                    NotifyOfPropertyChange();
-                }
-            }
-        }
-
         public KaraokeViewModel(SongModel currentSong, IEventAggregator djEvents)
         {
             _djEvents = djEvents;
@@ -85,13 +72,6 @@ namespace Ergasia_Final.ViewModels
             RatingsCount = Ratings.Count;
         }
 
-        public bool TextIsValid(string text)
-        {
-            if (text == string.Empty) return true;
-            if (text.Length > 1) return false;
-            int num;
-            return int.TryParse(text, out num) && num >= 0 && num <= 5;
-        }
 
         // Fires when a new song starts playing from DJViewModel
         public async Task HandleAsync(SongModel message, CancellationToken cancellationToken)
@@ -102,15 +82,15 @@ namespace Ergasia_Final.ViewModels
             RatingsCount = 0;
         }
 
-        public void OnRatingKeyDown(KeyEventArgs e)
+        public void OnRateButtonClick(Button source)
         {
-            if (e.Key == Key.Enter && RateText.Length == 1)
-            {
-                AddRating(int.Parse(RateText));
-            }
+            int rating = int.Parse(source.Content.ToString());
+
+            AddRating(rating);
         }
 
-        public void OnClose()
+
+		public void OnClose()
         {
             _djEvents.PublishOnUIThreadAsync(1);
         }

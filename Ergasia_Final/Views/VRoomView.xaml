@@ -57,7 +57,9 @@
             </Style>
         </Grid.Resources>
         <!--1st Row, Title and Catalog Button-->
-        <TextBlock Text="Artists Hall" Style="{StaticResource titleStyle}"/>
+        <TextBlock Text="Viewing Room" 
+                   FontWeight="Bold"
+                   Style="{StaticResource titleStyle}"/>
         <Button x:Name="OpenFoodAndDrink" 
                 Style="{StaticResource foodAndDrinkButton}"
                 HorizontalAlignment="Right" Margin="10"/>

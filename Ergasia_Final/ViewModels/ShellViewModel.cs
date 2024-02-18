@@ -28,9 +28,19 @@ namespace Ergasia_Final.ViewModels
 		private string _maximizeSymbol = "🗖";
 		private bool _isDarkMode = true;
         private bool _helpOpen = false;
+        private Visibility showBackButton = Visibility.Hidden;
         private Visibility djOpen = Visibility.Collapsed;
 
 		// Properties
+        public Visibility ShowBackButton
+        {
+            get => showBackButton;
+            set
+            {
+                showBackButton = value;
+                NotifyOfPropertyChange();
+            }
+        }
 		public string MaximizeSymbol
 		{
 			get => _maximizeSymbol;
@@ -85,6 +95,7 @@ namespace Ergasia_Final.ViewModels
             }
             else if (message is Screen)
             {
+                ShowBackButton = Visibility.Visible;
                 _windowStack.Push(message);
                 await ActivateItemAsync(message);
             }
@@ -95,21 +106,26 @@ namespace Ergasia_Final.ViewModels
         {
             try
             {
-                string activeViewModel = _windowStack.Peek().GetType().Name;
+                Type activeViewModel = _windowStack.Peek().GetType();
                 // If the current window is NOT MainMenuView, then go to previous window
-                if (activeViewModel != typeof(MainMenuViewModel).Name)
+                if (activeViewModel != typeof(MainMenuViewModel))
                 {
-                    if (activeViewModel == typeof(DJViewModel).Name)
+                    if (activeViewModel == typeof(DJViewModel))
                     {
                         _events.PublishOnUIThreadAsync("DJ Exiting!");
                     } 
-                    else if (activeViewModel == typeof(ExHallViewModel).Name)
+                    else if (activeViewModel == typeof(ExHallViewModel))
                     {
                         _events.PublishOnUIThreadAsync("ExHall Exiting!");
                     }
                     _windowStack.Pop();
                     var newWindow = _windowStack.Peek();
                     ActivateItemAsync(newWindow);
+
+                    if (newWindow.GetType() == typeof(MainMenuViewModel))
+                    {
+                        ShowBackButton = Visibility.Hidden;
+                    }
                 }
             }
             catch 
