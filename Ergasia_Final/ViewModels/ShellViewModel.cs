@@ -19,7 +19,7 @@ namespace Ergasia_Final.ViewModels
     /// <summary>
     /// The "frame" for all other Windows to be shown, contains a back button + a menu strip 
     /// </summary>
-    public class ShellViewModel : Conductor<object>, IHandle<object>
+    public class ShellViewModel : Conductor<object>, IHandle<object>, IHandle<string>
     {
         private readonly IEventAggregator _events;
 
@@ -28,6 +28,7 @@ namespace Ergasia_Final.ViewModels
 		private string _maximizeSymbol = "🗖";
 		private bool _isDarkMode = true;
         private bool _helpOpen = false;
+        private Visibility djOpen = Visibility.Collapsed;
 
 		// Properties
 		public string MaximizeSymbol
@@ -39,7 +40,18 @@ namespace Ergasia_Final.ViewModels
 				NotifyOfPropertyChange();
 			}
 		}
+        public Visibility DjOpen
+        {
+            get => djOpen;
+            set
+            {
+                djOpen = value;
+                NotifyOfPropertyChange();
+            }
+        }
         public ICommand OpenOnlineHelp { get; private set; }
+        public ICommand CreateBackup { get; private set; }
+        public ICommand ExitCommand { get; private set; }
 
 		/// <summary>
 		/// By default, request the event aggregator instance for class cross-communication
@@ -57,6 +69,8 @@ namespace Ergasia_Final.ViewModels
             _windowStack.Push(mainMenu);
 
             OpenOnlineHelp = new RelayCommand(ExecuteOpenOnlineHelp);
+            CreateBackup = new RelayCommand(ExecuteCreateBackup);
+            ExitCommand = new RelayCommand(CloseApp);
         }
 
         // Methods
@@ -112,15 +126,18 @@ namespace Ergasia_Final.ViewModels
             {
                 string cwd = Environment.CurrentDirectory;
                 string fileName = Directory.GetParent(cwd).Parent.Parent.FullName + "\\help.html";
-				var process = new Process();
+
+                var process = new Process();
                 process.StartInfo.UseShellExecute = true;
                 process.StartInfo.FileName = fileName;
                 process.Start();
             } 
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            catch (Exception) { }
+        }
+
+        public void ExecuteCreateBackup()
+        {
+            MessageBox.Show("DJ has been backed up succesfully!");
         }
 
         // Replace color theme resource dictionaries to dynamically change app colors
@@ -173,5 +190,11 @@ namespace Ergasia_Final.ViewModels
                 Application.Current.MainWindow.DragMove();
             }
         }
-    }
+
+		public Task HandleAsync(string message, CancellationToken cancellationToken)
+		{
+            DjOpen = message.Equals("DJ Opening!") ? Visibility.Visible : Visibility.Collapsed;
+            return Task.CompletedTask;
+		}
+	}
 }

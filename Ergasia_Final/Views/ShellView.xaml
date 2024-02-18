@@ -2,10 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
              xmlns:local="clr-namespace:Ergasia_Final.Views" 
              xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:cal="http://www.caliburnproject.org" 
              Foreground="#014511"
              MinWidth="800" MinHeight="550"
              WindowStyle="None"
@@ -14,7 +14,7 @@
         <KeyBinding Key="F1" 
                     Command="{Binding OpenOnlineHelp}"/>
     </Window.InputBindings>
-    <Grid Background="#937fd4">
+    <Grid Background="#937fd4" x:Name="MainShellGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="60"/>
@@ -26,27 +26,50 @@
                 BorderThickness="0"
                 Background="Transparent"
                 Grid.Row="0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <StackPanel.Resources>
-                    <Style TargetType="Button">
-                        <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Width" Value="40"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="BorderThickness" Value="0"/>
-                    </Style>
-                </StackPanel.Resources>
-                <Button Content="🗕"
-                        x:Name="MinimizeView"
-                        Foreground="{DynamicResource Foreground1}"></Button>
-                <Button Content="{Binding Path=MaximizeSymbol, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        x:Name="MaximizeView"
-                        Foreground="{DynamicResource Foreground1}"></Button>
-                <Button Background="OrangeRed"
-                        x:Name="CloseApp"
-                        Foreground="#efefef"
-                        Content="╳"></Button>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <Menu Background="{Binding ElementName=MainShellGrid}">
+                    <Menu.Resources>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Background" Value="#634fa4"/>
+                            <Setter Property="Foreground" Value="#f0f0f0"/>
+                        </Style>
+                    </Menu.Resources>
+                    <MenuItem Header="File">
+                        <MenuItem Header="Create Backup" Command="{Binding CreateBackup}"
+                                  Visibility="{Binding DjOpen}"/>
+                        <Separator/>
+                        <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+                    </MenuItem>
+                    <MenuItem Header="Help" Command="{Binding OpenOnlineHelp}"/>
+                </Menu>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                            Grid.Column="1">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Width" Value="40"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button Content="🗕"
+                            x:Name="MinimizeView"/>
+                    <Button Content="{Binding Path=MaximizeSymbol, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            x:Name="MaximizeView"/>
+                    <Button Background="OrangeRed"
+                            x:Name="CloseApp"
+                            Foreground="#efefef"
+                            Content="╳"/>
+                </StackPanel>
+            </Grid>
         </Border>
         <!--Row 1: StackPanel with navigation and light/dark mode switch-->
         <Grid Grid.Row="1">
