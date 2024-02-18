@@ -20,11 +20,13 @@
     <None Remove="Images\altj_concert.jpg" />
     <None Remove="Images\altj_portrait.jpg" />
     <None Remove="Images\avatar.png" />
+    <None Remove="Images\back_button.png" />
     <None Remove="Images\clock.png" />
     <None Remove="Images\coffee.png" />
     <None Remove="Images\color_wheel.png" />
     <None Remove="Images\drink.png" />
     <None Remove="Images\fast_bunny.png" />
+    <None Remove="Images\light_dark_mode.png" />
     <None Remove="Images\M83.jpg" />
     <None Remove="Images\m83_concert.jpg" />
     <None Remove="Images\m83_portrait.jpg" />
@@ -113,6 +115,8 @@
     <Content Include="Audio\ts_blankSpace.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\back_button.png" />
+    <Resource Include="Images\light_dark_mode.png" />
     <Resource Include="Images\singer_staff.png" />
     <Resource Include="Images\altJ.jpg" />
     <Resource Include="Images\altj_concert.jpg" />
