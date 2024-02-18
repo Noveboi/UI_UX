@@ -523,6 +523,7 @@ namespace Ergasia_Final.ViewModels
         /// <param name="source">The seeker control, so that we can grab its Value property</param>
         public void OnSeekerValueChanged(Slider source)
         {
+            // Do nothing if the value is NOT changed by the user
             if (!userSeeking) return;
 
             CurrentSongTime = TimeSpan.FromSeconds(source.Value).ToString("mm':'ss");

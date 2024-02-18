@@ -26,10 +26,6 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.Resources>
-                <!--Auto-DJ Buttons-->
-                <Style TargetType="Button" x:Key="autoDjButton">
-                    
-                </Style>
                 <!--
                     Slider Custom Style
                     Refer to: https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.slider?view=windowsdesktop-8.0
@@ -222,8 +218,8 @@
                                         <Ellipse.Fill>
                                             <RadialGradientBrush>
                                                 <GradientStop Offset="0" 
-                                                              Color="#aa4155"/>
-                                                <GradientStop Offset="1" Color="#9a3145"/>
+                                                              Color="#550044"/>
+                                                <GradientStop Offset="1" Color="#660055"/>
                                             </RadialGradientBrush>
                                         </Ellipse.Fill>
                                     </Ellipse>
@@ -233,8 +229,8 @@
                                         <Setter TargetName="ThumbEllipse" Property="Fill">
                                             <Setter.Value>
                                                 <RadialGradientBrush>
-                                                    <GradientStop Offset="0" Color="#8a2135"/>
-                                                    <GradientStop Offset="1" Color="#6a0115"/>
+                                                    <GradientStop Offset="0" Color="#880077"/>
+                                                    <GradientStop Offset="1" Color="#770066"/>
                                                 </RadialGradientBrush>
                                             </Setter.Value>
                                         </Setter>
@@ -454,7 +450,7 @@
                                Text="Auto-DJ"
                                Style="{StaticResource titleStyle}">
                     </TextBlock>
-                    <TextBlock FontSize="14"
+                    <!--<TextBlock FontSize="14"
                                TextWrapping="Wrap"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
@@ -466,7 +462,7 @@
                             <Run Text="speed" Foreground="HotPink"/>
                             <Run Text="!"/>
                         </TextBlock.Inlines>
-                    </TextBlock>
+                    </TextBlock>-->
                 </StackPanel>
                 <!--Genre Buttons-->
                 <Grid Grid.Column="1"
@@ -475,9 +471,10 @@
                         <RowDefinition Height="30"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Genres" 
-                               Style="{StaticResource autoDjHeader}"
-                               HorizontalAlignment="Center"/>
+                    <TextBlock  Style="{StaticResource autoDjHeader}"
+                               HorizontalAlignment="Center">
+                        <Run Text="Sort by" Foreground="{DynamicResource TextForeground}"/> Genre
+                    </TextBlock>
                     <Grid Grid.Row="1">
                         <Grid.Resources>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
@@ -505,9 +502,10 @@
                         <RowDefinition Height="30"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Speed" 
-                               Style="{StaticResource autoDjHeader}"
-                               HorizontalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource autoDjHeader}"
+                               HorizontalAlignment="Center">
+                        <Run Text="Sort by" Foreground="{DynamicResource TextForeground}"/> Speed
+                    </TextBlock>
                     <Grid Grid.Row="1">
                         <Grid.Resources>
                             <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">

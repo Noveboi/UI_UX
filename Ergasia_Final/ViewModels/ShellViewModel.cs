@@ -1,7 +1,11 @@
 ﻿using Caliburn.Micro;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,10 +22,29 @@ namespace Ergasia_Final.ViewModels
     public class ShellViewModel : Conductor<object>, IHandle<object>
     {
         private readonly IEventAggregator _events;
-        /// <summary>
-        /// By default, request the event aggregator instance for class cross-communication
-        /// </summary>
-        public ShellViewModel(IEventAggregator eventAggregator)
+
+		// Fields
+		private Stack<object> _windowStack;
+		private string _maximizeSymbol = "🗖";
+		private bool _isDarkMode = true;
+        private bool _helpOpen = false;
+
+		// Properties
+		public string MaximizeSymbol
+		{
+			get => _maximizeSymbol;
+			set
+			{
+				_maximizeSymbol = value;
+				NotifyOfPropertyChange();
+			}
+		}
+        public ICommand OpenOnlineHelp { get; private set; }
+
+		/// <summary>
+		/// By default, request the event aggregator instance for class cross-communication
+		/// </summary>
+		public ShellViewModel(IEventAggregator eventAggregator)
         {
             _events = eventAggregator;
             _events.SubscribeOnUIThread(this);
@@ -32,23 +55,9 @@ namespace Ergasia_Final.ViewModels
 
             _windowStack = new Stack<object>();
             _windowStack.Push(mainMenu);
-        }
 
-        // Properties
-        public string MaximizeSymbol
-        {
-            get => _maximizeSymbol;
-            set
-            {
-                _maximizeSymbol = value;
-                NotifyOfPropertyChange();
-            }
+            OpenOnlineHelp = new RelayCommand(ExecuteOpenOnlineHelp);
         }
-
-        // Fields
-        private Stack<object> _windowStack;
-        private string _maximizeSymbol = "🗖";
-        private bool _isDarkMode = true;
 
         // Methods
         // (Implemented from IHandle) This method runs when an event is published in IEventAggregator
@@ -92,6 +101,25 @@ namespace Ergasia_Final.ViewModels
             catch 
             { 
                 //do nothing
+            }
+        }
+
+        public void ExecuteOpenOnlineHelp()
+        {
+            if (_helpOpen) return;
+
+            try
+            {
+                string cwd = Environment.CurrentDirectory;
+                string fileName = Directory.GetParent(cwd).Parent.Parent.FullName + "\\help.html";
+				var process = new Process();
+                process.StartInfo.UseShellExecute = true;
+                process.StartInfo.FileName = fileName;
+                process.Start();
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 

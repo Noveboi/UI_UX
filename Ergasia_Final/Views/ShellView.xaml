@@ -10,6 +10,10 @@
              MinWidth="800" MinHeight="550"
              WindowStyle="None"
              ResizeMode="CanResizeWithGrip">
+    <Window.InputBindings>
+        <KeyBinding Key="F1" 
+                    Command="{Binding OpenOnlineHelp}"/>
+    </Window.InputBindings>
     <Grid Background="#937fd4">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
