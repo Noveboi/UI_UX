@@ -10,7 +10,8 @@
              xmlns:dd="urn:gong-wpf-dragdrop" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" 
              d:DataContext="{d:DesignInstance Type=viewmodels:DJViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
-             MinHeight="450" MinWidth="600">
+             MinHeight="450" MinWidth="600"
+             cal:Message.Attach="[Event Loaded] = [Action OnViewLoaded($view)]">
     <Border BorderBrush="{Binding BorderLightIndicator}" 
             BorderThickness="10" 
             Background="{DynamicResource MainBackground}">
@@ -532,9 +533,7 @@
             </Grid>
             
             <!--Media Controls-->
-            <Grid Grid.Row="1"
-                  cal:Message.Attach=
-                  "[Event Loaded] = [Action OnMediaControlsLoaded($source)]">
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -543,7 +542,7 @@
                               Source="{Binding CurrentAudioSource, 
                                        UpdateSourceTrigger=PropertyChanged}"
                               cal:Message.Attach="[Event MediaEnded] = [Action NextInQueue()];
-                                                  [Event MediaOpened] = [Action OnSongChanged()];"
+                                                  [Event MediaOpened] = [Action OnSongChanged()]"
                               LoadedBehavior="Manual" UnloadedBehavior="Manual"/>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>

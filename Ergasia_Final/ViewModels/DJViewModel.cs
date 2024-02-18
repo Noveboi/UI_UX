@@ -27,35 +27,49 @@ namespace Ergasia_Final.ViewModels
         /// EventAggregator used to send updates to the <see cref="KaraokeViewModel"/> when a new song plays
         /// </summary>
         private readonly IEventAggregator _djEvents;
-        private readonly IEventAggregator _shellEvents;
+        /// <summary>
+        /// EventAggregator used for sending/handling messages between threads within this ViewModel. 
+        /// See for example the method <see cref="StartSeekerPositionUpdateAsync(CancellationToken)"/>
+        /// </summary>
         private readonly IEventAggregator _localThreadEvents;
-        private bool karaokeOpen = false;
-        private Brush effectsButtonColor;
+
+        // Brushes and Colors
+		private Color lightsColor;
+		private Brush effectsButtonColor;
         private static readonly Brush EFFECTS_DISABLED = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
         private static readonly Brush EFFECTS_OFF = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a01039"));
         private static readonly Brush EFFECTS_ON = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#13a51d"));
+
+        // Locators for audio/images
         private static readonly Uri PLAY_IMAGE = new Uri("/Images/play.png", UriKind.Relative);
         private static readonly Uri PAUSE_IMAGE = new Uri("/Images/pause.png", UriKind.Relative);
-        private Color lightsColor;
         private Uri playPauseImage = PLAY_IMAGE;
-        private MediaElement _audioPlayer;
         private Uri currentAudioSource;
+
+        // Booleans for simple condition checking
         private bool isPlaying = false;
         private bool hasMediaOpened = false;
-        private bool hasFinishedLoading = true;
+		private bool karaokeOpen = false;
+		private bool hasFinishedLoading = true;
         private bool initialLoad = false;
         private bool userSeeking = false;
         private bool exitWhilePlaying = false;
-        private TimeSpan savedPosition = TimeSpan.MaxValue;
 
+        // Seeker-related fields
         private int currentSeekerMaximum;
         private string currentSongDuration;
         private string currentSongTime = "00:00";
-        private double currentSongTimeSpan = 0.0;
+        private double currentSongElapsedSeconds = 0.0;
 
         private CancellationTokenSource cancelSeekerPositionUpdate;
         private CancellationToken seekerCancelToken;
 
+		private MediaElement _audioPlayer;
+
+        /// <summary>
+        /// Bound to the IsEnabled property of the play/pause media control button.
+        /// This property ensures that the user does not click "Pause" before the media (audio) has finished loading.
+        /// </summary>
 		public bool PauseAvailable
         {
             get => hasFinishedLoading;
@@ -65,6 +79,10 @@ namespace Ergasia_Final.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+
+        /// <summary>
+        /// Bound to the <see cref="Slider.MaximizeValue"/> property
+        /// </summary>
         public int CurrentSeekerMaximum
         {
             get => currentSeekerMaximum;
@@ -75,16 +93,22 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public double CurrentSongTimeSpan
+        /// <summary>
+        /// Store the current song's elapsed time from the <see cref="MediaElement.Position"/> property
+        /// </summary>
+        public double CurrentSongElapsedSeconds
         {
-            get => currentSongTimeSpan;
+            get => currentSongElapsedSeconds;
             set
             {
-                currentSongTimeSpan = value;
+                currentSongElapsedSeconds = value;
                 NotifyOfPropertyChange();
             }
         }
 
+        /// <summary>
+        /// Displays the current song's duration in mm:ss format
+        /// </summary>
         public string CurrentSongDuration
         {
             get => currentSongDuration;
@@ -95,6 +119,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Displays the running song time in mm:ss format
+        /// </summary>
         public string CurrentSongTime
         {
             get => currentSongTime;
@@ -105,6 +132,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Bound [Two-Way] to the <see cref="Slider"/> (Seeker) Value property
+        /// </summary>
         public double Bpm
         {
             get => bpm;
@@ -114,7 +144,15 @@ namespace Ergasia_Final.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+
+        /// <summary>
+        /// Bound to the <see cref="DataGrid"/> of the <see cref="DJView"/>
+        /// </summary>
         public BindableCollection<SongModel> SongQueue { get; }
+
+        /// <summary>
+        /// Bound to the "Effects" button's IsEnabled property. Used for other logic concerning the karaoke window as well!
+        /// </summary>
         public bool KaraokeOpen
         {
             get => karaokeOpen;
@@ -125,6 +163,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Bound to the "Effects" button (really?? no way!)
+        /// </summary>
         public Brush EffectsButtonColor
         {
             get => effectsButtonColor;
@@ -135,6 +176,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Bound to <see cref="Xceed.Wpf.Toolkit.ColorCanvas"/>, notifies and updates the BorderBrush of the outermost Border
+        /// </summary>
         public Color LightsColor
         {
             get => lightsColor;
@@ -147,25 +191,24 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public bool IsPlaying
+        /// <summary>
+        /// Private property and not bound to anything. This boolean is responsible for changing and notifying the 
+        /// image (<see cref="PlayPauseImage"/>) used in the play/pause media control in the <see cref="DJView"/>.
+        /// </summary>
+        private bool IsPlaying
         {
             get => isPlaying;
             set
             {
                 isPlaying = value;
                 PlayPauseImage = isPlaying ? PAUSE_IMAGE : PLAY_IMAGE;
+                NotifyOfPropertyChange("PlayPauseImage");
             }
         }
-        public Uri PlayPauseImage
-        {
-            get => playPauseImage;
-            set
-            {
-                playPauseImage = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
+        
+        /// <summary>
+        /// Bound to <see cref="MediaElement.Source"/>
+        /// </summary>
         public Uri CurrentAudioSource
         {
             get => currentAudioSource;
@@ -176,16 +219,19 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public Brush BorderLightIndicator { get; set; }
+		public Uri PlayPauseImage { get; set; }
+		public Brush BorderLightIndicator { get; set; }
         #endregion
         public DJViewModel(IEventAggregator eventAggregator)
         {
+            // Instatiate EventAggregators and subscribe on the UI Thread
 			eventAggregator.SubscribeOnUIThread(this);
 			_djEvents = new EventAggregator();
 			_localThreadEvents = new EventAggregator();
 			_djEvents.SubscribeOnUIThread(this);
 			_localThreadEvents.SubscribeOnUIThread(this);
 
+            // Set a starting light color
             LightsColor = (Color)ColorConverter.ConvertFromString("#cc1188");
 
 			SongQueue = new BindableCollection<SongModel>();
@@ -196,10 +242,20 @@ namespace Ergasia_Final.ViewModels
 			UpdateSongs();
 
 			currentAudioSource = SongQueue[0].AudioPath;
-
             effectsButtonColor = EFFECTS_DISABLED;
             bpm = SongQueue[0].BPM;
         }
+
+        public void OnViewLoaded(DJView view)
+        {
+            // Grab the MediaElement control from the view
+            if (!initialLoad)
+            {
+                _audioPlayer = view.AudioPlayer;
+                initialLoad = true;
+            }
+		}
+
         #region Sort Buttons
         // The sorting is done as follows:
         //   - Create 2 lists
@@ -267,9 +323,32 @@ namespace Ergasia_Final.ViewModels
             SongQueue.Move(sourceId, targetId);
             UpdateSongs();
         }
-        #endregion
-        #region Song Queue Manipulation
-        private void UpdateSongs()
+		#endregion
+		#region Song Queue Manipulation
+
+		/// <summary>
+		/// Ensures dynamic feedback to the user when the <see cref="SongQueue"/> is manipulated
+		/// 
+		/// <para>
+		///     The changes made are the following:
+		/// <list type="bullet"> 
+		///     <item>
+		///         <see cref="SongQueue"/> RowIDs are re-initialized
+		///     </item>
+		///     <item>
+		///         After the songs are re-ordered and if <see cref="KaraokeViewModel"/> is open, a message is sent to the ViewModel
+        ///         containing the currently playing song. This allows <see cref="KaraokeViewModel"/> to change the lyrics displayed
+ 		///     </item>
+        ///     <item>
+        ///         The <see cref="Bpm"/> property (Binding with BPM Slider) is updated 
+        ///     </item>
+        ///     <item>
+        ///         The <see cref="MediaElement.Source"/> is updated
+        ///     </item>
+		/// </list>
+		/// </para>
+		/// </summary>
+		private void UpdateSongs()
         {
             SongQueue[0].RowID = "⏵";
             for (int i = 1; i < SongQueue.Count; i++)
@@ -279,12 +358,19 @@ namespace Ergasia_Final.ViewModels
             SongQueue.Refresh();
 
             // Send the current song to KaraokeViewModel (if open)
-            _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
+            if (KaraokeOpen)
+            {
+                _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
+            }
+
             Bpm = SongQueue[0].BPM;
             CurrentAudioSource = SongQueue[0].AudioPath;
         }
 
         // Use this instead of SongQueue.Add()!
+        /// <summary>
+        /// Wrapper method for <see cref="List{T}.Add(T)"/>
+        /// </summary>
         private void AddToQueue(string artistName, string title, GenreTypes genre, int bpm, string lyrics, Uri? audioPath = null)
         {
             int id = SongQueue.Count + 1;
@@ -308,6 +394,9 @@ namespace Ergasia_Final.ViewModels
 
         #endregion
         #region Karaoke 
+        /// <summary>
+        /// Open the karaoke window using the <see cref="Caliburn.Micro"/> <see cref="WindowManager"/>
+        /// </summary>
         public void OpenKaraoke()
         {
             if (!karaokeOpen)
@@ -319,6 +408,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// [OBSOLETE, IMPLEMENT IN XAML] On button Click, change the background of the button
+        /// </summary>
         public void AddVoiceEffects()
         {
             if (effectsButtonColor is null || effectsButtonColor == EFFECTS_OFF)
@@ -332,14 +424,24 @@ namespace Ergasia_Final.ViewModels
         }
         #endregion
         #region Media Controls
+
+        /// <summary>
+        /// Essentially a wrapper method for <see cref="MediaElement.Play()"/> and <see cref="MediaElement.Pause()"/>.
+        /// 
+        /// <para>
+        ///     Along with handling the pausing/playing of the audio player, it sets other local ViewModel settings for 
+        ///     reasons such as bug prevention and retaining the UI
+        /// </para>
+        /// </summary>
+        /// <returns></returns>
         public async Task PlayPause()
         {
             IsPlaying = !IsPlaying;
             if (IsPlaying)
             {
                 PauseAvailable = false || hasMediaOpened;
-                // Do NOT use _audioPlayer.Play() anywhere else!
                 _audioPlayer.Play();
+
                 if (hasMediaOpened)
                 {
                     cancelSeekerPositionUpdate = new CancellationTokenSource();
@@ -354,6 +456,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Removes the top song (currently playing) and puts it to the end of the queue
+        /// </summary>
         public void NextInQueue()
         {
             SongModel justFinished = SongQueue[0];
@@ -363,6 +468,9 @@ namespace Ergasia_Final.ViewModels
             UpdateSongs();
         }
 
+        /// <summary>
+        /// Removes the top song (currently playing) and puts it second in queue
+        /// </summary>
         public void PreviousInQueue()
         {
             int lastIndex = SongQueue.Count - 1;
@@ -373,16 +481,14 @@ namespace Ergasia_Final.ViewModels
             UpdateSongs();
         }
 
-        // Grab the MediaElement control from the View
-        public void OnMediaControlsLoaded(Grid source)
-        {
-            if (!initialLoad) 
-            { 
-                _audioPlayer = source.FindName("AudioPlayer") as MediaElement;
-                initialLoad = true;
-            }
-        }
-
+        /// <summary>
+        /// Is called when the event is fired from the audio player <see cref="MediaElement"/> 
+        /// (i.e. when the source (audio) finishes loading and is ready to play)
+        /// <para>
+        ///     The method updates properties related to song duration and seeker Maximum value
+        /// </para>
+        /// </summary>
+        /// <returns></returns>
         public async Task OnSongChanged()
         {
             CurrentSongDuration = _audioPlayer.NaturalDuration.TimeSpan.ToString("mm':'ss");
@@ -395,24 +501,22 @@ namespace Ergasia_Final.ViewModels
             await StartSeekerPositionUpdateAsync(seekerCancelToken);
         }
 
+        /// <summary>
+        /// Changes the <see cref="MediaElement"/>'s SpeedRatio property, the audio is updated automatically
+        /// </summary>
         public void ChangeBPM()
         {
             _audioPlayer.SpeedRatio = Bpm / SongQueue[0].BPM;
         }
 
         /// <summary>
-        /// When the user manually changes the seeker's position, fire.
-        /// This function fires when the MouseUp Event is fired on the Seeker Slider control.
+        /// Is called when the ValueChanged event is fired on the seeker
+        /// <para>
+        ///     Here, we are only interested in the case that the value changes WHEN the user is dragging the seeker thumb!
+        ///     If that is the case then we update the song time display (mm:ss) to reflect the seeker's current position
+        /// </para>
         /// </summary>
-        public async void OnUserSeekerValueChanged()
-        {
-            userSeeking = false;
-            _audioPlayer.Position = TimeSpan.FromSeconds(CurrentSongTimeSpan);
-            cancelSeekerPositionUpdate = new CancellationTokenSource();
-            seekerCancelToken = cancelSeekerPositionUpdate.Token;
-            await StartSeekerPositionUpdateAsync(seekerCancelToken);
-        }
-
+        /// <param name="source">The seeker control, so that we can grab its Value property</param>
         public void OnSeekerValueChanged(Slider source)
         {
             if (userSeeking)
@@ -421,7 +525,16 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public void OnUserSeeking()
+		/// <summary>
+		/// This method is called when the user starts seeking and dragging the seeker's thumb.
+		/// When MouseDown is detected on the seeker, call this method
+		/// 
+		/// <para>
+		///     The method tells the async method <see cref="StartSeekerPositionUpdateAsync(CancellationToken)"/> to stop firing periodically by cancelling
+        ///     the <see cref="CancellationTokenSource"/> associated with it.
+		/// </para>
+		/// </summary>
+		public void OnUserSeeking()
         {
             if (hasMediaOpened)
             {
@@ -431,11 +544,24 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        /// <summary>
-        /// Periodically update send messages indicating the seeker's current positions
-        /// to the UI Thread.
-        /// </summary>
-        private async Task StartSeekerPositionUpdateAsync(CancellationToken cancellationToken)
+		/// <summary>
+		/// When the user manually changes the seeker's position, call this method.
+		/// This method is called when the MouseUp Event is fired on the Seeker Slider control.
+		/// </summary>
+		public async void OnUserSeekerValueChanged()
+		{
+			userSeeking = false;
+			_audioPlayer.Position = TimeSpan.FromSeconds(CurrentSongElapsedSeconds);
+			cancelSeekerPositionUpdate = new CancellationTokenSource();
+			seekerCancelToken = cancelSeekerPositionUpdate.Token;
+			await StartSeekerPositionUpdateAsync(seekerCancelToken);
+		}
+
+		/// <summary>
+		/// Periodically update send messages indicating the seeker's current positions
+		/// to the UI Thread.
+		/// </summary>
+		private async Task StartSeekerPositionUpdateAsync(CancellationToken cancellationToken)
         {
             try
             {
@@ -454,6 +580,10 @@ namespace Ergasia_Final.ViewModels
         }
         #endregion
 		#region EventAggregator Handlers (Implemented from IHandle<TMessage>)
+
+        /// <summary>
+        /// Handles messages sent from <see cref="KaraokeViewModel"/>
+        /// </summary>
 		public Task HandleAsync(int message, CancellationToken cancellationToken)
         {
             KaraokeOpen = false;
@@ -461,6 +591,13 @@ namespace Ergasia_Final.ViewModels
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Handles messages sent from the main <see cref="IEventAggregator"/>.
+        /// <para>
+        ///     This handler is concerned with stopping/starting the <see cref="MediaElement"/> audio player 
+        ///     when the user clicks the "Previous Window" button. Without handling, the audio would continue playing on another thread.
+        /// </para>
+        /// </summary>
         public async Task HandleAsync(string message, CancellationToken cancellationToken)
         {
             if (message == "DJ Exiting!")
@@ -474,14 +611,12 @@ namespace Ergasia_Final.ViewModels
                 {
                     exitWhilePlaying = false;
                 }
-                savedPosition = _audioPlayer.Position;
             }
-            if (message == "DJ Opening!" && savedPosition != TimeSpan.MaxValue)
+            if (message == "DJ Opening!")
             {
                 if (exitWhilePlaying)
                 {
                     ChangeBPM();
-                    _audioPlayer.Position = savedPosition;
                     await PlayPause();
                 }
             }
@@ -493,7 +628,7 @@ namespace Ergasia_Final.ViewModels
         public Task HandleAsync(Tuple<string, double> message, CancellationToken cancellationToken)
         {
             CurrentSongTime = message.Item1;
-            CurrentSongTimeSpan = message.Item2;
+            CurrentSongElapsedSeconds = message.Item2;
             return Task.CompletedTask;
         }
 
