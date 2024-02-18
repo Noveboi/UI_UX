@@ -247,12 +247,11 @@ namespace Ergasia_Final.ViewModels
 
         public void OnViewLoaded(DJView view)
         {
-            // Grab the MediaElement control from the view
-            if (!initialLoad)
-            {
-                _audioPlayer = view.AudioPlayer;
-                initialLoad = true;
-            }
+            if (initialLoad) return;
+
+			// Grab the MediaElement control from the view
+			_audioPlayer = view.AudioPlayer;
+            initialLoad = true;
 		}
 
         #region Sort Buttons
@@ -349,6 +348,7 @@ namespace Ergasia_Final.ViewModels
 		/// </summary>
 		private void UpdateSongs()
         {
+            // Update Row IDs
             SongQueue[0].RowID = "⏵";
             for (int i = 1; i < SongQueue.Count; i++)
             {
@@ -398,13 +398,12 @@ namespace Ergasia_Final.ViewModels
         /// </summary>
         public void OpenKaraoke()
         {
-            if (!karaokeOpen)
-            {
-                IWindowManager manager = new WindowManager();
-                manager.ShowWindowAsync(new KaraokeViewModel(SongQueue[0], _djEvents));
-                KaraokeOpen = true;
-                EffectsButtonColor = EFFECTS_OFF;
-            }
+            if (karaokeOpen) return;
+
+            IWindowManager manager = new WindowManager();
+            manager.ShowWindowAsync(new KaraokeViewModel(SongQueue[0], _djEvents));
+            KaraokeOpen = true;
+            EffectsButtonColor = EFFECTS_OFF;
         }
 
         /// <summary>
@@ -436,6 +435,7 @@ namespace Ergasia_Final.ViewModels
         public async Task PlayPause()
         {
             IsPlaying = !IsPlaying;
+
             if (IsPlaying)
             {
                 PauseAvailable = false || hasMediaOpened;
@@ -461,8 +461,10 @@ namespace Ergasia_Final.ViewModels
         public void NextInQueue()
         {
             SongModel justFinished = SongQueue[0];
+
             SongQueue.RemoveAt(0);
             SongQueue.Add(justFinished);
+
             _audioPlayer.SpeedRatio = 1;
             UpdateSongs();
         }
@@ -474,8 +476,10 @@ namespace Ergasia_Final.ViewModels
         {
             int lastIndex = SongQueue.Count - 1;
             SongModel lastSong = SongQueue[lastIndex];
+
             SongQueue.RemoveAt(lastIndex);
             SongQueue.Insert(0, lastSong);
+
             _audioPlayer.SpeedRatio = 1;
             UpdateSongs();
         }
@@ -493,10 +497,11 @@ namespace Ergasia_Final.ViewModels
             CurrentSongDuration = _audioPlayer.NaturalDuration.TimeSpan.ToString("mm':'ss");
             CurrentSeekerMaximum = (int)_audioPlayer.NaturalDuration.TimeSpan.TotalSeconds;
 
-            cancelSeekerPositionUpdate = new CancellationTokenSource();
+			hasMediaOpened = true;
+			PauseAvailable = true;
+
+			cancelSeekerPositionUpdate = new CancellationTokenSource();
             seekerCancelToken = cancelSeekerPositionUpdate.Token;
-            hasMediaOpened = true;
-            PauseAvailable = true;
             await StartSeekerPositionUpdateAsync(seekerCancelToken);
         }
 
@@ -518,10 +523,10 @@ namespace Ergasia_Final.ViewModels
         /// <param name="source">The seeker control, so that we can grab its Value property</param>
         public void OnSeekerValueChanged(Slider source)
         {
-            if (userSeeking)
-            {
-                CurrentSongTime = TimeSpan.FromSeconds(source.Value).ToString("mm':'ss");
-            }
+            if (!userSeeking) return;
+
+            CurrentSongTime = TimeSpan.FromSeconds(source.Value).ToString("mm':'ss");
+            CurrentSongElapsedSeconds = source.Value;
         }
 
 		/// <summary>
@@ -535,12 +540,11 @@ namespace Ergasia_Final.ViewModels
 		/// </summary>
 		public void OnUserSeeking()
         {
-            if (hasMediaOpened)
-            {
-                // Stop the seeker's value from changing
-                cancelSeekerPositionUpdate.Cancel();
-                userSeeking = true;
-            }
+            if (!hasMediaOpened) return;
+
+            // Stop the seeker's value from changing
+            cancelSeekerPositionUpdate.Cancel();
+            userSeeking = true;
         }
 
 		/// <summary>
@@ -575,6 +579,9 @@ namespace Ergasia_Final.ViewModels
                     await Task.Delay(500, cancellationToken);
                 }
             } 
+            
+            // When the CancellationTokenSource is cancelled, the TaskCanceledException is caused, thus forcing
+            // the try block to exit and the method to stop execution
             catch (TaskCanceledException) { }
         }
         #endregion
@@ -599,25 +606,20 @@ namespace Ergasia_Final.ViewModels
         /// </summary>
         public async Task HandleAsync(string message, CancellationToken cancellationToken)
         {
-            if (message == "DJ Exiting!")
+			if (message == "DJ Exiting!" && IsPlaying)
             {
-                if (IsPlaying)
-                {
-                    exitWhilePlaying = true;
-                    await PlayPause();
-                }
-                else
-                {
-                    exitWhilePlaying = false;
-                }
+                exitWhilePlaying = true;
+                await PlayPause();
             }
-            if (message == "DJ Opening!")
+            else if (message == "DJ Exiting!" && !IsPlaying)
             {
-                if (exitWhilePlaying)
-                {
-                    ChangeBPM();
-                    await PlayPause();
-                }
+                exitWhilePlaying = false;
+            }
+
+            if (message == "DJ Opening!" && exitWhilePlaying)
+            {
+                ChangeBPM();
+                await PlayPause();
             }
         }
 
