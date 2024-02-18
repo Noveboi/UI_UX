@@ -30,7 +30,8 @@
             <RowDefinition Height="80"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <!--Title-->
+        
+        <!--Staff Question & Answer-->
         <StackPanel Orientation="Horizontal">
             <Image Source="/Images/singer_staff.png"
                    Margin="5 5 0 5"/>
@@ -38,7 +39,10 @@
                     HorizontalAlignment="Left" Content="Got a question?"
                     Margin="5 10 10 10"/>
         </StackPanel>
+        
+        <!--Title-->
         <TextBlock Text="Cafeteria" FontWeight="Bold" Style="{StaticResource titleStyle}"/>
+        
         <Grid Grid.Row="1">
             <!--Columns!-->
             <Grid.ColumnDefinitions>
@@ -47,11 +51,13 @@
             </Grid.ColumnDefinitions>
             <!--Column0, Menu-->
             <Grid Margin="20 20 20 0">
+                <!--Catalogue Menu-->
                 <ListView ItemsSource="{Binding Source={StaticResource source}}"
                           Background="#231242"
                           Margin="0 0 0 40"
                           SelectionMode="Single"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <!--Catalogue Group Header Style-->
                     <ListView.GroupStyle>
                         <GroupStyle>
                             <GroupStyle.ContainerStyle>
@@ -77,6 +83,8 @@
                             </GroupStyle.ContainerStyle>
                         </GroupStyle>
                     </ListView.GroupStyle>
+                    
+                    <!--Catalogue Items Style-->
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Foreground" Value="#d0d0d0"/>
@@ -88,9 +96,16 @@
                                         <Grid Background="{TemplateBinding Background}"
                                               HorizontalAlignment="Stretch"
                                               VerticalAlignment="Stretch">
+                                            <!--
+                                                Main Grid, its design is as follows:
+                                                    - Column 0 [ButtonColumn]: For the [+] button
+                                                    - Column 1: Contains a StackPanel that has the 
+                                                                Item.Name on top and the Item.OptionalDescription
+                                                                at the bottom if it's not null
+                                            -->
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition x:Name="ButtonColumn" Width="50"/>
+                                                    <ColumnDefinition x:Name="ButtonColumn" Width="0"/>
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
                                                 <Button Content="+" MinHeight="50">
@@ -116,6 +131,8 @@
                                                                FontSize="16"/>
                                                 </StackPanel>
                                             </Grid>
+
+                                            <!--Item Price Indicator (Right-most alignment)-->
                                             <TextBlock Margin="10"
                                                        HorizontalAlignment="Right">
                                                 €<Run Text="{Binding Price}" FontWeight="Bold"/>
@@ -128,8 +145,8 @@
                                             <DataTrigger Binding="{Binding AllergyWarning}" Value="True">
                                                 <Setter TargetName="ItemName" Property="Foreground" Value="#ffbb55"/>
                                             </DataTrigger>
-                                            <Trigger Property="IsMouseOver" Value="False">
-                                                <Setter TargetName="ButtonColumn" Property="Width" Value="0"/>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ButtonColumn" Property="Width" Value="50"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -143,6 +160,8 @@
                         </Style>
                     </ListView.ItemContainerStyle>
                 </ListView>
+                
+                <!--Allergy Warning Text-->
                 <TextBlock VerticalAlignment="Bottom" Margin="0 0 0 10"
                            Foreground="{DynamicResource TextForeground}"
                            TextWrapping="Wrap">
@@ -160,13 +179,20 @@
                 </Grid.RowDefinitions>
                 <Grid.Resources>
                 </Grid.Resources>
+                <!-- [Checkout Grid] Row 0 -->
                 <TextBlock Text="Your Order" FontSize="36" 
                            VerticalAlignment="Top" Style="{StaticResource titleStyle}"/>
+                <!-- [Checkout Grid] Row 1:
+                     - ListView for the user's cart
+                     - Total Price Indicator for the current order
+                 -->
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
+                    
+                    <!--Cart ListView-->
                     <ListView ItemsSource="{Binding Source={StaticResource cartSource}}"
                               Background="#222244" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.GroupStyle>
@@ -214,6 +240,8 @@
                             </GroupStyle>
                         </ListView.GroupStyle>
                     </ListView>
+                    
+                    <!--Total Price Indicator-->
                     <TextBlock Style="{DynamicResource simpleText}"
                                FontSize="22" TextAlignment="Center"
                                Grid.Row="1" VerticalAlignment="Center">

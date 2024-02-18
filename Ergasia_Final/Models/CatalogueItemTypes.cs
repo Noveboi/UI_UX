@@ -9,9 +9,9 @@ namespace Ergasia_Final.Models
     public enum CatalogueItemTypes
     {
         Coffee,
-        SoftDrink,
+        Drinks,
         Tea,
-        Snack,
-        Sweet
+        Snacks,
+        Sweets
     }
 }
