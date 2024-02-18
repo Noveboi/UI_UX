@@ -34,7 +34,7 @@ namespace Ergasia_Final.ViewModels
         private readonly IEventAggregator _localThreadEvents;
 
         // Brushes and Colors
-		private Color lightsColor;
+		private Color lightsColor = (Color)ColorConverter.ConvertFromString("#cc1188");
 		private Brush effectsButtonColor;
         private static readonly Brush EFFECTS_DISABLED = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
         private static readonly Brush EFFECTS_OFF = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a01039"));
@@ -43,7 +43,6 @@ namespace Ergasia_Final.ViewModels
         // Locators for audio/images
         private static readonly Uri PLAY_IMAGE = new Uri("/Images/play.png", UriKind.Relative);
         private static readonly Uri PAUSE_IMAGE = new Uri("/Images/pause.png", UriKind.Relative);
-        private Uri playPauseImage = PLAY_IMAGE;
         private Uri currentAudioSource;
 
         // Booleans for simple condition checking
@@ -191,11 +190,11 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        /// <summary>
-        /// Private property and not bound to anything. This boolean is responsible for changing and notifying the 
-        /// image (<see cref="PlayPauseImage"/>) used in the play/pause media control in the <see cref="DJView"/>.
-        /// </summary>
-        private bool IsPlaying
+		/// <summary>
+		/// Private property and not bound to anything. This boolean is responsible for changing and notifying the 
+		/// image (<see cref="PlayPauseImage"/>) used in the play/pause media control in the <see cref="DJView"/>.
+		/// </summary>
+		private bool IsPlaying
         {
             get => isPlaying;
             set
@@ -219,10 +218,10 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-		public Uri PlayPauseImage { get; set; }
-		public Brush BorderLightIndicator { get; set; }
-        #endregion
-        public DJViewModel(IEventAggregator eventAggregator)
+        public Uri PlayPauseImage { get; set; } = PLAY_IMAGE;
+        public Brush BorderLightIndicator { get; set; }
+		#endregion
+		public DJViewModel(IEventAggregator eventAggregator)
         {
             // Instatiate EventAggregators and subscribe on the UI Thread
 			eventAggregator.SubscribeOnUIThread(this);
@@ -231,11 +230,11 @@ namespace Ergasia_Final.ViewModels
 			_djEvents.SubscribeOnUIThread(this);
 			_localThreadEvents.SubscribeOnUIThread(this);
 
-            // Set a starting light color
-            LightsColor = (Color)ColorConverter.ConvertFromString("#cc1188");
-
 			SongQueue = new BindableCollection<SongModel>();
             PopulateUtility.AddSongs(AddToQueue);
+
+            // Set the border color
+            BorderLightIndicator = new SolidColorBrush(lightsColor);
 
             // shuffle the song queue (Blank Space first every time is annoying ( sick song tho >:] ))
             SongQueue = new BindableCollection<SongModel>(SongQueue.OrderBy(_ => Guid.NewGuid()).ToList());

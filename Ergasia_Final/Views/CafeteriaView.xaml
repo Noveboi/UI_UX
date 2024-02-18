@@ -36,6 +36,7 @@
             <Image Source="/Images/singer_staff.png"
                    Margin="5 5 0 5"/>
             <Button x:Name="OpenStaffQNA"
+                    Width="150"
                     HorizontalAlignment="Left" Content="Got a question?"
                     Margin="5 10 10 10"/>
         </StackPanel>
