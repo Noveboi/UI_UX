@@ -141,7 +141,7 @@ namespace Ergasia_Final.ViewModels
             try
             {
                 string cwd = Environment.CurrentDirectory;
-                string fileName = Directory.GetParent(cwd).Parent.Parent.FullName + "\\help.html";
+                string fileName = Directory.GetParent(cwd).Parent.Parent.FullName + "\\help\\help.html";
 
                 var process = new Process();
                 process.StartInfo.UseShellExecute = true;

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample HTML Page with Sidebar</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="applet_styles.css">
     <script src="script.js"></script>
     <style>
 
@@ -25,16 +26,38 @@
         </div>
         <a href="#" onclick="handleClickRedirect('contact.html')">Contact</a>
     </div>
-    <div class="main-content">
+<div class="main-content">
+    <h1>Choose the window you require help with!</h1>
+    <div class="window-selection">
+        <div class="window-box">
+            <a href="#">
+                <img src="img/dj.jpg">
+            </a>
+            <h3>DJ App</h3>
+        </div>
+        <div class="window-box">
+            <a href="#">
+                <img src="img/karaoke.jpg">
+            </a>
+            <h3>Karaoke</h3>
+        </div>
+    </div>
+    <h2>DJ App</h2>
+    <div class="window-help">
         
     </div>
-    <script>
-        let windowPath = window.location.pathname
-        var userCwd = windowPath.substring(0, windowPath.lastIndexOf('/'))
-        // Handle click event on <a> tags, cases:
-        //  1. The page is run on a server, a simple href attribute with the relative path is enough.
-        //  2. The page is run locally by double-clicking the HTML file, here we need to get the user's CWD
-        //     in order to properly redirect
+    <h2>Karaoke</h2>
+    <div class="window-help">
+
+    </div>
+</div>
+<script>
+    let windowPath = window.location.pathname
+    var userCwd = windowPath.substring(0, windowPath.lastIndexOf('/'))
+    // Handle click event on <a> tags, cases:
+    //  1. The page is run on a server, a simple href attribute with the relative path is enough.
+    //  2. The page is run locally by double-clicking the HTML file, here we need to get the user's CWD
+    //     in order to properly redirect
     function handleClickRedirect(pageFile) {
         if (userCwd == "") {
             window.location.href = pageFile
@@ -43,6 +66,6 @@
             window.location.href = redirect
         }
     }
-    </script>
+</script>
 </body>
 </html>

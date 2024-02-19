@@ -12,54 +12,68 @@
 </head>
 <body>
 
-<div class="sidebar">
-    <h1>Modern Museum of Music Artists</h1>
-    <a href="/help.html">Home</a>
-    <div class="menu-item" id="applets-expander">
-        <a href="#">Applets</a>
-        <div class="sub-menu">
-            <a href="/upcon.html">Upcoming Concerts</a>
-            <a href="/exhall.html">Exhibition Hall</a>
-            <a href="/vroom.html">Viewing Room</a>
-            <a href="/dj.html">DJ</a>
+    <div class="sidebar">
+        <h1>Modern Museum of Music Artists</h1>
+        <a href="#" onclick="handleClickRedirect('help.html')">Home</a>
+        <div class="menu-item" id="applets-expander">
+            <a href="#">Applets</a>
+            <div class="sub-menu">
+                <a href="#" onclick="handleClickRedirect('upcon.html')">Upcoming Concerts</a>
+                <a href="#" onclick="handleClickRedirect('exhall.html')">Exhibition Hall</a>
+                <a href="#" onclick="handleClickRedirect('vroom.html')">Viewing Room</a>
+                <a href="#" onclick="handleClickRedirect('dj.html')">DJ</a>
+            </div>
+        </div>
+        <a href="#" onclick="handleClickRedirect('contact.html')">Contact</a>
+    </div>
+    <div class="main-content">
+        <h1>Welcome to the Museum's help page!</h1>
+        <p>
+            Here you can find resources that will assist you with anything that has to do with the museum's application!
+            In the case you still have questions or need help, despite the page's offerings, you can 
+            <a href="/contact.html"><b>contact</b></a> museum staff for assistance.
+        </p>
+        <h2>Application Layout</h2>
+        <p>
+            The museum's application has <b>4 applets</b> that each serve a different function and provide the visitors 
+            with a unique experience! 
+        </p>
+        <h3>Museum Concerts</h3>
+        <div class="showcase">
+            <img src="img/upCon.jpg">
+            <img src="img/concertTickets.jpg">
+        </div>
+        <h3>Exhibition Hall</h3>
+        <div class="showcase">
+            <img src="img/exHall.jpg">
+        </div>
+        <h3>Viewing Room</h3>
+        <div class="showcase">
+            <img src="img/vroom.jpg">
+            <img src="img/artistHall.jpg">
+            <img src="img/cafeteria.jpg">
+        </div>
+        <h3>Digital DJ</h3>
+        <div class="showcase">
+            <img src="img/dj.jpg">
+            <img src="img/karaoke.jpg">
         </div>
     </div>
-    <a href="/contact.html">Contact</a>
-</div>
-
-<div class="main-content">
-    <h1>Welcome to the Museum's help page!</h1>
-    <p>
-        Here you can find resources that will assist you with anything that has to do with the museum's application!
-        In the case you still have questions or need help, despite the page's offerings, you can 
-        <a href="/contact.html"><b>contact</b></a> museum staff for assistance.
-    </p>
-    <h2>Application Layout</h2>
-    <p>
-        The museum's application has <b>4 applets</b> that each serve a different function and provide the visitors 
-        with a unique experience! 
-    </p>
-    <h3>Museum Concerts</h3>
-    <div class="showcase">
-        <img src="img/upCon.jpg">
-        <img src="img/concertTickets.jpg">
-    </div>
-    <h3>Exhibition Hall</h3>
-    <div class="showcase">
-        <img src="img/exHall.jpg">
-    </div>
-    <h3>Viewing Room</h3>
-    <div class="showcase">
-        <img src="img/vroom.jpg">
-        <img src="img/artistHall.jpg">
-        <img src="img/cafeteria.jpg">
-    </div>
-    <h3>Digital DJ</h3>
-    <div class="showcase">
-        <img src="img/dj.jpg">
-        <img src="img/karaoke.jpg">
-    </div>
-</div>
-
+<script>
+    let windowPath = window.location.pathname
+    var userCwd = windowPath.substring(0, windowPath.lastIndexOf('/'))
+    // Handle click event on <a> tags, cases:
+    //  1. The page is run on a server, a simple href attribute with the relative path is enough.
+    //  2. The page is run locally by double-clicking the HTML file, here we need to get the user's CWD
+    //     in order to properly redirect
+    function handleClickRedirect(pageFile) {
+        if (userCwd == "") {
+            window.location.href = pageFile
+        } else {
+            var redirect = userCwd + "/" + pageFile
+            window.location.href = redirect
+        }
+    }
+</script>
 </body>
 </html>
