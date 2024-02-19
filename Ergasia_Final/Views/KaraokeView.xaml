@@ -4,7 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ergasia_Final.Views"
-        xmlns:cal="http://www.caliburnproject.org" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:KaraokeViewModel}"
+        xmlns:cal="http://www.caliburnproject.org" 
+        xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:KaraokeViewModel}"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="Karaoke" Height="600" Width="600"
         MinHeight="450" MinWidth="400"
@@ -96,15 +99,74 @@
                     <Run Text=" Ratings"/>
                 </TextBlock.Inlines>
             </TextBlock>
-            <TextBox Grid.Row="2"
-                     Margin="30" MaxHeight="100"
-                     FontSize="48"
-                     Text="{Binding RateText, 
-                            Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}"
-                     cal:Message.Attach="[Event KeyDown] = [Action OnRatingKeyDown($eventArgs)]"
-                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-            </TextBox>
+            <StackPanel Grid.Row="2" VerticalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Height" Value="60"/>
+                        <Setter Property="Width" Value="60"/>
+                        <Setter Property="Margin" Value="10"/>
+                        <Setter Property="Background" Value="#8833ac"/>
+                        <Setter Property="Foreground" Value="#f0f0f0"/>
+                        <Setter Property="BorderBrush" Value="#dfd0ff"/>
+                        <Setter Property="FontFamily" Value="Gloucester MT"/>
+                        <Setter Property="FontSize" Value="26"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <Grid>
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                              HorizontalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <EventTrigger RoutedEvent="Click">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimationUsingKeyFrames 
+                                                        Storyboard.TargetProperty="Background.Color">
+                                                        <LinearColorKeyFrame KeyTime="0:0:0"
+                                                                              Value="#a853cc"/>
+                                                        <LinearColorKeyFrame KeyTime="0:0:0.1"
+                                                                             Value="#d8c8fc"/>
+                                                        <LinearColorKeyFrame KeyTime="0:0:0.4"
+                                                                             Value="#a853cc"/>
+                                                    </ColorAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="cal:Message.Attach" 
+                                Value="[Event Click] = [Action OnRateButtonClick($source)]">
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#a853cc"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <Button Content="1"/>
+                    <Button Content="2"/>
+                    <Button Content="3"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <Button Content="4"/>
+                    <Button Content="5"/>
+                </StackPanel>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

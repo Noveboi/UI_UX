@@ -1,9 +1,6 @@
 ﻿using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ergasia_Final.Models;
+using System.Windows.Controls;
 
 namespace Ergasia_Final.ViewModels
 {
@@ -14,5 +11,17 @@ namespace Ergasia_Final.ViewModels
         {
             _eventAggregator = eventAggregator;
         }
-    }
+
+        public void OpenFoodAndDrink()
+        {
+            // Keep a singleton instance of CafeteriaViewModel in order to maintain the user's order state
+            _eventAggregator.PublishOnUIThreadAsync(WindowFactory.RequestViewModel<CafeteriaViewModel>(_eventAggregator));
+        }
+
+        public void GoToArtistHall(Button source)
+        {
+            _eventAggregator.PublishOnUIThreadAsync(new ArtistHallViewModel(source.Name));
+        }
+
+	}
 }

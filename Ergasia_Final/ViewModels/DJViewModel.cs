@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
+using CommunityToolkit.Mvvm.Input;
 using Ergasia_Final.Models;
+using Ergasia_Final.Utilities;
 using Ergasia_Final.Views;
 using GongSolutions.Wpf.DragDrop;
 using Microsoft.Xaml.Behaviors.Core;
@@ -25,37 +27,49 @@ namespace Ergasia_Final.ViewModels
         /// EventAggregator used to send updates to the <see cref="KaraokeViewModel"/> when a new song plays
         /// </summary>
         private readonly IEventAggregator _djEvents;
-        private readonly IEventAggregator _shellEvents;
+        /// <summary>
+        /// EventAggregator used for sending/handling messages between threads within this ViewModel. 
+        /// See for example the method <see cref="StartSeekerPositionUpdateAsync(CancellationToken)"/>
+        /// </summary>
         private readonly IEventAggregator _localThreadEvents;
-        private bool karaokeOpen = false;
-        private Brush effectsButtonColor;
+
+        // Brushes and Colors
+		private Color lightsColor = (Color)ColorConverter.ConvertFromString("#cc1188");
+		private Brush effectsButtonColor;
         private static readonly Brush EFFECTS_DISABLED = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#666666"));
         private static readonly Brush EFFECTS_OFF = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#a01039"));
         private static readonly Brush EFFECTS_ON = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#13a51d"));
+
+        // Locators for audio/images
         private static readonly Uri PLAY_IMAGE = new Uri("/Images/play.png", UriKind.Relative);
         private static readonly Uri PAUSE_IMAGE = new Uri("/Images/pause.png", UriKind.Relative);
-        private Color lightsColor;
-        private Uri playPauseImage = PLAY_IMAGE;
-        private MediaElement _audioPlayer;
         private Uri currentAudioSource;
+
+        // Booleans for simple condition checking
         private bool isPlaying = false;
         private bool hasMediaOpened = false;
-        private bool hasFinishedLoading = true;
+		private bool karaokeOpen = false;
+		private bool hasFinishedLoading = true;
         private bool initialLoad = false;
         private bool userSeeking = false;
         private bool exitWhilePlaying = false;
-        private TimeSpan savedPosition = TimeSpan.MaxValue;
 
+        // Seeker-related fields
         private int currentSeekerMaximum;
         private string currentSongDuration;
         private string currentSongTime = "00:00";
-        private double currentSongTimeSpan = 0.0;
+        private double currentSongElapsedSeconds = 0.0;
 
         private CancellationTokenSource cancelSeekerPositionUpdate;
         private CancellationToken seekerCancelToken;
 
+		private MediaElement _audioPlayer;
 
-        public bool PauseAvailable
+        /// <summary>
+        /// Bound to the IsEnabled property of the play/pause media control button.
+        /// This property ensures that the user does not click "Pause" before the media (audio) has finished loading.
+        /// </summary>
+		public bool PauseAvailable
         {
             get => hasFinishedLoading;
             set
@@ -64,6 +78,10 @@ namespace Ergasia_Final.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+
+        /// <summary>
+        /// Bound to the <see cref="Slider.MaximizeValue"/> property
+        /// </summary>
         public int CurrentSeekerMaximum
         {
             get => currentSeekerMaximum;
@@ -74,16 +92,22 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public double CurrentSongTimeSpan
+        /// <summary>
+        /// Store the current song's elapsed time from the <see cref="MediaElement.Position"/> property
+        /// </summary>
+        public double CurrentSongElapsedSeconds
         {
-            get => currentSongTimeSpan;
+            get => currentSongElapsedSeconds;
             set
             {
-                currentSongTimeSpan = value;
+                currentSongElapsedSeconds = value;
                 NotifyOfPropertyChange();
             }
         }
 
+        /// <summary>
+        /// Displays the current song's duration in mm:ss format
+        /// </summary>
         public string CurrentSongDuration
         {
             get => currentSongDuration;
@@ -94,6 +118,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Displays the running song time in mm:ss format
+        /// </summary>
         public string CurrentSongTime
         {
             get => currentSongTime;
@@ -104,6 +131,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Bound [Two-Way] to the <see cref="Slider"/> (Seeker) Value property
+        /// </summary>
         public double Bpm
         {
             get => bpm;
@@ -113,7 +143,15 @@ namespace Ergasia_Final.ViewModels
                 NotifyOfPropertyChange();
             }
         }
+
+        /// <summary>
+        /// Bound to the <see cref="DataGrid"/> of the <see cref="DJView"/>
+        /// </summary>
         public BindableCollection<SongModel> SongQueue { get; }
+
+        /// <summary>
+        /// Bound to the "Effects" button's IsEnabled property. Used for other logic concerning the karaoke window as well!
+        /// </summary>
         public bool KaraokeOpen
         {
             get => karaokeOpen;
@@ -124,6 +162,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Bound to the "Effects" button (really?? no way!)
+        /// </summary>
         public Brush EffectsButtonColor
         {
             get => effectsButtonColor;
@@ -134,6 +175,9 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        /// <summary>
+        /// Bound to <see cref="Xceed.Wpf.Toolkit.ColorCanvas"/>, notifies and updates the BorderBrush of the outermost Border
+        /// </summary>
         public Color LightsColor
         {
             get => lightsColor;
@@ -146,25 +190,24 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public bool IsPlaying
+		/// <summary>
+		/// Private property and not bound to anything. This boolean is responsible for changing and notifying the 
+		/// image (<see cref="PlayPauseImage"/>) used in the play/pause media control in the <see cref="DJView"/>.
+		/// </summary>
+		private bool IsPlaying
         {
             get => isPlaying;
             set
             {
                 isPlaying = value;
                 PlayPauseImage = isPlaying ? PAUSE_IMAGE : PLAY_IMAGE;
+                NotifyOfPropertyChange("PlayPauseImage");
             }
         }
-        public Uri PlayPauseImage
-        {
-            get => playPauseImage;
-            set
-            {
-                playPauseImage = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
+        
+        /// <summary>
+        /// Bound to <see cref="MediaElement.Source"/>
+        /// </summary>
         public Uri CurrentAudioSource
         {
             get => currentAudioSource;
@@ -175,30 +218,42 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
+        public Uri PlayPauseImage { get; set; } = PLAY_IMAGE;
         public Brush BorderLightIndicator { get; set; }
-        #endregion
-        public DJViewModel(IEventAggregator eventAggregator)
+		#endregion
+		public DJViewModel(IEventAggregator eventAggregator)
         {
+            // Instatiate EventAggregators and subscribe on the UI Thread
 			eventAggregator.SubscribeOnUIThread(this);
 			_djEvents = new EventAggregator();
 			_localThreadEvents = new EventAggregator();
 			_djEvents.SubscribeOnUIThread(this);
 			_localThreadEvents.SubscribeOnUIThread(this);
 
-            LightsColor = (Color)ColorConverter.ConvertFromString("#cc1188");
-
 			SongQueue = new BindableCollection<SongModel>();
-            AddSongs();
+            PopulateUtility.AddSongs(AddToQueue);
+
+            // Set the border color
+            BorderLightIndicator = new SolidColorBrush(lightsColor);
 
             // shuffle the song queue (Blank Space first every time is annoying ( sick song tho >:] ))
             SongQueue = new BindableCollection<SongModel>(SongQueue.OrderBy(_ => Guid.NewGuid()).ToList());
 			UpdateSongs();
 
 			currentAudioSource = SongQueue[0].AudioPath;
-
             effectsButtonColor = EFFECTS_DISABLED;
             bpm = SongQueue[0].BPM;
         }
+
+        public void OnViewLoaded(DJView view)
+        {
+            if (initialLoad) return;
+
+			// Grab the MediaElement control from the view
+			_audioPlayer = view.AudioPlayer;
+            initialLoad = true;
+		}
+
         #region Sort Buttons
         // The sorting is done as follows:
         //   - Create 2 lists
@@ -266,10 +321,34 @@ namespace Ergasia_Final.ViewModels
             SongQueue.Move(sourceId, targetId);
             UpdateSongs();
         }
-        #endregion
-        #region Song Queue Manipulation
-        private void UpdateSongs()
+		#endregion
+		#region Song Queue Manipulation
+
+		/// <summary>
+		/// Ensures dynamic feedback to the user when the <see cref="SongQueue"/> is manipulated
+		/// 
+		/// <para>
+		///     The changes made are the following:
+		/// <list type="bullet"> 
+		///     <item>
+		///         <see cref="SongQueue"/> RowIDs are re-initialized
+		///     </item>
+		///     <item>
+		///         After the songs are re-ordered and if <see cref="KaraokeViewModel"/> is open, a message is sent to the ViewModel
+        ///         containing the currently playing song. This allows <see cref="KaraokeViewModel"/> to change the lyrics displayed
+ 		///     </item>
+        ///     <item>
+        ///         The <see cref="Bpm"/> property (Binding with BPM Slider) is updated 
+        ///     </item>
+        ///     <item>
+        ///         The <see cref="MediaElement.Source"/> is updated
+        ///     </item>
+		/// </list>
+		/// </para>
+		/// </summary>
+		private void UpdateSongs()
         {
+            // Update Row IDs
             SongQueue[0].RowID = "⏵";
             for (int i = 1; i < SongQueue.Count; i++)
             {
@@ -278,12 +357,19 @@ namespace Ergasia_Final.ViewModels
             SongQueue.Refresh();
 
             // Send the current song to KaraokeViewModel (if open)
-            _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
+            if (KaraokeOpen)
+            {
+                _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
+            }
+
             Bpm = SongQueue[0].BPM;
             CurrentAudioSource = SongQueue[0].AudioPath;
         }
 
         // Use this instead of SongQueue.Add()!
+        /// <summary>
+        /// Wrapper method for <see cref="List{T}.Add(T)"/>
+        /// </summary>
         private void AddToQueue(string artistName, string title, GenreTypes genre, int bpm, string lyrics, Uri? audioPath = null)
         {
             int id = SongQueue.Count + 1;
@@ -305,436 +391,24 @@ namespace Ergasia_Final.ViewModels
             SongQueue.Add(song);
         }
 
-        public void AddSongs()
-        {
-            AddToQueue("Taylor Swift", "Blank Space", GenreTypes.Pop, 96,
-                @"Nice to meet you, where you been?
-I could show you incredible things
-Magic, madness, heaven, sin
-Saw you there and I thought
-""Oh, my God, look at that face
-You look like my next mistake
-Love's a game, wanna play?"" Ay
-
-New money, suit and tie
-I can read you like a magazine
-Ain't it funny? Rumors fly
-And I know you heard about me
-So hey, let's be friends
-I'm dying to see how this one ends
-Grab your passport and my hand
-I can make the bad guys good for a weekend
-
-So it's gonna be forever
-Or it's gonna go down in flames
-You can tell me when it's over, mm
-If the high was worth the pain
-Got a long list of ex-lovers
-They'll tell you I'm insane
-'Cause you know I love the players
-And you love the game
-
-'Cause we're young, and we're reckless
-We'll take this way too far
-It'll leave you breathless, mm
-Or with a nasty scar
-Got a long list of ex-lovers
-They'll tell you I'm insane
-But I've got a blank space, baby
-And I'll write your name
-
-Cherry lips, crystal skies
-I could show you incredible things
-Stolen kisses, pretty lies
-You're the King, baby, I'm your Queen
-Find out what you want
-Be that girl for a month
-Wait, the worst is yet to come, oh, no
-
-Screaming, crying, perfect storms
-I can make all the tables turn
-Rose garden filled with thorns
-Keep you second guessing like
-""Oh, my God, who is she?""
-I get drunk on jealousy
-But you'll come back each time you leave
-'Cause, darling, I'm a nightmare dressed like a daydream
-
-So it's gonna be forever
-Or it's gonna go down in flames
-You can tell me when it's over, mm
-If the high was worth the pain
-Got a long list of ex-lovers
-They'll tell you I'm insane
-'Cause you know I love the players
-And you love the game
-
-'Cause we're young, and we're reckless (oh)
-We'll take this way too far
-It'll leave you breathless, mm (oh)
-Or with a nasty scar
-Got a long list of ex-lovers
-They'll tell you I'm insane (insane)
-But I've got a blank space, baby
-And I'll write your name
-
-Boys only want love if it's torture
-Don't say I didn't, say I didn't warn ya
-Boys only want love if it's torture
-Don't say I didn't, say I didn't warn ya
-
-So it's gonna be forever
-Or it's gonna go down in flames
-You can tell me when it's over (over)
-If the high was worth the pain
-Got a long list of ex-lovers
-They'll tell you I'm insane (I'm insane)
-'Cause you know I love the players
-And you love the game
-
-'Cause we're young, and we're reckless
-We'll take this way too far (ooh)
-It'll leave you breathless, mm
-Or with a nasty scar (leave a nasty scar)
-Got a long list of ex-lovers
-They'll tell you I'm insane
-But I've got a blank space, baby
-And I'll write your name", new Uri("./Audio/ts_blankSpace.mp3", UriKind.RelativeOrAbsolute));
-
-            AddToQueue("alt-J", "Fitzpleasure", GenreTypes.Rock, 144,
-                @"Tra la la tra la tra-ah la
-La
-Tra la la tra la tra-ah la
-La
-Tra la la tra la tra-ah la
-La
-Tra la la tra la tra-ah
-In your snatch fitzpleasure
-Broom-shaped pleasure
-
-Deep greedy and googling every corner
-La tra la tra-ah la
-La la la la la la la
-
-Dead in the middle
-Of the C-O double M-O-N
-Little did I know then
-That the Mandela Boys soon become Mandela Men
-Tall woman
-Pull the pylons down
-And wrap them around the necks
-Of all the feckless men that queue to be the next
-
-Steepled fingers
-Ring la la la la la la la la leaders
-Queue jumpers
-Rock fist paper scissors, la la la la la la lingered fluffers (the choir)
-In your hoof lies the heartland
-Where we tent for our treasure, pleasure, leisure
-Les yeux, it's all in your eyes
-In your snatch fitzpleasure
-A broom-shaped pleasure
-
-Deep greedy and googling every corner
-Tra la la tra la tra-ah la
-La la la la la la la
-Ohhhhhhh
-Blended by the lights", new Uri("./Audio/altj_fitzpleasure.mp3", UriKind.RelativeOrAbsolute));
-
-            AddToQueue("Daft Punk", "Digital Love", GenreTypes.Dance, 120,
-                @"Last night I had a dream about you
-In this dream I'm dancing right beside you
-And it looked like everyone was having fun
-the kind of feeling I've waited so long
-
-Don't stop, come a little closer
-As we jam the rhythm gets stronger
-There's nothing wrong with just a little, little fun
-We were dancing all night long
-
-The time is right
-To put my arms around you
-You're feeling right
-You wrap your arms around too
-But suddenly I feel the shining sun
-Before I knew it this dream was all gone
-
-Oh, I don't know what to do
-About this dream and you
-I wish this dream comes true
-
-Oh, I don't know what to do
-About this dream and you
-We'll make this dream come true
-
-Why don't you play the game?
-Why don't you play the game?", new Uri("./Audio/dp_digitalLove.mp3", UriKind.RelativeOrAbsolute));
-
-            AddToQueue("M83", "Midnight City", GenreTypes.Dance, 105,
-                @"Waiting in a car
-Waiting for a ride in the dark
-The night city grows
-Look at the horizon glow
-
-Waiting in a car
-Waiting for a ride in the dark
-Drinking in the lounge
-Following the neon signs
-
-Waiting for a word
-Looking at the milky skyline
-The city is my church (city is my church)
-It wraps me in its blinding twilight
-
-Waiting in a car
-Waiting for the right time
-Waiting in a car
-Waiting for the right time
-
-Waiting in a car
-Waiting for the right time
-Waiting in a car
-Waiting for the right time
-
-Waiting in a car
-Waiting for the right time", new Uri("./Audio/m83_midnightCity.mp3", UriKind.RelativeOrAbsolute));
-
-            AddToQueue("Taylor Swift", "Don't Blame Me", GenreTypes.Pop, 136,
-                @"Don't blame me, love made me crazy
-If it doesn't, you ain't doin' it right
-Lord, save me, my drug is my baby
-I'll be usin' for the rest of my life
-
-I've been breakin' hearts a long time
-And, toyin' with them older guys
-Just playthings for me to use
-Something happened for the first time
-In the darkest little paradise
-Shakin', pacin', I just need you
-
-For you, I would cross the line
-I would waste my time
-I would lose my mind
-They say, she's gone too far this time
-
-Don't blame me, love made me crazy
-If it doesn't, you ain't doin' it right
-Lord, save me, my drug is my baby
-I'll be usin' for the rest of my life
-
-Don't blame me, love made me crazy
-If it doesn't, you ain't doin' it right
-Oh, Lord, save me, my drug is my baby
-I'll be usin' for the rest of my life
-
-My name is whatever you decide, and
-I'm just gonna call you mine
-I'm insane, but I'm your baby
-(Your baby)
-Echoes (echoes), of your name inside my mind
-Halo, hiding my obsession
-I once was poison ivy, but now I'm your daisy
-
-And baby, for you, I would fall from grace
-Just to touch your face
-If you walk away
-I'd beg you on my knees to stay
-
-Don't blame me, love made me crazy
-If it doesn't, you ain't doin' it right
-Lord, save me, my drug is my baby
-I'll be usin' for the rest of my life (yeah, ooh)
-
-Don't blame me, love made me crazy
-If it doesn't, you ain't doin' it right
-Oh, Lord, save me, my drug is my baby
-I'll be usin' for the rest of my life
-
-I get so high, oh!
-Every time you're, every time you're lovin' me
-You're lovin' me
-Trip of my life, oh!
-Every time you're, every time you're touchin' me
-You're touchin' me
-Every time you're, every time you're lovin' me
-
-Oh, Lord, save me, my drug is my baby
-I'll be using for the rest of my life
-(Using for the rest of my life, oh!)
-
-Don't blame me, love made me crazy
-If it doesn't, you ain't doin' it right
-(Doin' it right, no)
-Lord, save me, my drug is my baby
-I'll be usin' for the rest of my life (oh-oh)
-
-Don't blame me, love made me crazy
-If it doesn't, you ain't doin' it right
-(You ain't doin' it right)
-Oh, Lord, save me, my drug is my baby
-I'll be usin' (I'll be usin') for the rest of my life (oh, I'll be usin')
-
-I get so high, oh!
-Every time you're, every time you're lovin' me
-You're lovin' me
-Oh, Lord, save me, my drug is my baby
-I'll be usin' for the rest of my life", new Uri("./Audio/ts_dontBlameMe.mp3", UriKind.RelativeOrAbsolute));
-
-            AddToQueue("Arctic Monkeys", "Knee Socks", GenreTypes.Rock, 98,
-                @"You got the lights on in the afternoon
-And the nights are drawn out long
-And you're kissing to cut through the gloom
-With a cough-drop-coloured tongue
-And you were sitting in the corner with the coats all piled high
-And I thought you might be mine
-In a small world on an exceptionally rainy Tuesday night
-In the right place and time
-
-When the zeros line up on the 24 hour clock
-When you know who's calling even though the number is blocked
-When you walked around your house wearing my sky blue Lacoste
-And your knee socks
-
-Well you cured my January blues
-Yeah you made it all alright
-I got a feeling I might have lit the very fuse
-That you were trying not to light
-You were a stranger in my phone book I was acting like I knew
-'Cause I had nothing to lose
-When the winter's in full swing and your dreams just aren't coming true
-Ain't it funny what you'll do
-
-When the zeros line up on the 24 hour clock
-When you know who's calling even though the number is blocked
-When you walked around your house wearing my sky blue Lacoste
-And your knee socks
-
-The late afternoon
-The ghost in your room that you always thought didn't approve of you knocking boots
-Never stopped you letting me get hold of the sweet spot by the scruff of your
-Knee socks
-
-You and me could have been a team
-Each had a half of a king and queen seat
-Like the beginning of Mean Streets
-You could Be My Baby
-[4x]
-
-(All the zeros lined up but the number's blocked when you've come undone)
-
-When the zeros line up on the 24 hour clock
-When you know who's calling even though the number is blocked
-When you walked around your house wearing my sky blue Lacoste
-And your knee socks
-[2x]", new Uri("./Audio/am_kneeSocks.mp3", UriKind.RelativeOrAbsolute));
-
-            AddToQueue("alt-J", "Breezeblocks", GenreTypes.Rock, 150, @"She may contain the urge to run away
-But hold her down with soggy clothes and breezeblocks
-Citrezene, your fevers gripped me again
-Never kisses, all you ever send are fullstops
-(La la la la)
-
-Do you know where the wild things go?
-They go along to take your honey
-(La la la la)
-Break down, now weep
-Build up breakfast, now let's eat
-My love, my love, love, love
-(La la la la)
-
-Muscle to muscle and toe to toe
-The fear has gripped me but here I go
-My heart sinks as I jump up
-Your hand grips hand as my eyes shut
-
-Do you know where the wild things go?
-They go along to take our honey
-(La la la la)
-Break down, now sleep
-Build up breakfast now let's eat
-My love, my love, love, love
-
-She bruises, coughs, she splutters pistol shots
-Hold her down with soggy clothes and breezeblocks
-(La la la la)
-She's morphine, queen of my vaccine
-My love, my love, love, love
-(La la la la)
-
-Muscle to muscle and toe to toe
-The fear has gripped me but here I go
-My heart sinks as I jump up
-Your hand grips hand as my eyes shut
-
-She may contain the urge to runaway
-But hold her down with soggy clothes and breezeblocks
-Germaline, disinfect the scene
-My love, my love, love, love
-Please don't go
-I love you so
-My lovely
-
-Please don't go, please don't go
-I love you so, I love you so
-Please don't go, please don't go
-I love you so, I love you so
-Please break my heart (hey)
-
-Please don't go, please don't go
-I love you so, I love you so
-Please don't go, please don't go
-I love you so, I love you so
-Please break my heart
-
-Please don't go
-(Please don't go) I'll eat you whole
-(I'll eat you whole) I love you so
-(I love you so) I love you so, I love you so
-(I love you so, I love you so) please don't go
-(Please don't go) I'll eat you whole
-(I'll eat you whole) I love you so
-(I love you so)
-
-(I love you so, I love you so) please don't go
-(Please don't go) I'll eat you whole
-(I'll eat you whole) I love you so
-(I love you so) I love you so, I love you so
-(I love you so, I love you so) please don't go
-(Please don't go) I'll eat you whole
-(I'll eat you whole) I love you so
-(I love you so)
-
-(I love you so, I love you so) please don't go
-(Please don't go) I'll eat you whole
-(I'll eat you whole) I love you so
-(I love you so) I love you so, I love you so
-(I love you so, I love you so) please don't go
-(Please don't go) I'll eat you whole
-(I'll eat you whole) I love you so
-(I love you so)
-
-(I love you so, I love you so) please don't go
-I'll eat you whole
-I love you so
-I love you so, I love you so
-Please don't go
-I'll eat you whole
-I love you so
-I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.RelativeOrAbsolute));
-        }
         #endregion
         #region Karaoke 
+        /// <summary>
+        /// Open the karaoke window using the <see cref="Caliburn.Micro"/> <see cref="WindowManager"/>
+        /// </summary>
         public void OpenKaraoke()
         {
-            if (!karaokeOpen)
-            {
-                IWindowManager manager = new WindowManager();
-                manager.ShowWindowAsync(new KaraokeViewModel(SongQueue[0], _djEvents));
-                KaraokeOpen = true;
-                EffectsButtonColor = EFFECTS_OFF;
-            }
+            if (karaokeOpen) return;
+
+            IWindowManager manager = new WindowManager();
+            manager.ShowWindowAsync(new KaraokeViewModel(SongQueue[0], _djEvents));
+            KaraokeOpen = true;
+            EffectsButtonColor = EFFECTS_OFF;
         }
 
+        /// <summary>
+        /// [OBSOLETE, IMPLEMENT IN XAML] On button Click, change the background of the button
+        /// </summary>
         public void AddVoiceEffects()
         {
             if (effectsButtonColor is null || effectsButtonColor == EFFECTS_OFF)
@@ -748,14 +422,25 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
         }
         #endregion
         #region Media Controls
+
+        /// <summary>
+        /// Essentially a wrapper method for <see cref="MediaElement.Play()"/> and <see cref="MediaElement.Pause()"/>.
+        /// 
+        /// <para>
+        ///     Along with handling the pausing/playing of the audio player, it sets other local ViewModel settings for 
+        ///     reasons such as bug prevention and retaining the UI
+        /// </para>
+        /// </summary>
+        /// <returns></returns>
         public async Task PlayPause()
         {
             IsPlaying = !IsPlaying;
+
             if (IsPlaying)
             {
                 PauseAvailable = false || hasMediaOpened;
-                // Do NOT use _audioPlayer.Play() anywhere else!
                 _audioPlayer.Play();
+
                 if (hasMediaOpened)
                 {
                     cancelSeekerPositionUpdate = new CancellationTokenSource();
@@ -770,88 +455,117 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
             }
         }
 
+        /// <summary>
+        /// Removes the top song (currently playing) and puts it to the end of the queue
+        /// </summary>
         public void NextInQueue()
         {
             SongModel justFinished = SongQueue[0];
+
             SongQueue.RemoveAt(0);
             SongQueue.Add(justFinished);
+
             _audioPlayer.SpeedRatio = 1;
             UpdateSongs();
         }
 
+        /// <summary>
+        /// Removes the top song (currently playing) and puts it second in queue
+        /// </summary>
         public void PreviousInQueue()
         {
             int lastIndex = SongQueue.Count - 1;
             SongModel lastSong = SongQueue[lastIndex];
+
             SongQueue.RemoveAt(lastIndex);
             SongQueue.Insert(0, lastSong);
+
             _audioPlayer.SpeedRatio = 1;
             UpdateSongs();
         }
 
-        // Grab the MediaElement control from the View
-        public void OnMediaControlsLoaded(Grid source)
-        {
-            if (!initialLoad) 
-            { 
-                _audioPlayer = source.FindName("AudioPlayer") as MediaElement;
-                initialLoad = true;
-            }
-        }
-
+        /// <summary>
+        /// Is called when the event is fired from the audio player <see cref="MediaElement"/> 
+        /// (i.e. when the source (audio) finishes loading and is ready to play)
+        /// <para>
+        ///     The method updates properties related to song duration and seeker Maximum value
+        /// </para>
+        /// </summary>
+        /// <returns></returns>
         public async Task OnSongChanged()
         {
             CurrentSongDuration = _audioPlayer.NaturalDuration.TimeSpan.ToString("mm':'ss");
             CurrentSeekerMaximum = (int)_audioPlayer.NaturalDuration.TimeSpan.TotalSeconds;
 
-            cancelSeekerPositionUpdate = new CancellationTokenSource();
+			hasMediaOpened = true;
+			PauseAvailable = true;
+
+			cancelSeekerPositionUpdate = new CancellationTokenSource();
             seekerCancelToken = cancelSeekerPositionUpdate.Token;
-            hasMediaOpened = true;
-            PauseAvailable = true;
             await StartSeekerPositionUpdateAsync(seekerCancelToken);
         }
 
+        /// <summary>
+        /// Changes the <see cref="MediaElement"/>'s SpeedRatio property, the audio is updated automatically
+        /// </summary>
         public void ChangeBPM()
         {
             _audioPlayer.SpeedRatio = Bpm / SongQueue[0].BPM;
         }
 
         /// <summary>
-        /// When the user manually changes the seeker's position, fire.
-        /// This function fires when the MouseUp Event is fired on the Seeker Slider control.
+        /// Is called when the ValueChanged event is fired on the seeker
+        /// <para>
+        ///     Here, we are only interested in the case that the value changes WHEN the user is dragging the seeker thumb!
+        ///     If that is the case then we update the song time display (mm:ss) to reflect the seeker's current position
+        /// </para>
         /// </summary>
-        public async void OnUserSeekerValueChanged()
-        {
-            userSeeking = false;
-            _audioPlayer.Position = TimeSpan.FromSeconds(CurrentSongTimeSpan);
-            cancelSeekerPositionUpdate = new CancellationTokenSource();
-            seekerCancelToken = cancelSeekerPositionUpdate.Token;
-            await StartSeekerPositionUpdateAsync(seekerCancelToken);
-        }
-
+        /// <param name="source">The seeker control, so that we can grab its Value property</param>
         public void OnSeekerValueChanged(Slider source)
         {
-            if (userSeeking)
-            {
-                CurrentSongTime = TimeSpan.FromSeconds(source.Value).ToString("mm':'ss");
-            }
+            // Do nothing if the value is NOT changed by the user
+            if (!userSeeking) return;
+
+            CurrentSongTime = TimeSpan.FromSeconds(source.Value).ToString("mm':'ss");
+            CurrentSongElapsedSeconds = source.Value;
         }
 
-        public void OnUserSeeking()
+		/// <summary>
+		/// This method is called when the user starts seeking and dragging the seeker's thumb.
+		/// When MouseDown is detected on the seeker, call this method
+		/// 
+		/// <para>
+		///     The method tells the async method <see cref="StartSeekerPositionUpdateAsync(CancellationToken)"/> to stop firing periodically by cancelling
+        ///     the <see cref="CancellationTokenSource"/> associated with it.
+		/// </para>
+		/// </summary>
+		public void OnUserSeeking()
         {
-            if (hasMediaOpened)
-            {
-                // Stop the seeker's value from changing
-                cancelSeekerPositionUpdate.Cancel();
-                userSeeking = true;
-            }
+            if (!hasMediaOpened) return;
+
+            // Stop the seeker's value from changing
+            cancelSeekerPositionUpdate.Cancel();
+            userSeeking = true;
         }
 
-        /// <summary>
-        /// Periodically update send messages indicating the seeker's current positions
-        /// to the UI Thread.
-        /// </summary>
-        private async Task StartSeekerPositionUpdateAsync(CancellationToken cancellationToken)
+		/// <summary>
+		/// When the user manually changes the seeker's position, call this method.
+		/// This method is called when the MouseUp Event is fired on the Seeker Slider control.
+		/// </summary>
+		public async void OnUserSeekerValueChanged()
+		{
+			userSeeking = false;
+			_audioPlayer.Position = TimeSpan.FromSeconds(CurrentSongElapsedSeconds);
+			cancelSeekerPositionUpdate = new CancellationTokenSource();
+			seekerCancelToken = cancelSeekerPositionUpdate.Token;
+			await StartSeekerPositionUpdateAsync(seekerCancelToken);
+		}
+
+		/// <summary>
+		/// Periodically update send messages indicating the seeker's current positions
+		/// to the UI Thread.
+		/// </summary>
+		private async Task StartSeekerPositionUpdateAsync(CancellationToken cancellationToken)
         {
             try
             {
@@ -866,40 +580,47 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
                     await Task.Delay(500, cancellationToken);
                 }
             } 
+            
+            // When the CancellationTokenSource is cancelled, the TaskCanceledException is caused, thus forcing
+            // the try block to exit and the method to stop execution
             catch (TaskCanceledException) { }
         }
         #endregion
-        #region EventAggregator Handlers (Implemented from IHandle<TMessage>)
-        public Task HandleAsync(int message, CancellationToken cancellationToken)
+		#region EventAggregator Handlers (Implemented from IHandle<TMessage>)
+
+        /// <summary>
+        /// Handles messages sent from <see cref="KaraokeViewModel"/>
+        /// </summary>
+		public Task HandleAsync(int message, CancellationToken cancellationToken)
         {
             KaraokeOpen = false;
             EffectsButtonColor = EFFECTS_DISABLED;
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Handles messages sent from the main <see cref="IEventAggregator"/>.
+        /// <para>
+        ///     This handler is concerned with stopping/starting the <see cref="MediaElement"/> audio player 
+        ///     when the user clicks the "Previous Window" button. Without handling, the audio would continue playing on another thread.
+        /// </para>
+        /// </summary>
         public async Task HandleAsync(string message, CancellationToken cancellationToken)
         {
-            if (message == "DJ Exiting!")
+			if (message == "DJ Exiting!" && IsPlaying)
             {
-                if (IsPlaying)
-                {
-                    exitWhilePlaying = true;
-                    await PlayPause();
-                }
-                else
-                {
-                    exitWhilePlaying = false;
-                }
-                savedPosition = _audioPlayer.Position;
+                exitWhilePlaying = true;
+                await PlayPause();
             }
-            if (message == "DJ Opening!" && savedPosition != TimeSpan.MaxValue)
+            else if (message == "DJ Exiting!" && !IsPlaying)
             {
-                if (exitWhilePlaying)
-                {
-                    ChangeBPM();
-                    _audioPlayer.Position = savedPosition;
-                    await PlayPause();
-                }
+                exitWhilePlaying = false;
+            }
+
+            if (message == "DJ Opening!" && exitWhilePlaying)
+            {
+                ChangeBPM();
+                await PlayPause();
             }
         }
 
@@ -909,7 +630,7 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
         public Task HandleAsync(Tuple<string, double> message, CancellationToken cancellationToken)
         {
             CurrentSongTime = message.Item1;
-            CurrentSongTimeSpan = message.Item2;
+            CurrentSongElapsedSeconds = message.Item2;
             return Task.CompletedTask;
         }
 
