@@ -19,6 +19,7 @@
         
         <!--Contactless-->
         <TextBlock Text="Contactless" 
+                   FontWeight="Bold"
                    Style="{StaticResource titleStyle}"/>
         <TextBlock Text="Place your card over the 'contactless' symbol below to finalize your payment."
                    Grid.Row="1" 
@@ -52,6 +53,7 @@
 
         <!--Manual-->
         <TextBlock Text="Manual Payment" 
+                   FontWeight="Bold"
                    Grid.Column="1"
                    Style="{StaticResource titleStyle}"/>
         <TextBlock Text="In the case where you don’t have a physical card available, you can use the form below to finalize your payment."

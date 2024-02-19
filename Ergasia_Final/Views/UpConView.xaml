@@ -13,7 +13,9 @@
             <RowDefinition Height="80"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Upcoming Concerts" Style="{StaticResource titleStyle}"/>
+        <TextBlock Text="Upcoming Concerts" 
+                   FontWeight="Bold"
+                   Style="{StaticResource titleStyle}"/>
         <StackPanel Grid.Row="1" Margin="20 10">
             <TextBlock Text="Click on the concert you want to get tickets to!" Style="{StaticResource simpleText}" FontWeight="Bold"/>
             <TextBlock Text="*Every concert listed here takes places at the Digital Museum of Music and Arts’ Concert Hall." Style="{StaticResource simpleText}"/>

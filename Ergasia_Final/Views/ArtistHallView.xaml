@@ -11,7 +11,9 @@
             <RowDefinition Height="80"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Personal Artist Hall" Style="{StaticResource titleStyle}"/>
+        <TextBlock Text="Personal Artist Hall" 
+                   FontWeight="Bold"
+                   Style="{StaticResource titleStyle}"/>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
