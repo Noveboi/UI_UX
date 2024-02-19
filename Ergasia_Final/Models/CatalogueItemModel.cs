@@ -12,6 +12,7 @@ namespace Ergasia_Final.Models
         public CatalogueItemTypes Type { get; set; }
         public double Price { get; set; }
         public bool AllergyWarning { get; set; } = false;
+        public bool CurrentlyAvailable { get; set; }
         public string? OptionalDescription { get; set; }
     }
 }

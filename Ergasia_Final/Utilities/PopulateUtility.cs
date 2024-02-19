@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Automation.Provider;
 using System.Windows.Media.Imaging;
 
 namespace Ergasia_Final.Utilities
@@ -559,28 +560,34 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
 
 			catalogueItems.Add(new CatalogueItemModel()
 			{
+				Name = "Water",
+				Type = CatalogueItemTypes.Beverages,
+				Price = 0.5
+			}); 
+			catalogueItems.Add(new CatalogueItemModel()
+			{
 				Name = "Coca Cola",
-				Type = CatalogueItemTypes.Drinks,
+				Type = CatalogueItemTypes.Beverages,
 				Price = 2,
 				OptionalDescription = "Choose between: Normal, Light, Zero"
 			});
 			catalogueItems.Add(new CatalogueItemModel()
 			{
 				Name = "Sprite",
-				Type = CatalogueItemTypes.Drinks,
+				Type = CatalogueItemTypes.Beverages,
 				Price = 2
 			});
 			catalogueItems.Add(new CatalogueItemModel()
 			{
 				Name = "Fanta",
-				Type = CatalogueItemTypes.Drinks,
+				Type = CatalogueItemTypes.Beverages,
 				Price = 2,
 				OptionalDescription = "Choose between: Carbonated, Not Carbonated"
 			});
 			catalogueItems.Add(new CatalogueItemModel()
 			{
 				Name = "Fanta Lemon",
-				Type = CatalogueItemTypes.Drinks,
+				Type = CatalogueItemTypes.Beverages,
 				Price = 2
 			});
 
@@ -641,6 +648,60 @@ I love you so, I love you so", new Uri("./Audio/altj_breezeblocks.mp3", UriKind.
 				OptionalDescription = "1 serving (ball): Chocolate, Vanilla, Strawberry, Lila Pause, Bitter Chocolate, Kaimaki"
 			});
 
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Gin Tonic",
+				Type = CatalogueItemTypes.Drinks,
+				Price = 6.0,
+				OptionalDescription = "Gordon's Gin distilled with tonic water"
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Manhattan",
+				Type = CatalogueItemTypes.Drinks,
+				Price = 7.5,
+				OptionalDescription = "Bourbon with sweet vermouth and bitters"
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Margarita",
+				Type = CatalogueItemTypes.Drinks,
+				Price = 8.0,
+				OptionalDescription = "Tequila with triple sec and fresh lime juice"
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Mai Tai",
+				Type = CatalogueItemTypes.Drinks,
+				Price = 7.5,
+				OptionalDescription = "Rum with orange curaçao, fresh lime juice and orgeat syrup"
+			});
+			catalogueItems.Add(new CatalogueItemModel()
+			{
+				Name = "Aperol Spritz",
+				Type = CatalogueItemTypes.Drinks,
+				Price = 5.5
+			});
+
+			catalogueItems.ForEach(item => SetCatalogueItemAvailability(item));
+		}
+
+		private static void SetCatalogueItemAvailability(CatalogueItemModel item)
+		{
+			if (item.Type == CatalogueItemTypes.Snacks || item.Type == CatalogueItemTypes.Sweets)
+			{
+				item.CurrentlyAvailable = DateTime.Now.Hour >= 10 && DateTime.Now.Hour <= 20;
+			}
+
+			else if (item.Type == CatalogueItemTypes.Drinks)
+			{
+				item.CurrentlyAvailable = DateTime.Now.Hour >= 18 && DateTime.Now.Hour <= 24;
+			}
+
+			else
+			{
+				item.CurrentlyAvailable = true;
+			}
 		}
 	}
 }

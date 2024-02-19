@@ -24,16 +24,17 @@
         </Grid.RowDefinitions>
         
         <!--Row 0: MenuStrip-->
-        <Border cal:Message.Attach="[Event MouseDown] = [Action MoveWindow($eventArgs)]"
-                BorderThickness="0"
+        <Border BorderThickness="0"
+                cal:Message.Attach="[Event MouseDown] = [Action MoveWindow($eventArgs)]"
                 Background="Transparent"
                 Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
-                <Menu Background="{Binding ElementName=MainShellGrid}">
+                <Menu Background="Transparent" HorizontalAlignment="Left">
                     <Menu.Resources>
                         <Style TargetType="MenuItem">
                             <Setter Property="FontSize" Value="14"/>
@@ -52,7 +53,7 @@
                     <MenuItem Header="Help" Command="{Binding OpenOnlineHelp}"/>
                 </Menu>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                            Grid.Column="1">
+                            Grid.Column="2">
                     <StackPanel.Resources>
                         <Style TargetType="Button">
                             <Setter Property="FontWeight" Value="Bold"/>

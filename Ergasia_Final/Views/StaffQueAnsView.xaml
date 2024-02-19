@@ -66,6 +66,14 @@
                     Yes! Any items on the catalogue marked as <Run Foreground="#ffbb55" Text="yellow"/>
                     contain ingredients that can cause allergic reaction.
                 </TextBlock>
+                <TextBlock Style="{StaticResource HeaderStyle}">
+                    <Run Text="Q:" FontWeight="Bold"/>
+                    Why are some items greyed out?
+                </TextBlock>
+                <TextBlock Style="{StaticResource ParagraphStyle}">
+                    Greyed out items in the catalogue means that they are not available 
+                    at your current time of day!
+                </TextBlock>
             </StackPanel>
         </ScrollViewer>
     </Border>

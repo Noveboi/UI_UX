@@ -89,14 +89,26 @@
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Foreground" Value="#d0d0d0"/>
+                            <Setter Property="Background" Value="#231242"/>
                             <Setter Property="FontSize" Value="20"/>
                             <Setter Property="MinHeight" Value="40"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListViewItem">
-                                        <Grid Background="{TemplateBinding Background}"
+                                        <ControlTemplate.Resources>
+                                            <Style TargetType="Grid">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Background" Value="#434343"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ControlTemplate.Resources>
+                                        <Grid x:Name="ListViewItemTemplateGrid"
+                                              Background="{TemplateBinding Background}"
                                               HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Stretch">
+                                              VerticalAlignment="Stretch"
+                                              IsEnabled="{Binding CurrentlyAvailable}">
                                             <!--
                                                 Main Grid, its design is as follows:
                                                     - Column 0 [ButtonColumn]: For the [+] button
@@ -120,7 +132,8 @@
                                                 </Button>
                                                 <StackPanel x:Name="ItemContainer"
                                                             Margin="10"
-                                                            Grid.Column="1">
+                                                            Grid.Column="1"
+                                                            IsEnabled="{Binding CurrentlyAvailable}">
                                                     <TextBlock x:Name="ItemName"
                                                                Text="{Binding Name}"
                                                                VerticalAlignment="Center"
@@ -146,9 +159,21 @@
                                             <DataTrigger Binding="{Binding AllergyWarning}" Value="True">
                                                 <Setter TargetName="ItemName" Property="Foreground" Value="#ffbb55"/>
                                             </DataTrigger>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="ButtonColumn" Property="Width" Value="50"/>
-                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsEnabled" Value="True" SourceName="ListViewItemTemplateGrid"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Width" Value="50" TargetName="ButtonColumn"/>
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                    <Condition Property="IsEnabled" Value="False" SourceName="ListViewItemTemplateGrid"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="ToolTip" Value="Not available at this time!"/>
+                                                <Setter Property="Cursor" Value="No"/>
+                                            </MultiTrigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
