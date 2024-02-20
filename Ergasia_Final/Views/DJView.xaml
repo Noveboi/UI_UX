@@ -582,7 +582,7 @@
                             Style="{StaticResource SeekerSlider}"
                             Maximum="{Binding CurrentSeekerMaximum,
                                       UpdateSourceTrigger=PropertyChanged}"
-                            Value="{Binding CurrentSongTimeSpan,
+                            Value="{Binding CurrentSongElapsedSeconds,
                                     Mode=TwoWay,
                                     UpdateSourceTrigger=PropertyChanged}"
                             cal:Message.Attach="[Event PreviewMouseUp] = [Action OnUserSeekerValueChanged()];

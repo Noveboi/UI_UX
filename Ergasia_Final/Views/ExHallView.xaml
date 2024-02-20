@@ -99,6 +99,7 @@
         <TextBlock x:Name="CurrentArtist_Name"
                    Margin="5"
                    Style="{StaticResource titleStyle}"
+                   FontSize="40"
                    TextWrapping="Wrap"
                    TextAlignment="Center"
                    FontFamily="Script MT Bold"

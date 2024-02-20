@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="StaffQueAnsView" Height="450" Width="800">
     <Border Background="{DynamicResource MainBackground}"
-            BorderBrush="Beige"
+            BorderBrush="#559999"
             BorderThickness="10">
         <Border.Resources>
             <Style TargetType="TextBlock" x:Key="HeaderStyle">
@@ -21,10 +21,14 @@
                 <Setter Property="FontWeight" Value="Light"/>
                 <Setter Property="Padding" Value="10"/>
             </Style>
+            <Style TargetType="TextBlock" x:Key="ContactStyle"
+                   BasedOn="{StaticResource HeaderStyle}">
+                <Setter Property="Background" Value="#559999"/>
+            </Style>
             <Style TargetType="TextBlock" x:Key="ParagraphStyle">
                 <Setter Property="TextWrapping" Value="Wrap"/>
                 <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
-                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="FontSize" Value="20"/>
                 <Setter Property="Padding" Value="5"/>
                 <Setter Property="Margin" Value="10"/>
             </Style>
@@ -73,6 +77,9 @@
                 <TextBlock Style="{StaticResource ParagraphStyle}">
                     Greyed out items in the catalogue means that they are not available 
                     at your current time of day!
+                </TextBlock>
+                <TextBlock Style="{StaticResource ContactStyle}">
+                    Still have questions? Contact us!
                 </TextBlock>
             </StackPanel>
         </ScrollViewer>

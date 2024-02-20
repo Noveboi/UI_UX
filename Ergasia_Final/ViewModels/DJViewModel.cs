@@ -58,7 +58,7 @@ namespace Ergasia_Final.ViewModels
         private int currentSeekerMaximum;
         private string currentSongDuration;
         private string currentSongTime = "00:00";
-        private double currentSongElapsedSeconds = 0.0;
+        private double currentSongElapsedSeconds = 0;
 
         private CancellationTokenSource cancelSeekerPositionUpdate;
         private CancellationToken seekerCancelToken;
