@@ -27,25 +27,120 @@
         <h1>Choose the window you require help with!</h1>
         <div class="window-selection">
             <div class="window-box">
-                <a href="#">
+                <a href="#upcon-help">
                     <img src="img/upCon.jpg">
                 </a>
                 <h3>Upcoming Concerts</h3>
             </div>
             <div class="window-box">
-                <a href="#">
+                <a href="#tickets-help">
                     <img src="img/concertTickets.jpg">
                 </a>
                 <h3>Ticket Purchase</h3>
             </div>
         </div>
         <h2>Upcoming Concerts</h2>
-        <div class="window-help">
-            
+        <div class="window-help" id="upcon-help">
+            <p>
+                The "landing page" of this applet. Besides
+                the information in the top of the page, you can find 
+                3 buttons, each containing the following information:
+                <ul>
+                    <li>The artist's name</li>
+                    <li>The <b>date and time</b> the concert will take place</li>
+                    <li>The price range per ticket. 
+                        (<b>€</b> = low price | <b>€€€</b> = high price)</li>
+                </ul> 
+            </p>
+            <p>
+                If you are interested in a concert listed here, click the button with
+                the artist that you want. You will then be transferred to the 
+                <a href="#tickets-help">Ticket Purchase</a> page, where you get to choose the 
+                location
+            </p>
         </div>
         <h2>Ticket Purchase</h2>
-        <div class="window-help">
-
+        <div class="window-help" id="tickets-help">
+            <p>
+                After you choose the concert you want to check out,
+                you are transferred here. You are greeted with two sections:
+                <ul>
+                    <li>
+                        <b>Concert Hall Map</b>
+                        <p>
+                            This map is an overhead view of the concert hall, located 
+                            in the Museum's premises. You can choose to be in one of 
+                            the following areas:
+                            <ul > 
+                                <li style="list-style-type: circle;">
+                                    <u><b>General Admission 
+                                        (<em style="color: rgb(22, 202, 22);">€</em>)</b></u>
+                                    <p>
+                                        The cheapest and most 'common' area.
+                                        You will still have a good view of the stage, 
+                                        just at a slight distance. 
+                                     </p>
+                                </li>
+                                <li style="list-style-type: circle;">
+                                    <u><b>VIP (<em style="color: red;">€€€</em>)</b></u>
+                                    <p>
+                                        The most expensive and 'exclusive' area.
+                                        You will be right next to the stage, without
+                                        obstructions. You will <b>feel</b> the sound! 
+                                    </p>
+                                </li>
+                                <li style="list-style-type: circle;">
+                                    <u><b>Side VIP 
+                                        (<em style="color: orange;">€€</em>)</b></u>
+                                    <p>
+                                        These areas offer a side view of the stage.
+                                        You will be very close to the stage, but the sound 
+                                        will not be as it is in the VIP section.
+                                    </p>
+                                </li>
+                            </ul>
+                        </p>
+                        <p>
+                            There are also different <b>colors</b> that 
+                            signify to the user the following:
+                            <ul>
+                                <li style="list-style-type: circle;">
+                                    <b style="color: #994444;">
+                                        Red/Brown Area
+                                    </b>
+                                    <p>An area you can select</p>
+                                </li>
+                                <li style="list-style-type: circle;">
+                                    <b style="color: #444499;">
+                                        Blue Area
+                                    </b>
+                                    <p>The area you have currently selected</p>
+                                </li>
+                                <li style="list-style-type: circle;">
+                                    <b style="color: #998888;">
+                                        Grey Area
+                                    </b>
+                                    <p>
+                                        This area is the <b>stage</b>, it always 
+                                        shows the artist's name and <u>cannot</u> be selected 
+                                    </p>
+                                </li>
+                            </ul>
+                        </p>
+                    </li>
+                    <li>
+                        <b>Price & Ticket Amount</b>
+                        <p>
+                            Here you can see a live price indication as well as 
+                            the quantity of tickets that you have selected. By default,
+                            the ticket quantity is 1, but you can change that by using
+                            the red and green button right beside the ticket number <b>or</b>
+                            by clicking in the "number box" and typing in how many tickets
+                            you want. (A valid number of tickets is between 1 and 99)
+                        </p>
+                    </li>
+                </ul> 
+            </p>
         </div>
     </div>
     <script>
