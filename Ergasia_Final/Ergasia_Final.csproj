@@ -41,6 +41,7 @@
     <None Remove="Images\snacks.png" />
     <None Remove="Images\taylor_concert.jpg" />
     <None Remove="Images\taylor_portrait.jpg" />
+    <None Remove="Images\ts_bg.jpg" />
     <None Remove="Images\TS_Eras_Tour.jpg" />
   </ItemGroup>
 
@@ -142,6 +143,7 @@
     <Resource Include="Images\snacks.png" />
     <Resource Include="Images\taylor_concert.jpg" />
     <Resource Include="Images\taylor_portrait.jpg" />
+    <Resource Include="Images\ts_bg.jpg" />
     <Resource Include="Images\TS_Eras_Tour.jpg" />
     <Resource Include="Images\visa.png" />
   </ItemGroup>

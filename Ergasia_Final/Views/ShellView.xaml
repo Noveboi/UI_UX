@@ -8,7 +8,7 @@
              xmlns:cal="http://www.caliburnproject.org" 
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
-             Foreground="#012506"
+             Foreground="#034515"
              MinWidth="800" MinHeight="590"
              WindowStyle="None"
              ResizeMode="CanResizeWithGrip">

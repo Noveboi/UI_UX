@@ -4,50 +4,84 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ergasia_Final.Views"
+             xmlns:cal="http://caliburnmicro.com"
+             xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ArtistHallViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="{DynamicResource MainBackground}">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="{Binding ArtistBackground}"
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="Personal Artist Hall" 
                    FontWeight="Bold"
-                   Style="{StaticResource titleStyle}"/>
+                   TextAlignment="Center"
+                   FontSize="48"
+                   Padding="10"
+                   Foreground="White">
+            <TextBlock.Background>
+                <SolidColorBrush Color="Purple" Opacity="0.5"/>
+            </TextBlock.Background>
+        </TextBlock>
         <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.Resources>
-                <Style TargetType="Rectangle">
+                <Style TargetType="Button">
                     <Setter Property="MinHeight" Value="90"/>
                     <Setter Property="MaxWidth" Value="160"/>
                     <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Background" Value="#427d52"/>
+                    <Setter Property="cal:Message.Attach" 
+                            Value="[Event Click] = [Action OnRequestNavigate($source)]"/>
                 </Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="{StaticResource TextForeground}"/>
                     <Setter Property="FontSize" Value="24"/>
                     <Setter Property="TextAlignment" Value="Center"/>
                 </Style>
+                <Style TargetType="StackPanel" x:Key="VideoPanel">
+                    <Setter Property="Grid.Row" Value="1"/>
+                    <Setter Property="VerticalAlignment" Value="Bottom"/>
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="Purple" Opacity="0.5"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Margin" Value="20"/>
+                </Style>
             </Grid.Resources>
-            <StackPanel Grid.Row="0" VerticalAlignment="Center"
-                        HorizontalAlignment="Stretch">
+            <StackPanel Grid.Column="0" 
+                        Style="{StaticResource VideoPanel}">
                 <TextBlock Text="Concerts" />
-                <Rectangle Fill="SandyBrown"/>
+                <Button Margin="20">
+                    <Hyperlink NavigateUri="{Binding Concert1.VideoLink}"/>
+                </Button>
+                <Button Margin="10 20 10 10">
+                    <Hyperlink NavigateUri="{Binding Concert2.VideoLink}"/>
+                </Button>
             </StackPanel>
-            <StackPanel Grid.Row="1" VerticalAlignment="Center">
-                <TextBlock Text="Interviews"/>
-                <Rectangle Fill="SandyBrown"/>
-            </StackPanel>
-            <StackPanel Grid.RowSpan="2" Grid.Column="1"
-                        VerticalAlignment="Center">
-                <TextBlock Text="Covers"/>
-                <Rectangle Fill="SandyBrown"/>
+            <StackPanel Grid.Column="2" Style="{StaticResource VideoPanel}">
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Interviews"/>
+                    <Button>
+                        <Hyperlink NavigateUri="{Binding Interview.VideoLink}"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Covers"/>
+                    <Button>
+                        <Hyperlink NavigateUri="{Binding Cover.VideoLink}"/>
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>
