@@ -6,7 +6,7 @@
              xmlns:cal="http://caliburnmicro.com"
              xmlns:local="clr-namespace:Ergasia_Final.Views" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ExHallViewModel}"
              mc:Ignorable="d" 
-             MinHeight="500"
+             MinHeight="450"
              MinWidth="600"
              d:DesignHeight="450" d:DesignWidth="800"
              cal:Message.Attach="[Event Loaded] = [Action OnViewLoaded($view)]">
@@ -116,44 +116,64 @@
         
         <!--Now Playing (Song)-->
         <Border Grid.Row="2" Grid.Column="2"
-                Margin="5 20 20 20"
+                Margin="5 5 10 5"
                 Grid.ColumnSpan="2"
                 BorderBrush="#f0f0f0"
                 BorderThickness="2">
         <Border.Background>
             <SolidColorBrush Color="#ddaaaa" Opacity="0.2"/>
         </Border.Background>
-            <StackPanel Orientation="Horizontal" Margin="10">
-            <MediaElement x:Name="AudioPlayer"
-                          Source="{Binding CurrentSong,
-                                   UpdateSourceTrigger=PropertyChanged}"
-                          Volume="0.15"
-                          LoadedBehavior="Manual"
-                          UnloadedBehavior="Manual"/>
-            <Button Background="Transparent" VerticalAlignment="Center"
-                    BorderThickness="0" Cursor="Hand"
-                    cal:Message.Attach="[Event Click] = [Action PlayPause($source)];
-                                        [Event Loaded] = [Action CreateStoryboard($source)]"
-                    Style="{StaticResource VinylStyle}">
-                <Image x:Name="vinylIcon"
-                       Source="/Images/now_playing.png" 
-                       Width="70" Height="70"
-                       RenderTransformOrigin="0.5,0.5">
-                    <Image.RenderTransform>
-                        <RotateTransform x:Name="vinylIconAngle" Angle="0.0"/>
-                    </Image.RenderTransform>
-                </Image>
-            </Button>
-            <TextBlock FontSize="24" Foreground="{DynamicResource TextForeground}"
-                       Margin="10"
-                       HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock.Inlines>
-                    <Run FontWeight="SemiBold" Text="{Binding Path=CurrentArtist.SongName}"/>
-                    <Run FontWeight="Light" Text="from"/>
-                    <Run FontWeight="SemiBold" Text="{Binding Path=CurrentArtist.AlbumName}"/>
-                </TextBlock.Inlines>
-            </TextBlock>
-        </StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.9*"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <MediaElement x:Name="AudioPlayer"
+                                  Source="{Binding CurrentSong,
+                                           UpdateSourceTrigger=PropertyChanged}"
+                                  Volume="{Binding Volume, UpdateSourceTrigger=PropertyChanged}"
+                                  LoadedBehavior="Manual"
+                                  UnloadedBehavior="Manual"/>
+                    <Button Background="Transparent" VerticalAlignment="Center"
+                            BorderThickness="0" Cursor="Hand"
+                            cal:Message.Attach="[Event Click] = [Action PlayPause($source)];
+                                                [Event Loaded] = [Action CreateStoryboard($source)]"
+                            Style="{StaticResource VinylStyle}">
+                        <Image x:Name="vinylIcon"
+                               Source="/Images/now_playing.png" 
+                               RenderTransformOrigin="0.5,0.5">
+                            <Image.RenderTransform>
+                                <RotateTransform x:Name="vinylIconAngle" Angle="0.0"/>
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+                    <TextBlock FontSize="24" Foreground="{DynamicResource TextForeground}"
+                               Margin="10"
+                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock.Inlines>
+                            <Run FontWeight="SemiBold" Text="{Binding Path=CurrentArtist.SongName}"/>
+                            <Run FontWeight="Light" Text="from"/>
+                            <Run FontWeight="SemiBold" Text="{Binding Path=CurrentArtist.AlbumName}"/>
+                        </TextBlock.Inlines>
+                    </TextBlock>
+                </StackPanel>
+                <Grid Grid.Row="1" Margin="10 0 10 10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{Binding VolumeImage, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Slider Grid.Column="1"
+                            Margin="5 0 30 0"
+                            VerticalAlignment="Center"
+                            Minimum="0"
+                            Maximum="1"
+                            Value="{Binding Volume, Mode=TwoWay,
+                            UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

@@ -43,6 +43,10 @@
     <None Remove="Images\taylor_portrait.jpg" />
     <None Remove="Images\ts_bg.jpg" />
     <None Remove="Images\TS_Eras_Tour.jpg" />
+    <None Remove="Images\volume_high.png" />
+    <None Remove="Images\volume_low.png" />
+    <None Remove="Images\volume_medium.png" />
+    <None Remove="Images\volume_mute.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -146,6 +150,10 @@
     <Resource Include="Images\ts_bg.jpg" />
     <Resource Include="Images\TS_Eras_Tour.jpg" />
     <Resource Include="Images\visa.png" />
+    <Resource Include="Images\volume_high.png" />
+    <Resource Include="Images\volume_low.png" />
+    <Resource Include="Images\volume_medium.png" />
+    <Resource Include="Images\volume_mute.png" />
   </ItemGroup>
 
 </Project>

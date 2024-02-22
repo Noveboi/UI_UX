@@ -22,6 +22,7 @@ namespace Ergasia_Final.ViewModels
         private ArtistModel _currentArtist;
         private int _currentIndex = 0;
         private int _maxIndex;
+        private double _volume = 0.5;
         private Visibility _leftNavButtonEnabled = Visibility.Hidden;
         private Visibility _rightNavButtonEnabled = Visibility.Visible;
         private Storyboard _vinylStoryboard;
@@ -30,6 +31,41 @@ namespace Ergasia_Final.ViewModels
         private bool _isPlaying = true;
         private bool _hasInitialized = false;
 
+
+        private static readonly Uri VOLUME_HIGH_IMG = new Uri("/Images/volume_high.png", UriKind.Relative);
+        private static readonly Uri VOLUME_MED_IMG = new Uri("/Images/volume_medium.png", UriKind.Relative);
+        private static readonly Uri VOLUME_LOW_IMG = new Uri("/Images/volume_low.png", UriKind.Relative);
+        private static readonly Uri VOLUME_MUTE_IMG = new Uri("/Images/volume_mute.png", UriKind.Relative);
+
+        public double Volume
+        {
+            get => _volume;
+            set
+            {
+                _volume = value;
+                NotifyOfPropertyChange();
+
+                // Set volume image according to value
+                if (_volume  == 0)
+                {
+                    VolumeImage = VOLUME_MUTE_IMG;
+                }
+                else if (_volume > 0 && _volume <= 0.25)
+                {
+                    VolumeImage = VOLUME_LOW_IMG;
+                }
+                else if (_volume > 0.25 && _volume <= 0.75)
+                {
+                    VolumeImage = VOLUME_MED_IMG;
+                }
+                else 
+                {
+                    VolumeImage = VOLUME_HIGH_IMG;
+                }
+                NotifyOfPropertyChange(nameof(VolumeImage));
+            }
+        }
+        public Uri VolumeImage { get; set; } = VOLUME_MED_IMG;
         public Uri CurrentSong
         {
             get => _currentSong;
