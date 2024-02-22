@@ -5,9 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ergasia_Final.Views"
              mc:Ignorable="d" 
-             xmlns:cal="http://caliburnmicro.com"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="{DynamicResource MainBackground}">
+             xmlns:cal="http://caliburnmicro.com" 
+             xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             d:DataContext="{d:DesignInstance Type=viewmodels:VRoomViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800"
+             cal:Message.Attach="[Event Loaded] = [Action OnWindowLoaded()]">
+    <Grid Background="{Binding WindowBackground, 
+                       UpdateSourceTrigger=PropertyChanged}"
+          x:Name="WindowGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"
                            MinHeight="80"/>
@@ -56,13 +61,190 @@
                 </Style.Triggers>
             </Style>
         </Grid.Resources>
+        
         <!--1st Row, Title and Catalog Button-->
-        <TextBlock Text="Viewing Room" 
-                   FontWeight="Bold"
-                   Style="{StaticResource titleStyle}"/>
-        <Button x:Name="OpenFoodAndDrink" 
-                Style="{StaticResource foodAndDrinkButton}"
-                HorizontalAlignment="Right" Margin="10"/>
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="ToggleButton">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0.5"
+                                                 EndPoint="1,0.5">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="#00002a" Offset="0.0"/>
+                                    <GradientStop Color="#111144" Offset="0.5"/>
+                                    <GradientStop Color="#77aaff" Offset="0.5"/>
+                                    <GradientStop Color="#aacfff" Offset="1.0"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border CornerRadius="10"
+                                        BorderThickness="4"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        Background="{TemplateBinding Background}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image 
+                                            Grid.Column="0"
+                                            Margin="15"
+                                            Source="/Images/moon.png"/>
+                                        <Image 
+                                            Grid.Column="1"
+                                            Margin="10"
+                                            Source="/Images/sun.png"/>
+                                        <Ellipse x:Name="Switch"
+                                                 Stroke="#aa5555"
+                                                 StrokeThickness="2">
+                                            <Ellipse.Fill>
+                                                <RadialGradientBrush>
+                                                    <GradientStop 
+                                                        Color="#df7a00" Offset="0"/>
+                                                    <GradientStop 
+                                                        Color="#aa5500" Offset="1"/>
+                                                </RadialGradientBrush>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsChecked" Value="False">
+                                        <Setter Property="Grid.Column" Value="0" TargetName="Switch"/>
+                                        <Setter Property="BorderBrush" Value="#322164"/>
+                                    </Trigger>
+                                    <Trigger Property="IsChecked" Value="True">
+                                        <Setter Property="Grid.Column" Value="1" TargetName="Switch"/>
+                                        <Setter Property="BorderBrush" Value="#efe032"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="RepeatButton">
+                    <Setter Property="SnapsToDevicePixels"
+                            Value="true" />
+                    <Setter Property="OverridesDefaultStyle"
+                            Value="true" />
+                    <Setter Property="IsTabStop"
+                            Value="false" />
+                    <Setter Property="Focusable"
+                            Value="false" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="RepeatButton">
+                                <Border Background="Transparent" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Thumb">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Thumb">
+                                <Border Height="20" 
+                                        Width="15"
+                                        Background="Beige">
+                                    
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Slider">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Slider">
+                                <Grid Height="20">
+                                <Border Height="10"
+                                        CornerRadius="10">
+                                        <Border.Background>
+                                            <LinearGradientBrush
+                                            StartPoint="0,0.5" EndPoint="1,0.5">
+                                                <GradientStop Color="#1177ff" Offset="0"/>
+                                                <GradientStop Color="#ff0012" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                    </Border>
+                                    <Track x:Name="PART_Track">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton/>
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb/>
+                                        </Track.Thumb>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton/>
+                                        </Track.IncreaseRepeatButton>
+                                    </Track>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <!--Light Switch & Thermostat Grid-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="135"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                 <!--Light Switch-->
+                <ToggleButton x:Name="LightSwitch" Margin="10" 
+                              IsChecked="{Binding LightsOn}">
+                </ToggleButton>
+                <!--Thermostat Grid-->
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+                    <Slider x:Name="Thermostat"
+                            Grid.ColumnSpan="3"
+                            VerticalAlignment="Bottom"
+                            Minimum="15"
+                            Value="{Binding Temperature}"
+                            Maximum="35"/>
+                        <Image Source="/Images/cold.png"
+                           Grid.Row="1"
+                           Margin="3 3 3 8"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1"
+                               Foreground="{DynamicResource TextForeground}"
+                               TextAlignment="Center" VerticalAlignment="Center">
+                        <Run Text="{Binding Temperature, UpdateSourceTrigger=PropertyChanged}"/>°C
+                    </TextBlock>
+                    <Image Source="/Images/hot.png"
+                           Grid.Row="1" Grid.Column="3"
+                           Margin="3 3 3 10"/>
+
+                </Grid>
+            </Grid>
+            <TextBlock Grid.Column="1"
+                       Text="Viewing Room" 
+                       FontWeight="Bold"
+                       Style="{StaticResource titleStyle}"/>
+            <Button Grid.Column="2"
+                    x:Name="OpenFoodAndDrink" 
+                    Style="{StaticResource foodAndDrinkButton}"
+                    HorizontalAlignment="Right" Margin="10"/>
+        </Grid>
         <!--2nd Row-->
         <StackPanel Grid.Row="1" Margin="20 10">
             <TextBlock Text="Click on any artist's icon!" 

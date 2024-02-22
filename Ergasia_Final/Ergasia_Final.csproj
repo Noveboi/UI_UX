@@ -23,14 +23,17 @@
     <None Remove="Images\back_button.png" />
     <None Remove="Images\clock.png" />
     <None Remove="Images\coffee.png" />
+    <None Remove="Images\cold.png" />
     <None Remove="Images\color_wheel.png" />
     <None Remove="Images\drink.png" />
     <None Remove="Images\fast_bunny.png" />
+    <None Remove="Images\hot.png" />
     <None Remove="Images\light_dark_mode.png" />
     <None Remove="Images\M83.jpg" />
     <None Remove="Images\m83_concert.jpg" />
     <None Remove="Images\m83_portrait.jpg" />
     <None Remove="Images\money.png" />
+    <None Remove="Images\moon.png" />
     <None Remove="Images\now_playing.png" />
     <None Remove="Images\pause.png" />
     <None Remove="Images\play.png" />
@@ -39,6 +42,7 @@
     <None Remove="Images\skip_forward.png" />
     <None Remove="Images\slow_turtle.png" />
     <None Remove="Images\snacks.png" />
+    <None Remove="Images\sun.png" />
     <None Remove="Images\taylor_concert.jpg" />
     <None Remove="Images\taylor_portrait.jpg" />
     <None Remove="Images\ts_bg.jpg" />
@@ -121,7 +125,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\back_button.png" />
+    <Resource Include="Images\cold.png" />
+    <Resource Include="Images\hot.png" />
     <Resource Include="Images\light_dark_mode.png" />
+    <Resource Include="Images\moon.png" />
     <Resource Include="Images\singer_staff.png" />
     <Resource Include="Images\altJ.jpg" />
     <Resource Include="Images\altj_concert.jpg" />
@@ -145,6 +152,7 @@
     <Resource Include="Images\skip_forward.png" />
     <Resource Include="Images\slow_turtle.png" />
     <Resource Include="Images\snacks.png" />
+    <Resource Include="Images\sun.png" />
     <Resource Include="Images\taylor_concert.jpg" />
     <Resource Include="Images\taylor_portrait.jpg" />
     <Resource Include="Images\ts_bg.jpg" />
