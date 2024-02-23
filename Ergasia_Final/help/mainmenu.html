@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Museum Help Page</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="applet_styles.css">
     <script src="script.js"></script>
 </head>
 <body>
@@ -26,11 +27,7 @@
         <a href="#" onclick="handleClickRedirect('contact.html')">Contact</a>
     </div>
     <div class="main-content">
-        <h1>Contact Information</h1>
-        <ul>
-            <li>Phone: 210-123-1234</li>
-            <li>Email: help@musicmuseum.gr</li>
-        </ul>
+        
     </div>
     <script>
         let windowPath = window.location.pathname
@@ -39,14 +36,14 @@
         //  1. The page is run on a server, a simple href attribute with the relative path is enough.
         //  2. The page is run locally by double-clicking the HTML file, here we need to get the user's CWD
         //     in order to properly redirect
-    function handleClickRedirect(pageFile) {
-        if (userCwd == "") {
-            window.location.href = pageFile
-        } else {
-            var redirect = userCwd + "/" + pageFile
-            window.location.href = redirect
+        function handleClickRedirect(pageFile) {
+            if (userCwd == "") {
+                window.location.href = pageFile
+            } else {
+                var redirect = userCwd + "/" + pageFile
+                window.location.href = redirect
+            }
         }
-    }
     </script>
 </body>
 </html>
