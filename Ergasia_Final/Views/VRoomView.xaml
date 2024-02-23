@@ -95,11 +95,11 @@
                                         </Grid.ColumnDefinitions>
                                         <Image 
                                             Grid.Column="0"
-                                            Margin="15"
+                                            Margin="10"
                                             Source="/Images/moon.png"/>
                                         <Image 
                                             Grid.Column="1"
-                                            Margin="10"
+                                            Margin="6"
                                             Source="/Images/sun.png"/>
                                         <Ellipse x:Name="Switch"
                                                  Stroke="#aa5555"
@@ -221,49 +221,65 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <!--Light Switch & Thermostat Grid-->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="135"/>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                 <!--Light Switch-->
-                <ToggleButton x:Name="LightSwitch" Margin="10" 
-                              IsChecked="{Binding LightsOn}">
-                </ToggleButton>
-                <!--Thermostat Grid-->
-                <Grid Grid.Column="1">
+            <Border Margin="8 8 3 3"
+                    BorderThickness="2">
+                <Border.BorderBrush>
+                    <SolidColorBrush Color="#f0f0f0" Opacity="0.5"/>
+                </Border.BorderBrush>
+                <Grid>
+                    <Grid.Background>
+                        <SolidColorBrush Color="#ddaaaa" Opacity="0.2"/>
+                    </Grid.Background>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="125"/>
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <Slider x:Name="Thermostat"
-                            Grid.ColumnSpan="3"
-                            VerticalAlignment="Bottom"
-                            Minimum="15"
-                            Value="{Binding Temperature}"
-                            Maximum="35"/>
-                        <Image Source="/Images/cold.png"
-                           Grid.Row="1"
-                           Margin="3 3 3 8"/>
-                    <Viewbox Grid.Row="1" Grid.Column="1">
-                        <TextBlock Margin="5"
-                                   Foreground="{DynamicResource TextForeground}"
-                                   TextAlignment="Center" VerticalAlignment="Center">
-                            <Run Text="{Binding Temperature, 
-                                UpdateSourceTrigger=PropertyChanged}"/>°C
-                        </TextBlock>
-                    </Viewbox>
-                    <Image Source="/Images/hot.png"
-                           Grid.Row="1" Grid.Column="3"
-                           Margin="3 3 3 10"/>
+                     <!--Light Switch-->
+                    <ToggleButton x:Name="LightSwitch" Margin="8 8 5 8" 
+                                  Width="100"
+                                  IsChecked="{Binding LightsOn}">
+                    </ToggleButton>
+                    <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Right"
+                               StrokeThickness="2">
+                        <Rectangle.Stroke>
+                            <SolidColorBrush Color="#f0f0f0" Opacity="0.5"/>
+                        </Rectangle.Stroke>
+                    </Rectangle>
+                    <!--Thermostat Grid-->
+                    <Grid Grid.Column="1" Margin="5 0 10 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <Slider x:Name="Thermostat"
+                                Grid.ColumnSpan="3"
+                                VerticalAlignment="Bottom"
+                                Minimum="15"
+                                Value="{Binding Temperature}"
+                                Maximum="35"/>
+                            <Image Source="/Images/cold.png"
+                               Grid.Row="1"
+                               Margin="3 3 3 8"/>
+                        <Viewbox Grid.Row="1" Grid.Column="1">
+                            <TextBlock Margin="5"
+                                       Foreground="{DynamicResource TextForeground}"
+                                       TextAlignment="Center" VerticalAlignment="Center">
+                                <Run Text="{Binding Temperature, 
+                                    UpdateSourceTrigger=PropertyChanged}"/>°C
+                            </TextBlock>
+                        </Viewbox>
+                        <Image Source="/Images/hot.png"
+                               Grid.Row="1" Grid.Column="3"
+                               Margin="3 3 3 10"/>
 
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Border>
             <TextBlock Grid.Column="1"
                        Text="Viewing Room" 
                        FontWeight="Bold"
