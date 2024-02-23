@@ -164,6 +164,82 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="RepeatButton">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="RepeatButton">
+                                        <Border Background="Transparent"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="Thumb">
+                            <Setter Property="Height" Value="6"/>
+                            <Setter Property="Background" Value="#fff0f0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Thumb">
+                                        <Border Background="{TemplateBinding Background}"
+                                                Width="10" CornerRadius="5">
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="Slider">
+                            <Setter Property="IsMoveToPointEnabled" Value="True"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush>
+                                        <GradientStop Color="#ddaaaa" Offset="0"/>
+                                        <GradientStop Color="#cf7a3a" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Slider">
+                                        <Grid Height="20">
+                                            <Border Height="6"
+                                                    CornerRadius="6"
+                                                    Background="{TemplateBinding Background}">
+                                                
+                                            </Border>
+                                            <Track x:Name="PART_Track">
+                                                <Track.DecreaseRepeatButton>
+                                                    <RepeatButton/>
+                                                </Track.DecreaseRepeatButton>
+                                                <Track.Thumb>
+                                                    <Thumb x:Name="TrackThumb"/>
+                                                </Track.Thumb>
+                                                <Track.IncreaseRepeatButton>
+                                                    <RepeatButton Background="AliceBlue"/>
+                                                </Track.IncreaseRepeatButton>
+                                            </Track>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver"
+                                                     Value="True">
+                                                <Setter Property="Height" 
+                                                        Value="20"
+                                                        TargetName="TrackThumb"/>
+                                                <Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush>
+                                                            <GradientStop Color="#ddaaaa" Offset="0"/>
+                                                            <GradientStop Color="#ffbbbb" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
                     <Image Source="{Binding VolumeImage, UpdateSourceTrigger=PropertyChanged}"/>
                     <Slider Grid.Column="1"
                             Margin="5 0 30 0"
