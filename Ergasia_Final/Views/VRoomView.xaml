@@ -65,6 +65,7 @@
         <!--1st Row, Title and Catalog Button-->
         <Grid>
             <Grid.Resources>
+                <!--Light Switch Style-->
                 <Style TargetType="ToggleButton">
                     <Setter Property="Background">
                         <Setter.Value>
@@ -123,11 +124,27 @@
                                         <Setter Property="Grid.Column" Value="1" TargetName="Switch"/>
                                         <Setter Property="BorderBrush" Value="#efe032"/>
                                     </Trigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsChecked" Value="False"/>
+                                            <Condition Property="IsMouseOver" Value="True"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="BorderBrush" Value="#523194"/>
+                                    </MultiTrigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsChecked" Value="True"/>
+                                            <Condition Property="IsMouseOver" Value="True"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="BorderBrush" Value="#ffaf21"/>
+                                    </MultiTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
+                        
+                <!--Thermostat Slider Style-->
                 <Style TargetType="RepeatButton">
                     <Setter Property="SnapsToDevicePixels"
                             Value="true" />
@@ -146,14 +163,22 @@
                     </Setter>
                 </Style>
                 <Style TargetType="Thumb">
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Background" Value="#f0f0f0"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Thumb">
                                 <Border Height="20" 
+                                        CornerRadius="5"
                                         Width="15"
-                                        Background="Beige">
-                                    
+                                        Background="{TemplateBinding Background}">
                                 </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" 
+                                                Value="#f0d0d0"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -225,11 +250,14 @@
                         <Image Source="/Images/cold.png"
                            Grid.Row="1"
                            Margin="3 3 3 8"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1"
-                               Foreground="{DynamicResource TextForeground}"
-                               TextAlignment="Center" VerticalAlignment="Center">
-                        <Run Text="{Binding Temperature, UpdateSourceTrigger=PropertyChanged}"/>°C
-                    </TextBlock>
+                    <Viewbox Grid.Row="1" Grid.Column="1">
+                        <TextBlock Margin="5"
+                                   Foreground="{DynamicResource TextForeground}"
+                                   TextAlignment="Center" VerticalAlignment="Center">
+                            <Run Text="{Binding Temperature, 
+                                UpdateSourceTrigger=PropertyChanged}"/>°C
+                        </TextBlock>
+                    </Viewbox>
                     <Image Source="/Images/hot.png"
                            Grid.Row="1" Grid.Column="3"
                            Margin="3 3 3 10"/>
