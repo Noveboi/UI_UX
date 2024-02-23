@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="applet_styles.css">
     <script src="script.js"></script>
-    <style>
-
-    </style>
 </head>
 <body>
     <div class="sidebar">
@@ -30,25 +27,128 @@
     <h1>Choose the window you require help with!</h1>
     <div class="window-selection">
         <div class="window-box">
-            <a href="#">
+            <a href="#dj-help">
                 <img src="img/dj.jpg">
             </a>
             <h3>DJ App</h3>
         </div>
         <div class="window-box">
-            <a href="#">
+            <a href="#karaoke-help">
                 <img src="img/karaoke.jpg">
             </a>
             <h3>Karaoke</h3>
         </div>
     </div>
     <h2>DJ App</h2>
-    <div class="window-help">
-        
+    <div class="window-help" id="dj-help">
+        <p>
+            The DJ App is a fully functional music player that allows
+            you and anyone to:
+            <ul>
+                <li><strong>Play</strong>/<strong>Pause</strong>
+                    the current song by using the middle 
+                    <strong style="color: #cf0000">red</strong>
+                    button under the song queue
+                </li>
+                <li>
+                    <strong>Skip</strong> to the next or previous song
+                    by using the left and right <strong style="color: #cf0000">red</strong>
+                    buttons
+                </li>
+                <li>
+                    <strong>Go to a specific time</strong> in the current song 
+                    by using the <strong style="color: #cd00cd">pink</strong> seeker
+                </li>
+                <li>
+                    <strong>Change the current song's speed (BPM)</strong> by 
+                    adjusting the <strong style="color: #3f7acf">blue</strong>
+                    BPM slider
+                </li>
+                <li>
+                    <strong>Adjust the song queue</strong> by one of the following ways:
+                    <ul>
+                        <li style="list-style-type: circle;">
+                            <strong>Sorting the queue by song genre</strong> using the 
+                            buttons on the right in the Auto-DJ section.
+                        </li>
+                        <li style="list-style-type: circle;">
+                            <strong>Sorting the queue by song speed (BPM)</strong>
+                            using the buttons on the right in the Auto-DJ section.
+                        </li>
+                        <li style="list-style-type: circle;">
+                            <strong>Dragging & dropping</strong> songs directly from and to
+                            the queue. This allows the user to be precise and achieve the queue
+                            that they want!
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Change the color of the lights</strong>
+                    by using the <strong>color wheel</strong> to the right
+                    of the BPM slider.
+                </li>
+                <li>
+                    <strong>See the lyrics of the current song</strong>
+                    and perform karaoke by clicking the aptly named "Karaoke" button.
+                </li> 
+                <li>
+                    <strong>Add voice effects</strong> to your karaoke performance by clicking
+                    the "Effects" button.
+                </li>
+                <li>
+                    <strong>Create a backup</strong> of the current state of the DJ Applet, that 
+                    includes:
+                    <ul>
+                        <li>The state of the song queue</li>
+                        <li>The speed (BPM) of the current song</li>
+                        <li>The color of the lights</li>
+                        <li>The time of the current song</li>
+                        <li>The ratings in the karaoke window</li>
+                    </ul>
+                    To create a backup, go to the top-left of the window and click the "File". After that, 
+                    a dialog box saying "Create Backup" will appear, click and like magic you
+                    have created a backup of the DJ!
+                </li>
+            </ul>
+        </p>
+        <h3>Frequently Asked Questions</h3>
+        <p><strong>Can I add my own songs to the song queue?</strong></p>
+        <p>Unfortunately, you cannot. The song queue contains songs 
+            from the museums featured artists and due to legal 
+            copyright reasons, we cannot allow users to play their own
+            songs. 
+        </p>
+        <p>
+            <strong>Do I have to manually play the next song after the current 
+            one finishes playing?</strong>
+        </p>
+        <p>
+            No, after the current song finishes playing the DJ will 
+            auto-play the next one!
+        </p>
+        <p>
+            <strong>Why is the "Effects" button greyed out and why can't I click it?</table></strong>
+        </p>
+        <p>
+            For you to be able to click the "Effects" button, <strong>you must have the Karaoke window open!</strong>
+        </p>
     </div>
     <h2>Karaoke</h2>
-    <div class="window-help">
-
+    <div class="window-help" id="karaoke-help">
+        <p>
+            The karaoke window provides the user with the lyrics to the current song and also gives everyone else
+            in the room the ability to rate the singer's perfomance!.
+        </p>
+        <p>
+            <strong>If you are the singer</strong>, do not worry about having to change the lyrics
+            once the song changes, that happens automatically!
+        </p>
+        <p>
+            <strong>If you are in the crowd</strong>, you can rate the 
+            singer by using the <strong style="color:purple">purple</strong>
+            buttons labelled 1 through 5! Be a good sport though, it's hard being
+            on stage!
+        </p>
     </div>
 </div>
 <script>
