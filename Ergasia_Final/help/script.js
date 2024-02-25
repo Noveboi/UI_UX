@@ -1,5 +1,3 @@
-
-
 window.onload = function () { 
     // Add click event to expanding sections in sidebar
     var expanders = document.getElementsByClassName("menu-item")

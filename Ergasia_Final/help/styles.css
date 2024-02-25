@@ -30,6 +30,11 @@ h2 {
     font-size: 48px;
 }
 
+h3 {
+    background-color: #f4bee3;
+    color: #812062;
+}
+
 /* Paragraphs */
 p {
     padding: 0px 40px;
