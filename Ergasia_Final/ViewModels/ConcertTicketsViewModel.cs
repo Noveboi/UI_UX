@@ -14,7 +14,7 @@ namespace Ergasia_Final.ViewModels
 {
     public class ConcertTicketsViewModel : Screen
     {
-        public ConcertTicketsViewModel(IEventAggregator events, double priceMultiplier, string artistName)
+		public ConcertTicketsViewModel(IEventAggregator events, double priceMultiplier, string artistName)
         {
             _eventAggregator = events;
             _artistPriceMultiplier = priceMultiplier;
@@ -26,15 +26,15 @@ namespace Ergasia_Final.ViewModels
         // Fields
         private readonly IEventAggregator _eventAggregator;
 
-        private double _artistPriceMultiplier;
+        private readonly double _artistPriceMultiplier;
         private double _seatPriceMultiplier = 1.0;
 
         private double _totalPriceNumeric;
-        private string _totalPriceString;
+        private string _totalPriceString = string.Empty;
 
         private string _ticketQuantity = "1";
 
-        private string _artistName;
+        private readonly string _artistName;
 
         private bool sideVip1Checked = false;
         private bool sideVip2Checked = false;
@@ -188,9 +188,8 @@ namespace Ergasia_Final.ViewModels
 
         public bool ValidateInput(string input)
         {
-            int num;
-            bool isValid = int.TryParse(input, out num);
-            if (isValid && num > 0 && num < 100)
+			bool isValid = int.TryParse(input, out int num);
+			if (isValid && num > 0 && num < 100)
             {
                 IsTicketsOutOfRange = false;
                 return true;
@@ -206,23 +205,21 @@ namespace Ergasia_Final.ViewModels
 
         public void RemoveTicket()
         {
-            int ticketAmt;
-			if (int.TryParse(TicketQuantity, out ticketAmt) && ticketAmt > 1)
-            {
-                ticketAmt--;
-                TicketQuantity = ticketAmt.ToString();
-            }
-        }
+			if (int.TryParse(TicketQuantity, out int ticketAmt) && ticketAmt > 1)
+			{
+				ticketAmt--;
+				TicketQuantity = ticketAmt.ToString();
+			}
+		}
 
         public void AddTicket()
         {
-            int ticketAmt;
-            if (int.TryParse(TicketQuantity, out ticketAmt) && ticketAmt < 99)
-            {
-                ticketAmt++;
-                TicketQuantity = ticketAmt.ToString();
-            }
-        }
+			if (int.TryParse(TicketQuantity, out int ticketAmt) && ticketAmt < 99)
+			{
+				ticketAmt++;
+				TicketQuantity = ticketAmt.ToString();
+			}
+		}
 
         public void ChooseSide1()
         {

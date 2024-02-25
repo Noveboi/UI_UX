@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace Ergasia_Final.ViewModels
 {
@@ -31,6 +33,11 @@ namespace Ergasia_Final.ViewModels
         {
             MessageBox.Show("Payment successful!\nReturning to Main Menu", "Success!", MessageBoxButton.OK, MessageBoxImage.Information);
             _eventAggregator.PublishOnUIThreadAsync("epay to main");
+        }
+
+        public void OnCalendarOpened(DatePicker source)
+        {
+            MessageBox.Show(source.ToString());
         }
     }
 }

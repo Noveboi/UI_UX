@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ergasia_Final.Views"
+             xmlns:ctrls="clr-namespace:Ergasia_Final.Controls"
+             xmlns:cal="http://caliburnmicro.com"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="{DynamicResource MainBackground}">
@@ -38,6 +39,8 @@
             
             <Image Source="/Images/contactless.png" Margin="100 0"
                    Grid.ColumnSpan="2"/>
+
+            <ctrls:MonthPicker/>
 
             <Image Source="/Images/visa.png" 
                    Grid.Row="1" HorizontalAlignment="Right"
@@ -81,35 +84,43 @@
                     <Setter Property="TextAlignment" Value="Left"/>
                     <Setter Property="Padding" Value="10"/>
                 </Style>
+                <Style TargetType="TextBlock" x:Key="InputDescriptionStyle">
+                    <Setter Property="Foreground" Value="#a0a0a0"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="Margin" Value="0 0 0 2"/>
+                </Style>
             </Grid.Resources>
             
             <StackPanel Grid.ColumnSpan="2">
                 <TextBlock Text="Card Holder (Full Name)"
-                           Style="{StaticResource simpleText}"/>
+                           Style="{StaticResource InputDescriptionStyle}"/>
                 <TextBox/>
             </StackPanel>
             
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
                 <TextBlock Text="Card Number"
-                           Style="{StaticResource simpleText}"/>
+                           Style="{StaticResource InputDescriptionStyle}"/>
                 <TextBox/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="0">
                 <TextBlock Text="Expiration Date"
-                           Style="{StaticResource simpleText}"/>
-                <TextBox/>
+                           Style="{StaticResource InputDescriptionStyle}"/>
+                <DatePicker 
+                    cal:Message.Attach="[Event CalendarOpened] = [Action OnCalendarOpened($source)]"/>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="1">
                 <TextBlock Text="CVC"
-                           Style="{StaticResource simpleText}"/>
-                <TextBox/>
+                           Width="50"
+                           Style="{StaticResource InputDescriptionStyle}"/>
+                <TextBox Width="50"/>
             </StackPanel>
 
             <Button x:Name="Pay"
                     Grid.Row="3" Grid.ColumnSpan="2"
-                    FontSize="26"
+                    FontSize="24"
                     Margin="20 10">
                 <TextBlock>
                     <TextBlock.Inlines>

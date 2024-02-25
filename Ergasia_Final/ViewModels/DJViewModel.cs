@@ -41,8 +41,8 @@ namespace Ergasia_Final.ViewModels
         private static readonly Brush EFFECTS_ON = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#13a51d"));
 
         // Locators for audio/images
-        private static readonly Uri PLAY_IMAGE = new Uri("/Images/play.png", UriKind.Relative);
-        private static readonly Uri PAUSE_IMAGE = new Uri("/Images/pause.png", UriKind.Relative);
+        private static readonly Uri PLAY_IMAGE = new("/Images/play.png", UriKind.Relative);
+		private static readonly Uri PAUSE_IMAGE = new("/Images/pause.png", UriKind.Relative);
         private Uri currentAudioSource;
 
         // Booleans for simple condition checking
@@ -56,7 +56,7 @@ namespace Ergasia_Final.ViewModels
 
         // Seeker-related fields
         private int currentSeekerMaximum;
-        private string currentSongDuration;
+        private string currentSongDuration = string.Empty;
         private string currentSongTime = "00:00";
         private double currentSongElapsedSeconds = 0;
 
@@ -186,7 +186,7 @@ namespace Ergasia_Final.ViewModels
                 lightsColor = value;
                 BorderLightIndicator = new SolidColorBrush(lightsColor); 
                 NotifyOfPropertyChange();
-                NotifyOfPropertyChange("BorderLightIndicator");
+                NotifyOfPropertyChange(nameof(BorderLightIndicator));
             }
         }
 
@@ -201,7 +201,7 @@ namespace Ergasia_Final.ViewModels
             {
                 isPlaying = value;
                 PlayPauseImage = isPlaying ? PAUSE_IMAGE : PLAY_IMAGE;
-                NotifyOfPropertyChange("PlayPauseImage");
+                NotifyOfPropertyChange(nameof(PlayPauseImage));
             }
         }
         
@@ -221,7 +221,9 @@ namespace Ergasia_Final.ViewModels
         public Uri PlayPauseImage { get; set; } = PLAY_IMAGE;
         public Brush BorderLightIndicator { get; set; }
 		#endregion
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 		public DJViewModel(IEventAggregator eventAggregator)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             // Instatiate EventAggregators and subscribe on the UI Thread
 			eventAggregator.SubscribeOnUIThread(this);
@@ -373,7 +375,7 @@ namespace Ergasia_Final.ViewModels
         private void AddToQueue(string artistName, string title, GenreTypes genre, int bpm, string lyrics, Uri? audioPath = null)
         {
             int id = SongQueue.Count + 1;
-            SongModel song = new SongModel()
+            SongModel song = new()
             {
                 RowID = SongQueue.Count == 0 ? "⏵" : id.ToString(),
                 ArtistName = artistName,
@@ -576,7 +578,7 @@ namespace Ergasia_Final.ViewModels
                                                                 _audioPlayer.Position.TotalSeconds);
                     // Ensure the properties values are changed on the UI Thread!
                     // This is why we don't change the properties from here and rather send a message to the UIThread
-                    await _localThreadEvents.PublishOnUIThreadAsync(message);
+                    await _localThreadEvents.PublishOnUIThreadAsync(message, CancellationToken.None);
                     await Task.Delay(500, cancellationToken);
                 }
             } 

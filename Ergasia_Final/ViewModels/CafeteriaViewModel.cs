@@ -22,7 +22,7 @@ namespace Ergasia_Final.ViewModels
             {
                 orderCost = Math.Round(value, 2);
                 CanPay = orderCost > 0;
-                NotifyOfPropertyChange("CanPay");
+                NotifyOfPropertyChange(nameof(CanPay));
                 NotifyOfPropertyChange();
             }
         }
@@ -57,7 +57,7 @@ namespace Ergasia_Final.ViewModels
             _eventAggregator.PublishOnUIThreadAsync(new EPayServiceViewModel(OrderCost, _eventAggregator));
         }
 
-        public void OpenStaffQNA()
+        public static void OpenStaffQNA()
         {
             new WindowManager().ShowWindowAsync(new StaffQueAnsViewModel());
         }

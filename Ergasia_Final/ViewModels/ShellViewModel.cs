@@ -17,17 +17,16 @@ using System.Windows.Input;
 namespace Ergasia_Final.ViewModels
 {
     /// <summary>
-    /// The "frame" for all other Windows to be shown, contains a back button + a menu strip 
+    /// The "frame" for all other Windows to be shown, contains a back button, light/dark mode switch + a menu strip 
     /// </summary>
     public class ShellViewModel : Conductor<object>, IHandle<object>, IHandle<string>
     {
         private readonly IEventAggregator _events;
 
 		// Fields
-		private Stack<object> _windowStack;
+		private readonly Stack<Screen> _windowStack;
 		private string _maximizeSymbol = "🗖";
 		private bool _isDarkMode = true;
-        private bool _helpOpen = false;
         private Visibility showBackButton = Visibility.Hidden;
         private Visibility djOpen = Visibility.Collapsed;
 
@@ -75,7 +74,7 @@ namespace Ergasia_Final.ViewModels
 
             ActivateItemAsync(mainMenu);
 
-            _windowStack = new Stack<object>();
+            _windowStack = new Stack<Screen>();
             _windowStack.Push(mainMenu);
 
             OpenOnlineHelp = new RelayCommand(ExecuteOpenOnlineHelp);
@@ -93,11 +92,11 @@ namespace Ergasia_Final.ViewModels
                 PreviousWindow();
                 PreviousWindow();
             }
-            else if (message is Screen)
+            else if (message is Screen window)
             {
                 ShowBackButton = Visibility.Visible;
-                _windowStack.Push(message);
-                await ActivateItemAsync(message);
+                _windowStack.Push(window);
+                await ActivateItemAsync(window, CancellationToken.None);
             }
         }
 
@@ -134,24 +133,32 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public void ExecuteOpenOnlineHelp()
+        public static void ExecuteOpenOnlineHelp()
         {
-            if (_helpOpen) return;
-
             try
             {
                 string cwd = Environment.CurrentDirectory;
-                string fileName = Directory.GetParent(cwd).Parent.Parent.FullName + "\\help\\help.html";
+                DirectoryInfo config = Directory.GetParent(cwd) ?? throw new DirectoryNotFoundException(cwd);
+                DirectoryInfo bin = config.Parent ?? throw new DirectoryNotFoundException(config.FullName);
+                DirectoryInfo appRoot = bin.Parent ?? throw new DirectoryNotFoundException(bin.FullName);
+				string fileName = appRoot.FullName + "\\help\\help.html";
 
-                var process = new Process();
+				var process = new Process();
                 process.StartInfo.UseShellExecute = true;
                 process.StartInfo.FileName = fileName;
                 process.Start();
+
             } 
+            catch (DirectoryNotFoundException ex)
+            {
+                MessageBox.Show(
+                    "Couldn't launch help page!" + Environment.NewLine +
+                    ex.Message, "Something went wrong!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             catch (Exception) { }
         }
 
-        public void ExecuteCreateBackup()
+        public static void ExecuteCreateBackup()
         {
             MessageBox.Show("DJ has been backed up succesfully!");
         }
@@ -166,8 +173,8 @@ namespace Ergasia_Final.ViewModels
             string colorThemePath = _isDarkMode ? "Resources/LightColors.xaml" : "Resources/DarkColors.xaml";
 
             // Create the ResourceDictionary and add it to the application scope
-            ResourceDictionary newTheme = new ResourceDictionary
-            {
+            ResourceDictionary newTheme = new()
+			{
                 Source = new Uri(colorThemePath, UriKind.Relative)
             };
             Application.Current.Resources.MergedDictionaries.Add(newTheme);
@@ -175,7 +182,7 @@ namespace Ergasia_Final.ViewModels
             _isDarkMode = !_isDarkMode;
         }
 
-        public void MinimizeView()
+        public static void MinimizeView()
         {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
@@ -194,12 +201,12 @@ namespace Ergasia_Final.ViewModels
             }
         }
 
-        public void CloseApp()
+        public static void CloseApp()
         {
             Application.Current.Shutdown();
         }
 
-        public void MoveWindow(MouseButtonEventArgs e)
+        public static void MoveWindow(MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {

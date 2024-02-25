@@ -24,7 +24,6 @@ namespace Ergasia_Final.ViewModels
         private double ratingsAverage = 0;
         private int ratingsCount = 0;
         private readonly IEventAggregator _djEvents;
-        private string rateText;
 
         public SongModel NowPlaying
         {
@@ -74,18 +73,22 @@ namespace Ergasia_Final.ViewModels
 
 
         // Fires when a new song starts playing from DJViewModel
-        public async Task HandleAsync(SongModel message, CancellationToken cancellationToken)
+        public Task HandleAsync(SongModel message, CancellationToken cancellationToken)
         {
             NowPlaying = message;
             Ratings.Clear();
             RatingsAverage = 0;
             RatingsCount = 0;
+
+            return Task.CompletedTask;
         }
 
         public void OnRateButtonClick(Button source)
         {
-            int rating = int.Parse(source.Content.ToString());
+            string? ratingText = source.Content.ToString();
+            if (ratingText is null) return;
 
+		    int rating = int.Parse(ratingText);
             AddRating(rating);
         }
 

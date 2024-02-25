@@ -18,24 +18,38 @@ namespace Ergasia_Final.ViewModels
 {
 	public class ExHallViewModel : Screen, IHandle<string>
     {
-        private List<ArtistModel> _artists;
+        // Museum Artist Data
+        private readonly List<ArtistModel> _artists;
         private ArtistModel _currentArtist;
+
+        // Artist Page related stuff
         private int _currentIndex = 0;
-        private int _maxIndex;
-        private double _volume = 0.5;
-        private Visibility _leftNavButtonEnabled = Visibility.Hidden;
-        private Visibility _rightNavButtonEnabled = Visibility.Visible;
-        private Storyboard _vinylStoryboard;
-        private MediaElement _audioPlayer;
-        private Uri _currentSong;
-        private bool _isPlaying = true;
-        private bool _hasInitialized = false;
+        private readonly int MAX_INDEX;
+		private Visibility _leftNavButtonEnabled = Visibility.Hidden;
+		private Visibility _rightNavButtonEnabled = Visibility.Visible;
 
+        // Audio Player
+		private double _volume = 0.5;
+		private MediaElement _audioPlayer;
+		private Uri _currentSong; // MediaElement 'Source' binding
+		private bool _isPlaying = true;
+        /// <summary>
+        /// Necessary flag for when entering and exiting the window. The <see cref="WindowFactory"/> class maintains the ViewModels, 
+        /// but the Views have to be re-initialized! That means that the <see cref="Window.Activated"/> event is NOT fired only once. 
+        /// Thus the method for handling the event, <see cref="OnViewLoaded(ExHallView)"/> is invoked every time we come back to this 
+        /// ViewModel and since <see cref="ExHallView"/> is re-initialized, it obtains a new <see cref="MediaElement"/> instance. Because
+        /// <see cref="MediaElement"/>s use separate threads, that means we will have TWO MediaElements playing at the same time!
+        /// </summary>
+		private bool _hasInitialized = false; 
 
-        private static readonly Uri VOLUME_HIGH_IMG = new Uri("/Images/volume_high.png", UriKind.Relative);
-        private static readonly Uri VOLUME_MED_IMG = new Uri("/Images/volume_medium.png", UriKind.Relative);
-        private static readonly Uri VOLUME_LOW_IMG = new Uri("/Images/volume_low.png", UriKind.Relative);
-        private static readonly Uri VOLUME_MUTE_IMG = new Uri("/Images/volume_mute.png", UriKind.Relative);
+		// Storyboard for the vinyl icon rotating
+		private Storyboard _vinylStoryboard;
+
+        // Icons for the volume indicator image
+		private static readonly Uri VOLUME_HIGH_IMG = new("/Images/volume_high.png", UriKind.Relative);
+		private static readonly Uri VOLUME_MED_IMG = new("/Images/volume_medium.png", UriKind.Relative);
+        private static readonly Uri VOLUME_LOW_IMG = new("/Images/volume_low.png", UriKind.Relative);
+		private static readonly Uri VOLUME_MUTE_IMG = new("/Images/volume_mute.png", UriKind.Relative);
 
         public double Volume
         {
@@ -103,13 +117,15 @@ namespace Ergasia_Final.ViewModels
                 NotifyOfPropertyChange();
             }
         }
-        public ExHallViewModel(IEventAggregator shellEvents)
-        {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+		public ExHallViewModel(IEventAggregator shellEvents)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+		{
             _artists = new List<ArtistModel>();
             PopulateUtility.AddArtists(_artists);
 
             _currentArtist = _artists[0];
-            _maxIndex = _artists.Count - 1;
+            MAX_INDEX = _artists.Count - 1;
             _currentSong = _currentArtist.SongPath;
 
             shellEvents.SubscribeOnUIThread(this);
@@ -118,7 +134,7 @@ namespace Ergasia_Final.ViewModels
         private void CheckHideNavButtons()
         {
             LeftNavButtonEnabled = _currentIndex > 0 ? Visibility.Visible : Visibility.Hidden;
-            RightNavButtonEnabled = _currentIndex < _maxIndex ? Visibility.Visible : Visibility.Hidden;
+            RightNavButtonEnabled = _currentIndex < MAX_INDEX ? Visibility.Visible : Visibility.Hidden;
         }
 
         public void GoLeft()
@@ -134,7 +150,7 @@ namespace Ergasia_Final.ViewModels
 
         public void GoRight()
         {
-            if (_currentIndex < _maxIndex)
+            if (_currentIndex < MAX_INDEX)
             {
                 _currentIndex += 1;
                 CurrentArtist = _artists[_currentIndex];
@@ -146,9 +162,11 @@ namespace Ergasia_Final.ViewModels
         public void CreateStoryboard(Button source)
         {
             _vinylStoryboard = new Storyboard();
-            DoubleAnimation constantRotation = new DoubleAnimation(0.0, 360.0, new Duration(TimeSpan.FromSeconds(3)));
-            constantRotation.RepeatBehavior = RepeatBehavior.Forever;
-            _vinylStoryboard.Children.Add(constantRotation);
+			DoubleAnimation constantRotation = new(0.0, 360.0, new Duration(TimeSpan.FromSeconds(3)))
+			{
+				RepeatBehavior = RepeatBehavior.Forever
+			};
+			_vinylStoryboard.Children.Add(constantRotation);
             Storyboard.SetTargetProperty(constantRotation, new PropertyPath("RenderTransform.Angle"));
             Storyboard.SetTargetName(constantRotation, "vinylIcon");
             _vinylStoryboard.Begin(source, true);
