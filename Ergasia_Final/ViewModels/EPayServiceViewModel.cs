@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Ergasia_Final.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace Ergasia_Final.ViewModels
         }
 
         // Fields
+        private bool _isCalendarOpen = false;
+        private string _dateDisplay = string.Empty;
         private string _price;
         private IEventAggregator _eventAggregator;
 
@@ -26,6 +29,24 @@ namespace Ergasia_Final.ViewModels
         public string Price
         {
             get => _price;
+        }
+        public bool IsCalendarOpen
+        {
+            get => _isCalendarOpen;
+            set
+            {
+                _isCalendarOpen = value;
+                NotifyOfPropertyChange();
+            }
+        }
+        public string DateDisplay
+        {
+            get => _dateDisplay;
+            set
+            {
+                _dateDisplay = value;
+                NotifyOfPropertyChange();
+            }
         }
 
         // Methods
@@ -35,9 +56,11 @@ namespace Ergasia_Final.ViewModels
             _eventAggregator.PublishOnUIThreadAsync("epay to main");
         }
 
-        public void OnCalendarOpened(DatePicker source)
+        public void OnMonthPicked(MonthPickerSelectionChangedEventArgs e)
         {
-            MessageBox.Show(source.ToString());
+            string dateString = $"{e.Month}/{e.Year}";
+            DateDisplay = dateString;
+            IsCalendarOpen = false;
         }
     }
 }

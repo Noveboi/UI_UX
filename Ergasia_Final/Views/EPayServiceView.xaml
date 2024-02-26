@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ctrls="clr-namespace:Ergasia_Final.Controls"
-             xmlns:cal="http://caliburnmicro.com"
+             xmlns:cal="http://caliburnmicro.com" xmlns:viewmodels="clr-namespace:Ergasia_Final.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:EPayServiceViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="{DynamicResource MainBackground}">
@@ -39,8 +39,6 @@
             
             <Image Source="/Images/contactless.png" Margin="100 0"
                    Grid.ColumnSpan="2"/>
-
-            <ctrls:MonthPicker/>
 
             <Image Source="/Images/visa.png" 
                    Grid.Row="1" HorizontalAlignment="Right"
@@ -107,8 +105,29 @@
             <StackPanel Grid.Row="2" Grid.Column="0">
                 <TextBlock Text="Expiration Date"
                            Style="{StaticResource InputDescriptionStyle}"/>
-                <DatePicker 
-                    cal:Message.Attach="[Event CalendarOpened] = [Action OnCalendarOpened($source)]"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding DateDisplay, Mode=TwoWay,
+                        UpdateSourceTrigger=PropertyChanged}"/>
+                    <ToggleButton 
+                        IsChecked="{Binding IsCalendarOpen, Mode=TwoWay,
+                        UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="CalendarOpenButton"  
+                        Grid.Column="1"/>
+                    <Popup IsOpen="{Binding IsChecked, ElementName=CalendarOpenButton}"
+                           AllowsTransparency="True"
+                           Placement="Top"
+                           PlacementTarget="{Binding ElementName=CalendarOpenButton}"
+                           StaysOpen="False">
+                        <ctrls:MonthPicker 
+                            cal:Message.Attach="[Event SelectionChanged] 
+                            = [Action OnMonthPicked($eventArgs)]"/>
+                    </Popup>
+
+                </Grid>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="1">

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Ergasia_Final.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -52,6 +53,7 @@ namespace Ergasia_Final.Controls
     {
         public static readonly DependencyProperty SelectedYearProperty = DependencyProperty.Register("SelectedYear", typeof(int), typeof(MonthPicker));
         public static readonly DependencyProperty SelectedMonthProperty = DependencyProperty.Register("SelectedMonth", typeof(int), typeof(MonthPicker));
+        public event EventHandler<MonthPickerSelectionChangedEventArgs> SelectionChanged;
         public ICommand PickMonth { get; private set; }
         public ICommand PreviousYear { get; private set; }
         public ICommand NextYear { get; private set; }
@@ -67,6 +69,11 @@ namespace Ergasia_Final.Controls
         }
 
         public ObservableCollection<MonthModel> Months { get; private set; } = new();
+        static MonthPicker()
+        {
+			DefaultStyleKeyProperty.OverrideMetadata(typeof(MonthPicker), new FrameworkPropertyMetadata(typeof(MonthPicker)));   
+		}
+
         public MonthPicker()
         {
 			string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
@@ -74,14 +81,12 @@ namespace Ergasia_Final.Controls
 			{
 				Months.Add(new MonthModel(monthNames[i], i + 1));
 			}
+			PickMonth = new RelayCommand<int>(ExecutePickMonth);
+			PreviousYear = new RelayCommand(() => SelectedYear--);
+			NextYear = new RelayCommand(() => SelectedYear++);
 
-			DefaultStyleKeyProperty.OverrideMetadata(typeof(MonthPicker), new FrameworkPropertyMetadata(typeof(MonthPicker)));
-            PickMonth = new RelayCommand<int>(ExecutePickMonth);
-            PreviousYear = new RelayCommand(() => SelectedYear--);
-            NextYear = new RelayCommand(() => SelectedYear++);
-
-            SelectedYear = DateTime.Now.Year;
-            SelectedMonth = DateTime.Now.Month;
+			SelectedYear = DateTime.Now.Year;
+			SelectedMonth = DateTime.Now.Month;
 		}
 
         private void ExecutePickMonth(int month)
@@ -89,6 +94,12 @@ namespace Ergasia_Final.Controls
             Months[SelectedMonth - 1].Checked = false;
             Months[month - 1].Checked = true;
             SelectedMonth = month;
+
+            SelectionChanged?.Invoke(this, new MonthPickerSelectionChangedEventArgs()
+            {
+                Month = month,
+                Year = SelectedYear
+            });
         }
     }
 
