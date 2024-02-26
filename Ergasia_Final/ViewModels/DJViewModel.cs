@@ -240,7 +240,7 @@ namespace Ergasia_Final.ViewModels
 
             // shuffle the song queue (Blank Space first every time is annoying ( sick song tho >:] ))
             SongQueue = new BindableCollection<SongModel>(SongQueue.OrderBy(_ => Guid.NewGuid()).ToList());
-			UpdateSongs();
+			UpdateSongs(true);
 
 			currentAudioSource = SongQueue[0].AudioPath;
             effectsButtonColor = EFFECTS_DISABLED;
@@ -321,7 +321,7 @@ namespace Ergasia_Final.ViewModels
             int targetId = targetSong.RowID == "⏵" ? 0 : int.Parse(targetSong.RowID) - 1;
 
             SongQueue.Move(sourceId, targetId);
-            UpdateSongs();
+            UpdateSongs(targetId == 0);
         }
 		#endregion
 		#region Song Queue Manipulation
@@ -348,24 +348,27 @@ namespace Ergasia_Final.ViewModels
 		/// </list>
 		/// </para>
 		/// </summary>
-		private void UpdateSongs()
+		private void UpdateSongs(bool songChanged = false)
         {
-            // Update Row IDs
-            SongQueue[0].RowID = "⏵";
-            for (int i = 1; i < SongQueue.Count; i++)
+			if (songChanged)
+			{
+				SongQueue[0].RowID = "⏵";
+				// Send the current song to KaraokeViewModel (if open)
+				if (KaraokeOpen)
+				{
+					_djEvents.PublishOnUIThreadAsync(SongQueue[0]);
+				}
+
+				Bpm = SongQueue[0].BPM;
+				CurrentAudioSource = SongQueue[0].AudioPath;
+			}
+
+			// Update Row IDs
+			for (int i = 1; i < SongQueue.Count; i++)
             {
                 SongQueue[i].RowID = (i + 1).ToString();
             }
             SongQueue.Refresh();
-
-            // Send the current song to KaraokeViewModel (if open)
-            if (KaraokeOpen)
-            {
-                _djEvents.PublishOnUIThreadAsync(SongQueue[0]);
-            }
-
-            Bpm = SongQueue[0].BPM;
-            CurrentAudioSource = SongQueue[0].AudioPath;
         }
 
         // Use this instead of SongQueue.Add()!
@@ -468,7 +471,7 @@ namespace Ergasia_Final.ViewModels
             SongQueue.Add(justFinished);
 
             _audioPlayer.SpeedRatio = 1;
-            UpdateSongs();
+            UpdateSongs(true);
         }
 
         /// <summary>
@@ -483,7 +486,7 @@ namespace Ergasia_Final.ViewModels
             SongQueue.Insert(0, lastSong);
 
             _audioPlayer.SpeedRatio = 1;
-            UpdateSongs();
+            UpdateSongs(true);
         }
 
         /// <summary>

@@ -1,16 +1,8 @@
 ﻿using Caliburn.Micro;
 using Ergasia_Final.Utilities;
-using Microsoft.Xaml.Behaviors.Media;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace Ergasia_Final.ViewModels
 {
@@ -19,23 +11,19 @@ namespace Ergasia_Final.ViewModels
         public EPayServiceViewModel(double price, IEventAggregator events)
         {
             _eventAggregator = events;
-            _price = $"€{price}";
+            Price = $"€{price}";
         }
 
         // Fields
         private bool _isCalendarOpen = false;
-        private string _dateDisplay = string.Empty;
+        private string _expirationDate = string.Empty;
 		private string _cvc = string.Empty;
 		private string _cardNumber = string.Empty;
 		private string _fullName = string.Empty;
-		private string _price;
-        private IEventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
 
         // Properties
-        public string Price
-        {
-            get => _price;
-        }
+        public string Price { get; }
         public bool IsCalendarOpen
         {
             get => _isCalendarOpen;
@@ -47,12 +35,12 @@ namespace Ergasia_Final.ViewModels
         }
         public string ExpirationDate
         {
-            get => _dateDisplay;
+            get => _expirationDate;
             set
             {
                 if (value.All(c => char.IsDigit(c) || c.Equals('/')))
                 {
-                    Set(ref _dateDisplay, value);
+                    Set(ref _expirationDate, value);
                     ValidExpirationDate = IsValidExpirationDate(value);
                     NotifyOfPropertyChange(nameof(ValidExpirationDate));
                 }
@@ -122,18 +110,19 @@ namespace Ergasia_Final.ViewModels
             IsCalendarOpen = false;
         }
 
-        private bool IsValidCVC(string cvcText)
+        private static bool IsValidCVC(string cvcText)
         {
             return cvcText.All(char.IsDigit) && cvcText.Length == 3; 
         }
-        private bool IsValidCardNumber(string cardNumberText)
+        private static bool IsValidCardNumber(string cardNumberText)
         {
             return cardNumberText.All(chr => char.IsDigit(chr) || char.IsWhiteSpace(chr))
             && cardNumberText.Where(c => !char.IsWhiteSpace(c)).ToArray().Length == 16;
         }
-        private bool IsValidExpirationDate(string expDateText)
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Regex needs re-initialization!")]
+		private bool IsValidExpirationDate(string expDateText)
         {
-            Regex regex = new Regex(@"^([1-9]|(10|11|12))\/2[0-1]([0-9]{2})$");
+            var regex = new Regex(@"^([1-9]|(10|11|12))\/2[0-1]([0-9]{2})$");
             return regex.IsMatch(expDateText);
         }
 	}

@@ -131,7 +131,7 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding DateDisplay, Mode=TwoWay,
+                    <TextBox Text="{Binding ExpirationDate, Mode=TwoWay,
                         UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Style>
                             <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
