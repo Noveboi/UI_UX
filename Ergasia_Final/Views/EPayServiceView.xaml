@@ -81,6 +81,7 @@
                     <Setter Property="FontSize" Value="18"/>
                     <Setter Property="TextAlignment" Value="Left"/>
                     <Setter Property="Padding" Value="10"/>
+                    <Setter Property="BorderBrush" Value="Green"/>
                 </Style>
                 <Style TargetType="TextBlock" x:Key="InputDescriptionStyle">
                     <Setter Property="Foreground" Value="#a0a0a0"/>
@@ -93,30 +94,83 @@
             <StackPanel Grid.ColumnSpan="2">
                 <TextBlock Text="Card Holder (Full Name)"
                            Style="{StaticResource InputDescriptionStyle}"/>
-                <TextBox/>
+                <TextBox Text="{Binding FullName,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ValidFullName}" Value="False">
+                                    <Setter Property="BorderBrush" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </StackPanel>
             
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
                 <TextBlock Text="Card Number"
                            Style="{StaticResource InputDescriptionStyle}"/>
-                <TextBox/>
+                <TextBox Text="{Binding CardNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ValidCardNumber}" Value="False">
+                                    <Setter Property="BorderBrush" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </StackPanel>
 
             <StackPanel Grid.Row="2" Grid.Column="0">
                 <TextBlock Text="Expiration Date"
                            Style="{StaticResource InputDescriptionStyle}"/>
-                <Grid>
+                <Grid Height="32">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBox Text="{Binding DateDisplay, Mode=TwoWay,
-                        UpdateSourceTrigger=PropertyChanged}"/>
+                        UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ValidExpirationDate}" Value="False">
+                                        <Setter Property="BorderBrush" Value="Red"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
                     <ToggleButton 
                         IsChecked="{Binding IsCalendarOpen, Mode=TwoWay,
                         UpdateSourceTrigger=PropertyChanged}"
-                        x:Name="CalendarOpenButton"  
-                        Grid.Column="1"/>
+                        x:Name="CalendarOpenButton"
+                        Cursor="Hand"
+                        Grid.Column="1">
+                        <ToggleButton.Style>
+                            <Style TargetType="ToggleButton">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#42cf00ff"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Grid Background="{TemplateBinding Background}">
+                                                <ContentPresenter Margin="3"/>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ToggleButton.Style>
+                        <Image Source="/Images/calendar_icon.png"
+                               Stretch="Uniform"/>
+                    </ToggleButton>
                     <Popup IsOpen="{Binding IsChecked, ElementName=CalendarOpenButton}"
                            AllowsTransparency="True"
                            Placement="Top"
@@ -126,7 +180,6 @@
                             cal:Message.Attach="[Event SelectionChanged] 
                             = [Action OnMonthPicked($eventArgs)]"/>
                     </Popup>
-
                 </Grid>
             </StackPanel>
 
@@ -134,7 +187,18 @@
                 <TextBlock Text="CVC"
                            Width="50"
                            Style="{StaticResource InputDescriptionStyle}"/>
-                <TextBox Width="50"/>
+                <TextBox Width="50"
+                         Text="{Binding Cvc, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ValidCVC}" Value="False">
+                                    <Setter Property="BorderBrush" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </StackPanel>
 
             <Button x:Name="Pay"
