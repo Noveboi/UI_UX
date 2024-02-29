@@ -44,12 +44,15 @@ namespace Ergasia_Final.ViewModels
             }
         } 
 
+
+
         private void SetNavigateUris(string artistName)
         {
             if (artistName == "taylor")
             {
                 Concert1 = new VideoPaketoModel()
                 {
+                    ImagePath = new Uri("/Images/ts_bg.jpg", UriKind.RelativeOrAbsolute),
                     VideoLink = new Uri("https://www.youtube.com/watch?v=P5JLMp08GC0")
                 };
             }

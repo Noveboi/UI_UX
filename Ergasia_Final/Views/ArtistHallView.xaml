@@ -63,6 +63,9 @@
                         Style="{StaticResource VideoPanel}">
                 <TextBlock Text="Concerts" />
                 <Button Margin="20">
+                    <Button.Background>
+                        <ImageBrush ImageSource="{Binding Concert1.ImagePath}"/>
+                    </Button.Background>
                     <Hyperlink NavigateUri="{Binding Concert1.VideoLink}"/>
                 </Button>
                 <Button Margin="10 20 10 10">

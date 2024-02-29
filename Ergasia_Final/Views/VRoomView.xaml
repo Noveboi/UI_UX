@@ -102,14 +102,14 @@
                                             Margin="6"
                                             Source="/Images/sun.png"/>
                                         <Ellipse x:Name="Switch"
-                                                 Stroke="#aa5555"
+                                                 Stroke="#808080"
                                                  StrokeThickness="2">
                                             <Ellipse.Fill>
                                                 <RadialGradientBrush>
                                                     <GradientStop 
-                                                        Color="#df7a00" Offset="0"/>
+                                                        Color="#d0d0d0" Offset="0"/>
                                                     <GradientStop 
-                                                        Color="#aa5500" Offset="1"/>
+                                                        Color="#a0a0a0" Offset="1"/>
                                                 </RadialGradientBrush>
                                             </Ellipse.Fill>
                                         </Ellipse>
@@ -118,25 +118,25 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsChecked" Value="False">
                                         <Setter Property="Grid.Column" Value="0" TargetName="Switch"/>
-                                        <Setter Property="BorderBrush" Value="#322164"/>
+                                        <Setter Property="BorderBrush" Value="#aa0011"/>
                                     </Trigger>
                                     <Trigger Property="IsChecked" Value="True">
                                         <Setter Property="Grid.Column" Value="1" TargetName="Switch"/>
-                                        <Setter Property="BorderBrush" Value="#efe032"/>
+                                        <Setter Property="BorderBrush" Value="#00aa11"/>
                                     </Trigger>
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
                                             <Condition Property="IsChecked" Value="False"/>
                                             <Condition Property="IsMouseOver" Value="True"/>
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="BorderBrush" Value="#523194"/>
+                                        <Setter Property="BorderBrush" Value="#cc0011"/>
                                     </MultiTrigger>
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
                                             <Condition Property="IsChecked" Value="True"/>
                                             <Condition Property="IsMouseOver" Value="True"/>
                                         </MultiTrigger.Conditions>
-                                        <Setter Property="BorderBrush" Value="#ffaf21"/>
+                                        <Setter Property="BorderBrush" Value="#00cc11"/>
                                     </MultiTrigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -222,6 +222,8 @@
             </Grid.ColumnDefinitions>
             <!--Light Switch & Thermostat Grid-->
             <Border Margin="8 8 3 3"
+                    HorizontalAlignment="Left"
+                    MaxHeight="75"
                     BorderThickness="2">
                 <Border.BorderBrush>
                     <SolidColorBrush Color="#f0f0f0" Opacity="0.5"/>
@@ -285,9 +287,11 @@
                        FontWeight="Bold"
                        Style="{StaticResource titleStyle}"/>
             <Button Grid.Column="2"
+                    MaxHeight="75"
                     x:Name="OpenFoodAndDrink" 
-                    Style="{StaticResource foodAndDrinkButton}"
-                    HorizontalAlignment="Right" Margin="10"/>
+                    Style="{StaticResource foodAndDrinkButton}" 
+                    HorizontalAlignment="Right"
+                    Margin="10"/>
         </Grid>
         <!--2nd Row-->
         <StackPanel Grid.Row="1" Margin="20 10">
