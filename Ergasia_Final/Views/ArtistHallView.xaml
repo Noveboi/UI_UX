@@ -25,7 +25,7 @@
                    Padding="10"
                    Foreground="White">
             <TextBlock.Background>
-                <SolidColorBrush Color="Purple" Opacity="0.5"/>
+                <SolidColorBrush Color="Purple" Opacity="0.35"/>
             </TextBlock.Background>
         </TextBlock>
         <Grid Grid.Row="1">
@@ -40,12 +40,59 @@
                     <Setter Property="MaxWidth" Value="160"/>
                     <Setter Property="Margin" Value="10"/>
                     <Setter Property="Background" Value="#427d52"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="cal:Message.Attach" 
                             Value="[Event Click] = [Action OnRequestNavigate($source)]"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="10" RenderTransformOrigin="0.5,0.5">
+                                    <Border.RenderTransform>
+                                        <ScaleTransform x:Name="ButtonScale" ScaleX="1" ScaleY="1"/>
+                                    </Border.RenderTransform>
+                                    <Grid>
+                                        <Border x:Name="overlay"
+                                            Background="#15ffffff" CornerRadius="10"
+                                                Visibility="Hidden"/>
+                                        <ContentPresenter/>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="overlay"
+                                            Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                    <EventTrigger RoutedEvent="Click">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames 
+                                                    Storyboard.TargetName="ButtonScale"
+                                                    Storyboard.TargetProperty="(ScaleTransform.ScaleX)">
+                                                    <LinearDoubleKeyFrame KeyTime="0:0:0.025" Value="1.1"/>
+                                                    <EasingDoubleKeyFrame KeyTime="0:0:0.35" Value="1"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                                <DoubleAnimationUsingKeyFrames 
+                                                    Storyboard.TargetName="ButtonScale"
+                                                    Storyboard.TargetProperty="(ScaleTransform.ScaleY)">
+                                                    <LinearDoubleKeyFrame KeyTime="0:0:0.025" Value="1.1"/>
+                                                    <EasingDoubleKeyFrame KeyTime="0:0:0.35" Value="1"/>
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="{StaticResource TextForeground}"/>
                     <Setter Property="FontSize" Value="24"/>
+                    <Setter Property="FontWeight" Value="Medium"/>
                     <Setter Property="TextAlignment" Value="Center"/>
                 </Style>
                 <Style TargetType="StackPanel" x:Key="VideoPanel">
@@ -53,7 +100,7 @@
                     <Setter Property="VerticalAlignment" Value="Bottom"/>
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="Purple" Opacity="0.5"/>
+                            <SolidColorBrush Color="Purple" Opacity="0.4"/>
                         </Setter.Value>
                     </Setter>
                     <Setter Property="Margin" Value="20"/>
@@ -69,6 +116,9 @@
                     <Hyperlink NavigateUri="{Binding Concert1.VideoLink}"/>
                 </Button>
                 <Button Margin="10 20 10 10">
+                    <Button.Background>
+                        <ImageBrush ImageSource="{Binding Concert2.ImagePath}"/>
+                    </Button.Background>
                     <Hyperlink NavigateUri="{Binding Concert2.VideoLink}"/>
                 </Button>
             </StackPanel>
@@ -76,12 +126,18 @@
                 <StackPanel Grid.Column="1">
                     <TextBlock Text="Interviews"/>
                     <Button>
+                        <Button.Background>
+                            <ImageBrush ImageSource="{Binding Interview.ImagePath}"/>
+                        </Button.Background>
                         <Hyperlink NavigateUri="{Binding Interview.VideoLink}"/>
                     </Button>
                 </StackPanel>
                 <StackPanel Grid.Column="2">
                     <TextBlock Text="Covers"/>
                     <Button>
+                        <Button.Background>
+                            <ImageBrush ImageSource="{Binding Cover.ImagePath}"/>
+                        </Button.Background>
                         <Hyperlink NavigateUri="{Binding Cover.VideoLink}"/>
                     </Button>
                 </StackPanel>
