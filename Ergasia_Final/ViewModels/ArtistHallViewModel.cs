@@ -32,18 +32,7 @@ namespace Ergasia_Final.ViewModels
         // Sets the Image background of the main Grid
         private void SetArtistBackground(string artistName)
         {
-            if (artistName == "taylor")
-            {
-                ArtistBackground = new Uri("./Images/ts_bg.jpg", UriKind.RelativeOrAbsolute);
-            }
-            else if (artistName == "m83")
-            {
-                
-            }
-            else if (artistName == "altj")
-            {
-
-            }
+            ArtistBackground = new Uri($"/Images/{artistName}_bg.jpg", UriKind.Relative);
         } 
 
         /// <summary>
@@ -52,23 +41,45 @@ namespace Ergasia_Final.ViewModels
         /// <param name="artistName"></param>
         private void SetNavigateUris(string artistName)
         {
-            if (artistName == "taylor")
+            Concert1 = new VideoPaketoModel()
             {
-                Concert1 = new VideoPaketoModel()
-                {
-                    ImagePath = new Uri("/Images/ts_bg.jpg", UriKind.RelativeOrAbsolute),
-                    VideoLink = new Uri("https://www.youtube.com/watch?v=P5JLMp08GC0")
-                };
-            }
-            if (artistName == "m83")
+                ImagePath = new Uri($"/Images/{artistName}_video1.jpg", UriKind.Relative)
+            };
+            Concert2 = new VideoPaketoModel()
             {
+                ImagePath = new Uri($"/Images/{artistName}_video2.jpg", UriKind.Relative)
+            };
+            Interview = new VideoPaketoModel()
+            {
+                ImagePath = new Uri($"/Images/{artistName}_video3.jpg", UriKind.Relative)
+            };
+            Cover = new VideoPaketoModel()
+            {
+                ImagePath = new Uri($"/Images/{artistName}_video4.jpg", UriKind.Relative)
+            };
 
-            }
+            if (artistName == "ts")
+            {
+                Concert1.VideoLink = new Uri("https://www.youtube.com/watch?v=SVY8I46dkb0");
+                Concert2.VideoLink = new Uri("https://www.youtube.com/watch?v=qdk01wkzKzo");
+                Interview.VideoLink = new Uri("https://www.youtube.com/watch?v=XnbCSboujF4");
+                Cover.VideoLink = new Uri("https://www.youtube.com/watch?v=16hiMn6V9Wk&list=WL&index=225");
+			}
             if (artistName == "altj")
             {
-
-            }
-        }
+			    Concert1.VideoLink = new Uri("https://www.youtube.com/watch?v=pcVRrlmpcWk");
+			    Concert2.VideoLink = new Uri("https://www.youtube.com/watch?v=8zHdLF3-coA");
+			    Interview.VideoLink = new Uri("https://www.youtube.com/watch?v=W4eGSuu92uA");
+                Cover.VideoLink = new Uri("https://www.youtube.com/watch?v=YJzxYFyZvFM");
+			}
+            if (artistName == "m83")
+            {
+                Concert1.VideoLink = new Uri("https://www.youtube.com/watch?v=ErrKRT3VjKk");
+                Concert2.VideoLink = new Uri("https://www.youtube.com/watch?v=XY-Sw9uBw9k");
+			    Interview.VideoLink = new Uri("https://www.youtube.com/watch?v=7XWjaOlk8P0&t=17s");
+                Cover.VideoLink = new Uri("https://www.youtube.com/watch?v=18_Gg2vwybY");
+			}
+		}
 
         public static void OnRequestNavigate(Button source)
         {

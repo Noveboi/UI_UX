@@ -47,13 +47,11 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}"
+                                <Border x:Name="ButtonBorder"
+                                        Background="{TemplateBinding Background}"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         CornerRadius="10" RenderTransformOrigin="0.5,0.5">
-                                    <Border.RenderTransform>
-                                        <ScaleTransform x:Name="ButtonScale" ScaleX="1" ScaleY="1"/>
-                                    </Border.RenderTransform>
                                     <Grid>
                                         <Border x:Name="overlay"
                                             Background="#15ffffff" CornerRadius="10"
@@ -65,22 +63,21 @@
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="overlay"
                                             Property="Visibility" Value="Visible"/>
+                                        <Setter Property="RenderTransform" TargetName="ButtonBorder">
+                                            <Setter.Value>
+                                                <ScaleTransform x:Name="ButtonScale" ScaleX="1.03" ScaleY="1.03"/>
+                                            </Setter.Value>
+                                        </Setter>
                                     </Trigger>
                                     <EventTrigger RoutedEvent="Click">
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <DoubleAnimationUsingKeyFrames 
-                                                    Storyboard.TargetName="ButtonScale"
-                                                    Storyboard.TargetProperty="(ScaleTransform.ScaleX)">
-                                                    <LinearDoubleKeyFrame KeyTime="0:0:0.025" Value="1.1"/>
-                                                    <EasingDoubleKeyFrame KeyTime="0:0:0.35" Value="1"/>
-                                                </DoubleAnimationUsingKeyFrames>
-                                                <DoubleAnimationUsingKeyFrames 
-                                                    Storyboard.TargetName="ButtonScale"
-                                                    Storyboard.TargetProperty="(ScaleTransform.ScaleY)">
-                                                    <LinearDoubleKeyFrame KeyTime="0:0:0.025" Value="1.1"/>
-                                                    <EasingDoubleKeyFrame KeyTime="0:0:0.35" Value="1"/>
-                                                </DoubleAnimationUsingKeyFrames>
+                                                <ColorAnimationUsingKeyFrames 
+                                                    Storyboard.TargetName="overlay"
+                                                    Storyboard.TargetProperty="Background.Color">
+                                                    <LinearColorKeyFrame KeyTime="0:0:0.045" Value="#70ef00af"/>
+                                                    <EasingColorKeyFrame KeyTime="0:0:2" Value="#15ffffff"/>
+                                                </ColorAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger>

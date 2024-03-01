@@ -346,7 +346,7 @@
                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Grid>
             </Button>
-            <Button x:Name="taylor" Grid.Column="1">
+            <Button x:Name="ts" Grid.Column="1">
                 <Grid>
                     <Image Source="/Images/TS_Eras_Tour.jpg" 
                            Stretch="UniformToFill" 
