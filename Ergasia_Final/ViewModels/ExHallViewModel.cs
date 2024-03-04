@@ -113,7 +113,7 @@ namespace Ergasia_Final.ViewModels
             set
             {
                 _currentArtist = value;
-                CurrentSong = _currentArtist.SongPath;
+                CurrentSong = _currentArtist.SongPath ?? throw new Exception("Please include audio files with ArtistModel instances!");
                 NotifyOfPropertyChange();
             }
         }
@@ -126,7 +126,7 @@ namespace Ergasia_Final.ViewModels
 
             _currentArtist = _artists[0];
             MAX_INDEX = _artists.Count - 1;
-            _currentSong = _currentArtist.SongPath;
+            _currentSong = _currentArtist.SongPath ?? throw new Exception("Please include audio files with ArtistModel instances!");
 
             shellEvents.SubscribeOnUIThread(this);
         }

@@ -242,9 +242,7 @@ namespace Ergasia_Final.ViewModels
             SongQueue = new BindableCollection<SongModel>(SongQueue.OrderBy(_ => Guid.NewGuid()).ToList());
 			UpdateSongs(true);
 
-			currentAudioSource = SongQueue[0].AudioPath;
             effectsButtonColor = EFFECTS_DISABLED;
-            bpm = SongQueue[0].BPM;
         }
 
         public void OnViewLoaded(DJView view)
@@ -360,7 +358,7 @@ namespace Ergasia_Final.ViewModels
 				}
 
 				Bpm = SongQueue[0].BPM;
-				CurrentAudioSource = SongQueue[0].AudioPath;
+				CurrentAudioSource = SongQueue[0].AudioPath ?? throw new Exception("Please use SongModel instances with audio!");
 			}
 
 			// Update Row IDs

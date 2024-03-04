@@ -8,7 +8,7 @@ namespace Ergasia_Final.Models
 {
     public class VideoPaketoModel
     {
-        public Uri VideoLink { get; set; }
-        public Uri ImagePath { get; set; }
+        public Uri? VideoLink { get; set; }
+        public Uri? ImagePath { get; set; }
     }
 }

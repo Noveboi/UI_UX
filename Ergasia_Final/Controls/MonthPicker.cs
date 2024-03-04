@@ -53,7 +53,7 @@ namespace Ergasia_Final.Controls
     {
         public static readonly DependencyProperty SelectedYearProperty = DependencyProperty.Register("SelectedYear", typeof(int), typeof(MonthPicker));
         public static readonly DependencyProperty SelectedMonthProperty = DependencyProperty.Register("SelectedMonth", typeof(int), typeof(MonthPicker));
-        public event EventHandler<MonthPickerSelectionChangedEventArgs> SelectionChanged;
+        public event EventHandler<MonthPickerSelectionChangedEventArgs>? SelectionChanged;
         public ICommand PickMonth { get; private set; }
         public ICommand PreviousYear { get; private set; }
         public ICommand NextYear { get; private set; }

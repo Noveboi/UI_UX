@@ -13,8 +13,8 @@ namespace Ergasia_Final.ViewModels
     public class VRoomViewModel : Screen
     {
         private readonly IEventAggregator _eventAggregator;
-        private SolidColorBrush _mainBgColor;
-        private SolidColorBrush _windowBackground;
+        private SolidColorBrush? _mainBgColor;
+        private SolidColorBrush? _windowBackground;
         private double _temperature = 20;
         private bool _lightsOn = false;
 
@@ -28,7 +28,7 @@ namespace Ergasia_Final.ViewModels
                 AdjustBackgroundBrightness();
             }
         }
-        public SolidColorBrush WindowBackground
+        public SolidColorBrush? WindowBackground
         {
             get => _windowBackground;
             set
@@ -62,7 +62,7 @@ namespace Ergasia_Final.ViewModels
         {
             int warmness = 2*((int)_temperature - 20);
             var newColor = new SolidColorBrush(Color.FromRgb(
-                (byte)(_mainBgColor.Color.R + warmness),
+                (byte)(_mainBgColor!.Color.R + warmness),
 				_mainBgColor.Color.G,
 				_mainBgColor.Color.B));
             WindowBackground = newColor;
@@ -73,17 +73,17 @@ namespace Ergasia_Final.ViewModels
             int dim_brighten = LightsOn ? 15 : -15;
 
             var newColor = new SolidColorBrush(Color.FromRgb(
-				NonNegativeX(WindowBackground.Color.R + dim_brighten),
+				NonNegativeX(WindowBackground!.Color.R + dim_brighten),
                 NonNegativeX(WindowBackground.Color.G + dim_brighten),
                 NonNegativeX(WindowBackground.Color.B + dim_brighten)));
             _mainBgColor = new SolidColorBrush(Color.FromRgb(
-				NonNegativeX(_mainBgColor.Color.R + dim_brighten),
+				NonNegativeX(_mainBgColor!.Color.R + dim_brighten),
 				NonNegativeX(_mainBgColor.Color.G + dim_brighten),
 				NonNegativeX(_mainBgColor.Color.B + dim_brighten)));
 			WindowBackground = newColor;
         }
 
-        private byte NonNegativeX(int X)
+        private static byte NonNegativeX(int X)
         {
             return (byte)(X > 0 ? X : 0);
         }

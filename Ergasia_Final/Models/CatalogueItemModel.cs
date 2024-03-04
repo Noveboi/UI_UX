@@ -8,8 +8,8 @@ namespace Ergasia_Final.Models
 {
     public class CatalogueItemModel
     {
-        public string Name { get; set; }
-        public CatalogueItemTypes Type { get; set; }
+        public string Name { get; set; } = string.Empty;
+		public CatalogueItemTypes Type { get; set; }
         public double Price { get; set; }
         public bool AllergyWarning { get; set; } = false;
         public bool CurrentlyAvailable { get; set; }

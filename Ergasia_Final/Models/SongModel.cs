@@ -11,10 +11,10 @@ namespace Ergasia_Final.Models
     {
         private int _bpm;
 
-        public string RowID { get; set; }
-        public string ArtistName { get; set; }
-        public string Title { get; set; }
-        public SpeedTypes Speed { get; private set; }
+        public string RowID { get; set; } = string.Empty;
+        public string ArtistName { get; set; } = string.Empty;
+		public string Title { get; set; } = string.Empty;
+		public SpeedTypes Speed { get; private set; }
         public GenreTypes Genre { get; set; }
         public int BPM
         {
@@ -26,7 +26,7 @@ namespace Ergasia_Final.Models
                 Speed = _bpm >= 110 ? SpeedTypes.Fast : SpeedTypes.Slow;
             }
         }
-        public Uri AudioPath { get; set; }
-        public string Lyrics { get; set; }
-    }
+        public Uri? AudioPath { get; set; }
+        public string Lyrics { get; set; } = string.Empty;
+	}
 }
