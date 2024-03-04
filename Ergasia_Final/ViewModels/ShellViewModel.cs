@@ -166,6 +166,11 @@ namespace Ergasia_Final.ViewModels
         // Replace color theme resource dictionaries to dynamically change app colors
         public void ToggleColorTheme()
         {
+            if (_windowStack.Peek().GetType() == typeof(VRoomViewModel))
+            {
+                MessageBox.Show("Light mode is not available for the Viewing Room applet!", "Cannot switch to light mode", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             // Clear the application dictionary for the colors
             // IMPORTANT: do not change the ORDER of the resource dictionaries in App.xaml!!!
             Application.Current.Resources.MergedDictionaries.RemoveAt(2);
