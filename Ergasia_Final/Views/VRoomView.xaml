@@ -216,9 +216,9 @@
                 </Style>
             </Grid.Resources>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="1.5*"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
             <!--Light Switch & Thermostat Grid-->
             <Border Margin="8 8 3 3"
@@ -233,12 +233,12 @@
                         <SolidColorBrush Color="#ddaaaa" Opacity="0.2"/>
                     </Grid.Background>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="125"/>
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="110"/>
+                        <ColumnDefinition Width="120"/>
                     </Grid.ColumnDefinitions>
                      <!--Light Switch-->
                     <ToggleButton x:Name="LightSwitch" Margin="8 8 5 8" 
-                                  Width="100"
+                                  Width="90"
                                   IsChecked="{Binding LightsOn}">
                     </ToggleButton>
                     <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Right"
@@ -250,9 +250,9 @@
                     <!--Thermostat Grid-->
                     <Grid Grid.Column="1" Margin="5 0 10 0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="25"/>
                             <ColumnDefinition/>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="25"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -264,34 +264,36 @@
                                 Minimum="15"
                                 Value="{Binding Temperature}"
                                 Maximum="35"/>
-                            <Image Source="/Images/cold.png"
-                               Grid.Row="1"
-                               Margin="3 3 3 8"/>
-                        <Viewbox Grid.Row="1" Grid.Column="1">
-                            <TextBlock Margin="5"
-                                       Foreground="{DynamicResource TextForeground}"
-                                       TextAlignment="Center" VerticalAlignment="Center">
-                                <Run Text="{Binding Temperature, 
-                                    UpdateSourceTrigger=PropertyChanged}"/>°C
-                            </TextBlock>
-                        </Viewbox>
+                        <Image Source="/Images/cold.png"
+                            Grid.Row="1"
+                            Margin="3 3 3 8"/>
+                        <TextBlock  Padding="5"
+                                    Grid.Row="1" Grid.Column="1"
+                                    Foreground="{DynamicResource TextForeground}"
+                                    FontWeight="Medium"
+                                    FontSize="16"
+                                    TextAlignment="Center" VerticalAlignment="Center">
+                            <Run Text="{Binding Temperature, 
+                                UpdateSourceTrigger=PropertyChanged}"/>°C
+                        </TextBlock>
                         <Image Source="/Images/hot.png"
                                Grid.Row="1" Grid.Column="3"
                                Margin="3 3 3 10"/>
-
                     </Grid>
                 </Grid>
             </Border>
             <TextBlock Grid.Column="1"
                        Text="Viewing Room" 
                        FontWeight="Bold"
+                       FontSize="40"
                        Style="{StaticResource titleStyle}"/>
             <Button Grid.Column="2"
                     MaxHeight="75"
                     x:Name="OpenFoodAndDrink" 
                     Style="{StaticResource foodAndDrinkButton}" 
                     HorizontalAlignment="Right"
-                    Margin="10"/>
+                    Width="230"
+                    Margin="8 8 3 3"/>
         </Grid>
         <!--2nd Row-->
         <StackPanel Grid.Row="1" Margin="20 10">
